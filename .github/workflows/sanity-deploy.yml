@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SANITY_AUTH_TOKEN: ${{ secrets.SANITY_DEPLOY_STUDIO_TOKEN }}
+      SANITY_STUDIO_PREVIEW_DOMAIN;: ${{ secrets.SANITY_STUDIO_PREVIEW_DOMAIN }}
     steps:
       - uses: actions/checkout@v2
         with:
