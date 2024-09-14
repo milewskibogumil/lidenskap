@@ -1,10 +1,10 @@
 import { defineField, defineType } from "sanity"
 import { defineSlugForDocument } from "../../utils/define-slug-for-document";
 
-const name = 'Index_Page';
-const title = 'Strona główna';
-const slug = '/';
-const icon = () => '🏠';
+const name = 'Contact_Page';
+const title = 'Kontakt';
+const slug = '/kontakt';
+const icon = () => '📞';
 
 export default defineType({
   name: name,

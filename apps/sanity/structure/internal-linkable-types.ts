@@ -6,4 +6,5 @@
  */
 export const InternalLinkableTypes: { type: string }[] = [
   { type: 'Index_Page' },
+  { type: 'Contact_Page' },
 ];
