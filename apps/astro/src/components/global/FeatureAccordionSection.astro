@@ -1,0 +1,68 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
+import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/image'
+import Accordion from '@/components/ui/Accordion.astro'
+
+export const FeatureAccordionSection_Query = `
+  {
+    ${ImageDataQuery('img')}
+    ${PortableTextQuery('heading')}
+    list[] {
+      ${PortableTextQuery('title')}
+      ${PortableTextQuery('description')}
+    }
+  },
+`
+export type Props = {
+  index: number
+  img: ImageDataProps
+  heading: PortableTextValue
+  list: {
+    title: PortableTextValue
+    description: PortableTextValue
+  }[]
+}
+
+const { index, img, heading, list } = Astro.props
+---
+
+<section class="FeatureAccordionSection">
+  <Image {...img} sizes="(max-width: calc(499rem / 16)) 100vw, 50vw" priority={index === 0} />
+  <div>
+    <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
+    {
+      list?.map(({ title, description }, i) => (
+        <Accordion summary={title} class="accordion" open={i === 0}>
+          <PortableText value={description} />
+        </Accordion>
+      ))
+    }
+  </div>
+</section>
+
+<style lang="scss">
+  .FeatureAccordionSection {
+    display: grid;
+    align-items: flex-start;
+    gap: clamp(calc(32rem / 16), calc(48vw / 7.68), calc(48rem / 16))
+      clamp(calc(64rem / 16), calc(82vw / 7.68), calc(124rem / 16));
+    grid-template-columns: 1fr 1.2fr;
+    @media (max-width: calc(899rem / 16)) {
+      grid-template-columns: 1fr;
+      img {
+        width: 298px;
+      }
+    }
+    & > div {
+      max-width: calc(608rem / 16);
+    }
+  }
+  .heading {
+    margin-bottom: clamp(calc(32rem / 16), calc(48vw / 7.68), calc(48rem / 16));
+  }
+  .accordion {
+    &:not(:last-child) {
+      margin-bottom: clamp(calc(24rem / 16), calc(48vw / 7.68), calc(48rem / 16));
+    }
+  }
+</style>

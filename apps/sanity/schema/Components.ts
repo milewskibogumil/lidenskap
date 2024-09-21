@@ -2,6 +2,7 @@ import { defineType } from "sanity";
 import SimpleCtaSection from "./components/SimpleCtaSection";
 import SplitContentImageGrid from "./components/SplitContentImageGrid";
 import SimpleHeadingFullImage from "./components/SimpleHeadingFullImage";
+import FeatureAccordionSection from "./components/FeatureAccordionSection";
 
 export default defineType({
   name: 'components',
@@ -10,7 +11,8 @@ export default defineType({
   of: [
     SimpleCtaSection,
     SplitContentImageGrid,
-    SimpleHeadingFullImage
+    SimpleHeadingFullImage,
+    FeatureAccordionSection,
   ],
   options: {
     insertMenu: {

@@ -58,10 +58,10 @@ const { index, heading, paragraph, cta, image } = Astro.props
       @supports (animation-timeline: view()) {
         animation: scroll-image linear forwards;
         animation-timeline: view();
-        transform-origin: bottom;
+        transform-origin: center;
         @keyframes scroll-image {
           from {
-            transform: translateY(-10%) scale(1.1);
+            transform: translateY(-8%) scale(1.16);
           }
           to {
             transform: translateY(0%) scale(1);
