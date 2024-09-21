@@ -1,0 +1,102 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+import PortableText, { type PortableTextValue } from './portable-text'
+
+type Props = {
+  summary: PortableTextValue
+} & HTMLAttributes<'details'>
+
+const { summary, ...props } = Astro.props
+---
+
+<details {...props} data-expanded={props.open ? 'true' : 'false'}>
+  <summary>
+    <PortableText value={summary} class="heading" />
+    <div class="icon"><div></div><div></div></div>
+  </summary>
+  <div class="content"><slot /></div>
+</details>
+
+<style lang="scss">
+  details {
+    border-bottom: 1px solid var(--secondary-200, #c0c7db);
+    &[data-expanded='true'] {
+      .icon {
+        div:first-child {
+          transform: rotate(90deg) scaleX(0);
+        }
+      }
+    }
+  }
+  summary {
+    padding: clamp(calc(16rem / 16), calc(24vw / 7.68), calc(24rem / 16)) 0;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+    align-items: flex-start;
+    .heading {
+      font-size: clamp(calc(20rem / 16), calc(24vw / 7.68), calc(24rem / 16));
+    }
+  }
+  .icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    div {
+      width: 24px;
+      height: 2px;
+      background-color: var(--secondary-700, #0c2d63);
+      &:first-child {
+        position: absolute;
+        transition: transform 0.5s var(--easing);
+        transform: rotate(90deg);
+      }
+    }
+  }
+  .content {
+    overflow: hidden;
+    transition: height 0.5s var(--easing);
+    :global(> :last-child) {
+      margin-bottom: clamp(calc(24rem / 16), calc(42vw / 7.68), calc(42rem / 16));
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll('details').forEach((details) => {
+    const content = details.querySelector<HTMLDivElement>('.content')
+    const summary = details.querySelector<HTMLDivElement>('summary')
+    if (!content || !summary) return
+    summary.addEventListener('click', (event) => {
+      event.preventDefault()
+      if (details.open) {
+        content.style.height = content.scrollHeight + 'px'
+        requestAnimationFrame(() => (content.style.height = '0px'))
+        details.setAttribute('data-expanded', 'false')
+        content.addEventListener(
+          'transitionend',
+          () => {
+            details.open = false
+            content.style.height = ''
+          },
+          { once: true }
+        )
+      } else {
+        details.setAttribute('data-expanded', 'true')
+        details.open = true
+        const startHeight = content.scrollHeight + 'px'
+        content.style.height = '0px'
+        requestAnimationFrame(() => (content.style.height = startHeight))
+        content.addEventListener(
+          'transitionend',
+          () => {
+            content.style.height = ''
+          },
+          { once: true }
+        )
+      }
+    })
+  })
+</script>
