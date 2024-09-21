@@ -1,0 +1,48 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@/src/components/ui/portable-text'
+import Button, { ButtonDataQuery, type ButtonDataProps } from '@/components/ui/button'
+
+export const SimpleCtaSection_Query = `
+  ${PortableTextQuery('name')}
+  ${PortableTextQuery('text')}
+  ${ButtonDataQuery('cta')}
+`
+
+export type Props = {
+  index: number
+  name: PortableTextValue
+  text: PortableTextValue
+  cta: ButtonDataProps
+}
+
+const { index, name, text, cta } = Astro.props
+---
+
+<section class="SimpleCtaSection sec-wo-margin">
+  <div class="max-width">
+    <PortableText value={name} class="h3" />
+    <header>
+      <PortableText value={text} heading={index === 0 ? 'h1' : 'h2'} class="h3" />
+      <Button {...cta} class="cta" />
+    </header>
+  </div>
+</section>
+
+<style lang="scss">
+  .SimpleCtaSection {
+    padding: clamp(calc(32rem / 16), calc(80vw / 7.68), calc(144rem / 16)) 0;
+    background: var(--primary-300, #f4efe8);
+    .max-width {
+      max-width: calc(1024rem / 16);
+      display: grid;
+      gap: clamp(calc(32rem / 16), calc(56vw / 7.68), calc(56rem / 16))
+        clamp(calc(42rem / 16), calc(56vw / 7.68), calc(56rem / 16));
+      @media (min-width: calc(1000rem / 16)) {
+        grid-template-columns: 1fr 3.6fr;
+      }
+    }
+  }
+  .cta {
+    margin-top: 2rem;
+  }
+</style>

@@ -26,7 +26,28 @@
 }
 
 :root {
+  --primary-100: #fffefd;
+  --primary-300: #f4efe8;
+  --primary-700: #ad6116;
+  --primary-800: #9c5712;
+
+  --secondary-100: #dee1e6;
+  --secondary-200: #c0c7db;
+  --secondary-300: #7d8fc1;
+  --secondary-500: #374776;
+  --secondary-700: #0c2d63;
+  --secondary-800: #0b2348;
+  --secondary-900: #122441;
+
+  --error-500: #c8452e;
+
+  --success-500: #298441;
+
+  --visited-500: #713776;
+
   --gap: clamp(96px, calc(132vw / 7.68), 152px);
+
+  --easing: cubic-bezier(0.17, 0.84, 0.44, 1);
 
   --pageMargin: clamp(16px, calc(40vw / 7.68), 40px);
   @media (max-width: 899px) and (min-width: 600px) {
@@ -110,7 +131,7 @@ img {
   outline: none;
 }
 :focus-visible {
-  outline: 2px solid var(--primary-800, #01403b);
+  outline: 2px solid var(--secondary-700, #0c2d63);
   outline-offset: 3px;
 }
 
@@ -127,15 +148,15 @@ body {
   min-width: 320px;
   -webkit-tap-highlight-color: transparent;
   background: var(--background-100, #fffcf9);
-  color: var(--primary-900, #001b19);
-  font-family: 'Poppins', sans-serif;
+  color: var(--secondary-700, #0c2d63);
+  font-family: 'Fixel', sans-serif;
   font-size: 1rem;
   line-height: 158%;
 }
 
 main,
 .max-width {
-  max-width: 1200px;
+  max-width: 1300px;
   width: calc(100% - var(--pageMargin) * 2);
   margin: 0 auto;
   height: 100%;
@@ -160,22 +181,24 @@ h6,
 .h6 {
   overflow-wrap: anywhere;
   font-weight: 400;
-  line-height: 128%;
-  color: var(--primary-800, #01403b);
+  line-height: 120%;
+  color: var(--secondary-700, #0c2d63);
+  font-variant-numeric: lining-nums tabular-nums;
   strong {
-    font-weight: 400;
-    color: var(--primary-900, #001b19);
+    font-weight: 600;
   }
 }
 h1,
-.h1,
-h2,
-.h2 {
-  font-size: clamp(calc(28rem / 16), calc(42vw / 7.68), calc(42rem / 16));
+.h1 {
+  font-size: clamp(calc(28rem / 16), calc(40vw / 7.68), calc(40rem / 16));
+  letter-spacing: -0.06em;
 }
+h2,
+.h2,
 h3,
 .h3 {
-  font-size: clamp(calc(18rem / 16), calc(24vw / 7.68), calc(24rem / 16));
+  font-size: clamp(calc(24rem / 16), calc(32vw / 7.68), calc(32rem / 16));
+  letter-spacing: -0.04em;
 }
 
 .link {
@@ -202,8 +225,8 @@ h3,
 
 .sec-wo-margin {
   margin: 0 calc(var(--pageMargin) * -1);
-  @media (min-width: 1280px) {
-    margin: 0 calc((100vw - 1200px) / -2);
+  @media (min-width: 1380px) {
+    margin: 0 calc((100vw - 1300px) / -2);
   }
 }
 

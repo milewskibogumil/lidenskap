@@ -1,0 +1,40 @@
+---
+import type { ComponentProps } from 'astro/types'
+import SimpleCtaSection, { SimpleCtaSection_Query } from '@/components/global/SimpleCtaSection.astro'
+
+const components = {
+  SimpleCtaSection,
+}
+
+type ComponentsMap = {
+  [Component in keyof typeof components]: {
+    _type: Component
+  } & ComponentProps<(typeof components)[Component]>
+}
+
+export type ComponentsProps = Array<ComponentsMap[keyof typeof components]>
+
+type Props = {
+  data: ComponentsProps
+  indexStart?: number
+}
+
+const { data, indexStart = 0 } = Astro.props
+
+export const Components_Query = /* groq */ `
+  components[] {
+    _type,
+    _type == "SimpleCtaSection" => {
+      ${SimpleCtaSection_Query}
+    },
+  },
+`
+---
+
+{
+  data?.map((item, i) => {
+    const DynamicComponent = components[item._type]
+    if (!DynamicComponent) return null
+    return <DynamicComponent {...item} index={indexStart + i} />
+  })
+}

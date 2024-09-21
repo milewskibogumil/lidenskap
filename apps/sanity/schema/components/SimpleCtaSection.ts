@@ -28,7 +28,7 @@ export default defineField({
       type: 'cta',
       title: 'Wezwanie do działania',
       validation: Rule => Rule.required(),
-    })
+    }),
   ],
   preview: {
     select: {
