@@ -33,7 +33,7 @@ const imageProps = {
   style: {
     background: `url(${asset.metadata.lqip}) center / cover no-repeat`,
   },
-  onload: 'this.removeAttribute("style")',
+  onload: 'this.style.removeProperty("background")',
   ...(priority && {
     loading: 'eager',
     fetchpriority: 'high',

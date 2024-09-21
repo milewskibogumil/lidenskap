@@ -1,5 +1,6 @@
 import { defineType } from "sanity";
 import SimpleCtaSection from "./components/SimpleCtaSection";
+import SplitContentImageGrid from "./components/SplitContentImageGrid";
 
 export default defineType({
   name: 'components',
@@ -7,6 +8,7 @@ export default defineType({
   title: 'Components',
   of: [
     SimpleCtaSection,
+    SplitContentImageGrid,
   ],
   options: {
     insertMenu: {

@@ -1,9 +1,11 @@
 ---
 import type { ComponentProps } from 'astro/types'
 import SimpleCtaSection, { SimpleCtaSection_Query } from '@/components/global/SimpleCtaSection.astro'
+import SplitContentImageGrid, { SplitContentImageGrid_Query } from '@/components/global/SplitContentImageGrid.astro'
 
 const components = {
   SimpleCtaSection,
+  SplitContentImageGrid,
 }
 
 type ComponentsMap = {
@@ -24,16 +26,15 @@ const { data, indexStart = 0 } = Astro.props
 export const Components_Query = /* groq */ `
   components[] {
     _type,
-    _type == "SimpleCtaSection" => {
-      ${SimpleCtaSection_Query}
-    },
+    _type == "SimpleCtaSection" => ${SimpleCtaSection_Query}
+    _type == "SplitContentImageGrid" => ${SplitContentImageGrid_Query}
   },
 `
 ---
 
 {
   data?.map((item, i) => {
-    const DynamicComponent = components[item._type]
+    const DynamicComponent = components[item._type] as any
     if (!DynamicComponent) return null
     return <DynamicComponent {...item} index={indexStart + i} />
   })

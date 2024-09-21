@@ -1,0 +1,105 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
+import Button, { ButtonDataQuery, type ButtonDataProps } from '@/components/ui/button'
+import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/image'
+
+export const SplitContentImageGrid_Query = `
+  {
+    ${PortableTextQuery('heading')}
+    ${PortableTextQuery('paragraph')}
+    ${ButtonDataQuery('cta')}
+    ${ImageDataQuery('images[]')}
+  },
+`
+
+export type Props = {
+  index: number
+  heading: PortableTextValue
+  paragraph: PortableTextValue
+  cta: ButtonDataProps
+  images: ImageDataProps[]
+}
+
+const { index, heading, paragraph, cta, images } = Astro.props
+---
+
+<section class="SplitContentImageGrid sec-wo-margin">
+  <div class="max-width">
+    <header>
+      <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="h3" />
+      <PortableText value={paragraph} class="paragraph h3" />
+      <Button {...cta} />
+    </header>
+    <div class="images">
+      <div>
+        {
+          [images[0], images[2]].map((img) => (
+            <Image {...img} sizes="(max-width: 1049px) 50vw, 25vw" loading={index === 0 ? 'eager' : 'lazy'} />
+          ))
+        }
+      </div>
+      <div>
+        {
+          [images[1], images[3]].map((img) => (
+            <Image {...img} sizes="(max-width: 1049px) 50vw, 25vw" loading={index === 0 ? 'eager' : 'lazy'} />
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  .SplitContentImageGrid {
+    background-color: var(--primary-300, #f4efe8);
+  }
+  header {
+    padding: clamp(calc(64rem / 16), calc(82vw / 7.68), calc(82rem / 16)) 0;
+  }
+  .max-width {
+    max-width: calc(1080rem / 16);
+    display: grid;
+    align-items: center;
+    column-gap: clamp(calc(64rem / 16), calc(96vw / 7.68), calc(96rem / 16));
+    @media (min-width: calc(1050rem / 16)) {
+      grid-template-columns: 1fr 1.25fr;
+    }
+  }
+  .paragraph {
+    margin: calc(24rem / 16) 0 clamp(calc(48rem / 16), calc(48vw / 7.68), calc(64rem / 16));
+  }
+  .images {
+    max-width: calc(608rem / 16);
+    overflow: clip;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(calc(8rem / 16), calc(12vw / 7.68), calc(12rem / 16));
+    margin-bottom: -89px;
+    div {
+      display: grid;
+      gap: clamp(calc(8rem / 16), calc(12vw / 7.68), calc(12rem / 16));
+      &:first-child {
+        animation: SplitContentImageGridUp 1s;
+        animation-timeline: view();
+      }
+      animation: SplitContentImageGridDown 1s;
+      animation-timeline: view();
+    }
+  }
+  @keyframes SplitContentImageGridUp {
+    from {
+      transform: translateY(0px);
+    }
+    to {
+      transform: translateY(-89px);
+    }
+  }
+  @keyframes SplitContentImageGridDown {
+    from {
+      transform: translateY(-89px);
+    }
+    to {
+      transform: translateY(0px);
+    }
+  }
+</style>

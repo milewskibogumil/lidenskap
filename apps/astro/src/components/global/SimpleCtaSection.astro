@@ -1,11 +1,13 @@
 ---
-import PortableText, { PortableTextQuery, type PortableTextValue } from '@/src/components/ui/portable-text'
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
 import Button, { ButtonDataQuery, type ButtonDataProps } from '@/components/ui/button'
 
 export const SimpleCtaSection_Query = `
-  ${PortableTextQuery('name')}
-  ${PortableTextQuery('text')}
-  ${ButtonDataQuery('cta')}
+  {
+    ${PortableTextQuery('name')}
+    ${PortableTextQuery('text')}
+    ${ButtonDataQuery('cta')}
+  },
 `
 
 export type Props = {
