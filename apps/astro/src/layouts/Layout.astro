@@ -2,6 +2,7 @@
 import '@/global/global.scss'
 import { LOCALE } from '../global/constants'
 import Head, { type Props as HeadProps } from './Head.astro'
+import SmoothScroll from './smooth-scroll.astro'
 
 type Props = HeadProps
 ---
@@ -15,5 +16,6 @@ type Props = HeadProps
     <main id="main">
       <slot />
     </main>
+    <SmoothScroll />
   </body>
 </html>
