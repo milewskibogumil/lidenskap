@@ -1,0 +1,87 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+
+export type Props = HTMLAttributes<'a' | 'button'> & {
+  text?: string | HTMLElement
+  theme: 'primary' | 'secondary'
+  type: 'external' | 'internal'
+  href?: string
+}
+
+const { text, theme, type, href, ...props } = Astro.props
+
+const Cmp = !!href ? 'a' : 'button'
+const children = (await Astro.slots.render('default')) ?? text
+---
+
+<Cmp
+  data-theme={theme}
+  {...href && { href }}
+  {...type === 'external' && { target: '_blank', rel: 'noreferrer' }}
+  {...props}>
+  {children}
+  {
+    theme === 'primary' && (
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none">
+        <path stroke="#FFFEFD" stroke-linecap="round" stroke-linejoin="round" d="M3 8h10m0 0L9.25 4M13 8l-3.75 4" />
+      </svg>
+    )
+  }
+</Cmp>
+
+<style lang="scss">
+  a,
+  button {
+    padding: calc(8rem / 16) 1rem;
+    font-size: calc(14rem / 16);
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: calc(6rem / 16);
+    position: relative;
+    overflow: hidden;
+    line-height: 165%;
+    letter-spacing: -0.01em;
+    transition: background-color 0.5s var(--easing);
+    z-index: 1;
+    @media (max-width: calc(499rem / 16)) {
+      width: 100%;
+    }
+    &[data-theme='primary'] {
+      color: var(--primary-100, #fffefd);
+      background-color: var(--primary-700, #ad6116);
+      &:hover {
+        background-color: var(--primary-800, #9c5712);
+      }
+    }
+    &[data-theme='secondary'] {
+      border: 1px solid var(--secondary-500, #374776);
+      background-color: var(--primary-100, #fffefd);
+      color: var(--secondary-900, #122441);
+      &::before {
+        background-color: var(--primary-100, #fffefd);
+      }
+      &:hover {
+        background-color: var(--primary-300, #f4efe8);
+      }
+    }
+    &::before {
+      content: '';
+      width: 100%;
+      aspect-ratio: 1/1;
+      background-color: var(--primary-700, #ad6116);
+      border-radius: 50%;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      transition: transform 0.5s var(--easing);
+      z-index: -1;
+    }
+    &:active {
+      &::before {
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+  }
+</style>
