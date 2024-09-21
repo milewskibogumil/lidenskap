@@ -78,10 +78,10 @@ const { index, heading, paragraph, cta, images } = Astro.props
     div {
       display: grid;
       gap: clamp(calc(8rem / 16), calc(12vw / 7.68), calc(12rem / 16));
-      animation: SplitContentImageGridUp 1s;
+      animation: SplitContentImageGridUp 1s forwards;
       animation-timeline: view();
       &:last-child {
-        animation: SplitContentImageGridDown 1s;
+        animation: SplitContentImageGridDown 1s forwards;
         animation-timeline: view();
         transform: translateY(-89px);
       }

@@ -2,10 +2,12 @@
 import type { ComponentProps } from 'astro/types'
 import SimpleCtaSection, { SimpleCtaSection_Query } from '@/components/global/SimpleCtaSection.astro'
 import SplitContentImageGrid, { SplitContentImageGrid_Query } from '@/components/global/SplitContentImageGrid.astro'
+import SimpleHeadingFullImage, { SimpleHeadingFullImage_Query } from '@/components/global/SimpleHeadingFullImage.astro'
 
 const components = {
   SimpleCtaSection,
   SplitContentImageGrid,
+  SimpleHeadingFullImage,
 }
 
 type ComponentsMap = {
@@ -28,6 +30,7 @@ export const Components_Query = /* groq */ `
     _type,
     _type == "SimpleCtaSection" => ${SimpleCtaSection_Query}
     _type == "SplitContentImageGrid" => ${SplitContentImageGrid_Query}
+    _type == "SimpleHeadingFullImage" => ${SimpleHeadingFullImage_Query}
   },
 `
 ---

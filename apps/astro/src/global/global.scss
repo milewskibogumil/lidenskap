@@ -49,9 +49,9 @@
 
   --easing: cubic-bezier(0.17, 0.84, 0.44, 1);
 
-  --pageMargin: clamp(16px, calc(40vw / 7.68), 40px);
+  --page-margin: clamp(16px, calc(40vw / 7.68), 40px);
   @media (max-width: 899px) and (min-width: 600px) {
-    --pageMargin: clamp(40px, calc(80vw / 7.68), 80px);
+    --page-margin: clamp(40px, calc(80vw / 7.68), 80px);
   }
 }
 
@@ -156,8 +156,8 @@ body {
 
 main,
 .max-width {
-  max-width: 1300px;
-  width: calc(100% - var(--pageMargin) * 2);
+  max-width: calc(1380rem / 16);
+  width: calc(100% - var(--page-margin) * 2);
   margin: 0 auto;
   height: 100%;
 }
@@ -224,9 +224,9 @@ h3,
 }
 
 .sec-wo-margin {
-  margin: 0 calc(var(--pageMargin) * -1);
-  @media (min-width: 1380px) {
-    margin: 0 calc((100vw - 1300px) / -2);
+  margin: 0 calc(var(--page-margin) * -1);
+  @media (min-width: calc(1380rem / 16)) {
+    margin: 0 calc((100vw - calc(1300rem / 16)) / -2);
   }
 }
 
@@ -257,11 +257,5 @@ h3,
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: clamp(12px, calc(16vw / 7.68), 16px);
-}
-
-div.paragraph {
-  & > *:not(:last-child) {
-    margin-bottom: 8px;
-  }
+  gap: clamp(calc(12rem / 16), calc(16vw / 7.68), 1rem);
 }

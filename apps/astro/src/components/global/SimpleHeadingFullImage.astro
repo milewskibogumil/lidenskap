@@ -1,0 +1,73 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
+import Button, { ButtonDataQuery, type ButtonDataProps } from '@/components/ui/button'
+import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/image'
+
+export const SimpleHeadingFullImage_Query = `
+  {
+    ${PortableTextQuery('heading')}
+    ${PortableTextQuery('paragraph')}
+    ${ButtonDataQuery('cta')}
+    ${ImageDataQuery('image')}
+  },
+`
+
+export type Props = {
+  index: number
+  heading: PortableTextValue
+  paragraph: PortableTextValue
+  cta: ButtonDataProps
+  image: ImageDataProps
+}
+
+const { index, heading, paragraph, cta, image } = Astro.props
+---
+
+<section class="SimpleHeadingFullImage">
+  <header>
+    <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} />
+    <div>
+      <PortableText value={paragraph} />
+      <Button {...cta} class="cta" />
+    </div>
+  </header>
+  <div class="image">
+    <Image {...image} sizes="100vw" priority={index === 0} />
+  </div>
+</section>
+
+<style lang="scss">
+  header {
+    display: grid;
+    gap: clamp(calc(24rem / 16), calc(32vw / 7.68), calc(32rem / 16))
+      clamp(calc(64rem / 16), calc(64vw / 7.68), calc(132rem / 16));
+    grid-template-columns: 1fr 1.2fr;
+    @media (max-width: calc(899rem / 16)) {
+      grid-template-columns: 1fr;
+      max-width: calc(643rem / 16);
+    }
+    margin-bottom: clamp(calc(64rem / 16), calc(64vw / 7.68), calc(80rem / 16));
+    .cta {
+      margin-top: clamp(calc(24rem / 16), calc(32vw / 7.68), calc(32rem / 16));
+    }
+  }
+  .image {
+    overflow: clip;
+    margin: 0 calc(var(--page-margin) * -1);
+    img {
+      @supports (animation-timeline: view()) {
+        animation: scroll-image linear forwards;
+        animation-timeline: view();
+        transform-origin: bottom;
+        @keyframes scroll-image {
+          from {
+            transform: translateY(-10%) scale(1.1);
+          }
+          to {
+            transform: translateY(0%) scale(1);
+          }
+        }
+      }
+    }
+  }
+</style>

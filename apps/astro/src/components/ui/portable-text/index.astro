@@ -29,8 +29,16 @@ const valueArray = Array.isArray(value) ? value : [value]
       )}
     </HeadingTag>
   ) : (
-    <div {...props}>
+    <div {...props} data-portable-text>
       <PortableText value={value} components={{ mark: Mark }} />
     </div>
   )
 }
+
+<style lang="scss">
+  [data-portable-text] {
+    :global(> *:not(:last-child)) {
+      margin-bottom: calc(8rem / 16);
+    }
+  }
+</style>
