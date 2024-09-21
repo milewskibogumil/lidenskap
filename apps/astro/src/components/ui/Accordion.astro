@@ -22,7 +22,8 @@ const { summary, ...props } = Astro.props
     border-bottom: 1px solid var(--secondary-200, #c0c7db);
     &[data-expanded='true'] {
       .icon {
-        div:first-child {
+        transform: rotate(90deg);
+        div:last-child {
           transform: rotate(90deg) scaleX(0);
         }
       }
@@ -44,13 +45,14 @@ const { summary, ...props } = Astro.props
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: transform 0.5s var(--easing);
     div {
       width: 24px;
       height: 2px;
       background-color: var(--secondary-700, #0c2d63);
+      transition: transform 0.5s var(--easing);
       &:first-child {
         position: absolute;
-        transition: transform 0.5s var(--easing);
         transform: rotate(90deg);
       }
     }
