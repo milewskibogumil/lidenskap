@@ -1,19 +1,20 @@
 @font-face {
   font-family: 'Fixel';
   src:
-    url('/fonts/FixelText-Regular.woff2') format('woff2'),
-    url('/fonts/FixelText-Regular.woff') format('woff');
+    url('/fonts/FixelDisplay-Regular.woff2') format('woff2'),
+    url('/fonts/FixelDisplay-Regular.woff') format('woff2');
   font-weight: 400;
   font-display: swap;
   font-style: normal;
 }
-
-@function rem($px) {
-  @if round($px) == $px {
-    @return calc($px / 16) + rem;
-  } @else {
-    @error "The value passed to rem() must be an integer";
-  }
+@font-face {
+  font-family: 'Fixel';
+  src:
+    url('/fonts/FixelDisplay-SemiBold.woff2') format('woff2'),
+    url('/fonts/FixelDisplay-SemiBold.woff') format('woff');
+  font-weight: 600;
+  font-display: swap;
+  font-style: normal;
 }
 
 *,
