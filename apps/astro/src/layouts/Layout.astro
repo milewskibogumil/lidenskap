@@ -1,7 +1,8 @@
 ---
 import '@/global/global.scss'
-import { LOCALE } from '../global/constants'
+import { LOCALE } from '@/global/constants'
 import Head, { type Props as HeadProps } from './Head.astro'
+import Header from '@/components/global/Header.astro'
 import SmoothScroll from './smooth-scroll.astro'
 
 type Props = HeadProps
@@ -13,6 +14,7 @@ type Props = HeadProps
     <Head {...Astro.props} />
   </head>
   <body>
+    <Header />
     <main id="main">
       <slot />
     </main>

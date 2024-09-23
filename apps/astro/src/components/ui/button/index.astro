@@ -3,12 +3,12 @@ import type { HTMLAttributes } from 'astro/types'
 
 export type Props = HTMLAttributes<'a' | 'button'> & {
   text?: string | HTMLElement
-  theme: 'primary' | 'secondary'
+  theme?: 'primary' | 'secondary'
   type: 'external' | 'internal'
   href?: string
 }
 
-const { text, theme, type, href, ...props } = Astro.props
+const { text, theme = 'primary', type, href, ...props } = Astro.props
 
 const Cmp = !!href ? 'a' : 'button'
 const children = (await Astro.slots.render('default')) ?? text
