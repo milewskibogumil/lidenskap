@@ -9,6 +9,7 @@ import FeatureAccordionSection, {
 import CtaSectionWithShapedImage, {
   CtaSectionWithShapedImage_Query,
 } from '@/components/global/CtaSectionWithShapedImage.astro'
+import ServicesOverview, { ServicesOverview_Query } from '@/components/global/ServicesOverview.astro'
 
 const components = {
   SimpleCtaSection,
@@ -16,6 +17,7 @@ const components = {
   SimpleHeadingFullImage,
   FeatureAccordionSection,
   CtaSectionWithShapedImage,
+  ServicesOverview,
 }
 
 type ComponentsMap = {
@@ -41,6 +43,7 @@ export const Components_Query = /* groq */ `
     _type == "SimpleHeadingFullImage" => ${SimpleHeadingFullImage_Query}
     _type == "FeatureAccordionSection" => ${FeatureAccordionSection_Query}
     _type == "CtaSectionWithShapedImage" => ${CtaSectionWithShapedImage_Query}
+    _type == "ServicesOverview" => ${ServicesOverview_Query}
   },
 `
 ---

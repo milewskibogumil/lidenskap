@@ -43,8 +43,8 @@ export default defineField({
               title: 'Usługi',
               of: [
                 defineField({
-                  type: 'object',
                   name: 'service',
+                  type: 'object',
                   fields: [
                     defineField({
                       name: 'isIcon',

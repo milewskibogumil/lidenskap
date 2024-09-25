@@ -1,0 +1,145 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
+import Button, { ButtonDataQuery, type ButtonDataProps } from '@/components/ui/button'
+import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/image'
+
+export const ServicesOverview_Query = `
+  {
+    ${PortableTextQuery('heading')}
+    ${PortableTextQuery('paragraph')}
+    items[] {
+      ${PortableTextQuery('name')}
+      services[] {
+        isIcon,
+        ${ImageDataQuery('img')}
+        ${ImageDataQuery('icon')}
+        ${PortableTextQuery('name')}
+      },
+    },
+    ${PortableTextQuery('ctaDescription')}
+    ${ButtonDataQuery('cta')}
+  },
+`
+
+export type Props = {
+  index: number
+  heading: PortableTextValue
+  paragraph: PortableTextValue
+  items: {
+    name: PortableTextValue
+    services: {
+      isIcon: boolean
+      img: ImageDataProps
+      icon: ImageDataProps
+      name: PortableTextValue
+    }[]
+  }[]
+  ctaDescription: PortableTextValue
+  cta: ButtonDataProps
+}
+
+const { index, heading, paragraph, items, ctaDescription, cta } = Astro.props
+---
+
+<section class="ServicesOverview">
+  <header>
+    <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
+    <PortableText value={paragraph} />
+  </header>
+  <div>
+    <ul class="services">
+      {
+        items?.map(({ name, services }) => (
+          <li>
+            <PortableText value={name} heading={index === 0 ? 'h2' : 'h3'} class="heading" />
+            <ul class="elements">
+              {services?.map(({ isIcon, img, icon, name }) => (
+                <li class="item">
+                  <div class="img">
+                    {isIcon ? (
+                      <Image {...icon} sizes="28px" />
+                    ) : (
+                      <Image
+                        {...img}
+                        sizes="(max-width: calc(749rem / 16)) 50vw, (max-width: calc(1199rem / 16)) 33vw, 25vw"
+                      />
+                    )}
+                  </div>
+                  <PortableText value={name} class="name" />
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="highlight">
+      <PortableText value={ctaDescription} class="description" />
+      <Button {...cta} />
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  .ServicesOverview {
+    padding: clamp(calc(48rem / 16), calc(64vw / 7.68), calc(96rem / 16)) 0;
+    display: grid;
+    gap: clamp(calc(32rem / 16), calc(48vw / 7.68), calc(48rem / 16))
+      clamp(calc(64rem / 16), calc(64vw / 7.68), calc(112rem / 16));
+    @media (min-width: calc(1050rem / 16)) {
+      grid-template-columns: 1fr 2.6fr;
+    }
+  }
+  header {
+    max-width: calc(608rem / 16);
+    .heading {
+      margin-bottom: clamp(calc(16rem / 16), calc(24vw / 7.68), calc(32rem / 16));
+    }
+  }
+  .services {
+    display: grid;
+    $gap: clamp(calc(32rem / 16), calc(48vw / 7.68), calc(82rem / 16));
+    gap: $gap;
+    margin-bottom: $gap;
+    .heading {
+      font-size: clamp(calc(18rem / 16), calc(20vw / 7.68), calc(22rem / 16));
+      margin-bottom: clamp(calc(12rem / 16), calc(16vw / 7.68), calc(20rem / 16));
+    }
+    .elements {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      @media (max-width: calc(1199rem / 16)) {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+      @media (max-width: calc(749rem / 16)) {
+        grid-template-columns: 1fr 1fr;
+      }
+      gap: calc(32rem / 16) calc(12rem / 16);
+      .item {
+        .img {
+          background-color: var(--primary-300, #f4efe8);
+          aspect-ratio: 206/138;
+          display: grid;
+          place-items: center;
+          margin-bottom: calc(8rem / 16);
+        }
+        .name {
+          font-size: calc(14rem / 16);
+        }
+      }
+    }
+  }
+  .highlight {
+    padding: clamp(calc(16rem / 16), calc(20vw / 7.68), calc(20rem / 16));
+    background-color: var(--primary-300, #f4efe8);
+    display: grid;
+    align-items: center;
+    gap: clamp(calc(24rem / 16), calc(32vw / 7.68), calc(48rem / 16));
+    @media (min-width: calc(650rem / 16)) {
+      grid-template-columns: 1fr auto;
+    }
+    .description {
+      max-width: calc(518rem / 16);
+    }
+  }
+</style>
