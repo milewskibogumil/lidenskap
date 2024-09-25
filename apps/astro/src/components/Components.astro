@@ -6,12 +6,16 @@ import SimpleHeadingFullImage, { SimpleHeadingFullImage_Query } from '@/componen
 import FeatureAccordionSection, {
   FeatureAccordionSection_Query,
 } from '@/components/global/FeatureAccordionSection.astro'
+import CtaSectionWithShapedImage, {
+  CtaSectionWithShapedImage_Query,
+} from '@/components/global/CtaSectionWithShapedImage.astro'
 
 const components = {
   SimpleCtaSection,
   SplitContentImageGrid,
   SimpleHeadingFullImage,
   FeatureAccordionSection,
+  CtaSectionWithShapedImage,
 }
 
 type ComponentsMap = {
@@ -36,6 +40,7 @@ export const Components_Query = /* groq */ `
     _type == "SplitContentImageGrid" => ${SplitContentImageGrid_Query}
     _type == "SimpleHeadingFullImage" => ${SimpleHeadingFullImage_Query}
     _type == "FeatureAccordionSection" => ${FeatureAccordionSection_Query}
+    _type == "CtaSectionWithShapedImage" => ${CtaSectionWithShapedImage_Query}
   },
 `
 ---

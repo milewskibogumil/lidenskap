@@ -1,0 +1,111 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
+import Button, { ButtonDataQuery, type ButtonDataProps } from '@/components/ui/button'
+import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/image'
+
+export const CtaSectionWithShapedImage_Query = `
+  {
+    ${PortableTextQuery('heading')}
+    ${PortableTextQuery('paragraph')}
+    ${PortableTextQuery('description')}
+    ${ButtonDataQuery('cta[]')}
+    ${ImageDataQuery('img')}
+  },
+`
+
+export type Props = {
+  index: number
+  heading: PortableTextValue
+  paragraph: PortableTextValue
+  description: PortableTextValue
+  cta: ButtonDataProps[]
+  img: ImageDataProps
+}
+
+const { index, heading, paragraph, description, cta, img } = Astro.props
+---
+
+<section class="CtaSectionWithShapedImage">
+  <div class="header">
+    <header>
+      <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
+      <PortableText value={paragraph} />
+    </header>
+    <div class="highlight">
+      <PortableText value={description} class="description" />
+      <div class="cta-wrapper">
+        {cta?.map((item) => <Button {...item} />)}
+      </div>
+    </div>
+  </div>
+  <div class="img">
+    <Image {...img} sizes="(max-width: 799px) 100vw, (max-width: 999px) 70vw, 50vw" priority={index === 0} />
+    <div></div>
+    <div></div>
+  </div>
+</section>
+
+<style lang="scss">
+  .CtaSectionWithShapedImage {
+    padding: clamp(calc(32rem / 16), calc(32vw / 7.68), calc(48rem / 16)) 0;
+    display: grid;
+    gap: clamp(calc(24rem / 16), calc(48vw / 7.68), calc(48rem / 16))
+      clamp(calc(64rem / 16), calc(96vw / 7.68), calc(124rem / 16));
+    @media (min-width: calc(1000rem / 16)) {
+      grid-template-columns: 1.2fr 1fr;
+      .img {
+        max-width: 100%;
+      }
+    }
+  }
+  .header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    header {
+      max-width: calc(542rem / 16);
+      margin-bottom: clamp(calc(24rem / 16), calc(32vw / 7.68), calc(32rem / 16));
+      .heading {
+        margin-bottom: clamp(calc(16rem / 16), calc(24vw / 7.68), calc(32rem / 16));
+      }
+    }
+    .highlight {
+      max-width: calc(426rem / 16);
+      padding: clamp(calc(16rem / 16), calc(20vw / 7.68), calc(20rem / 16));
+      background-color: var(--primary-300, #f4efe8);
+      .description {
+        margin-bottom: clamp(calc(16rem / 16), calc(24vw / 7.68), calc(32rem / 16));
+      }
+    }
+  }
+  .img {
+    width: fit-content;
+    max-width: 534px;
+    position: relative;
+    div {
+      z-index: 1;
+      width: 10px;
+      height: 100%;
+      background: var(--background-100, #fffcf9);
+      position: absolute;
+      top: 0;
+      animation: CtaSectionWithShapedImage 500ms 200ms var(--easing) both;
+      transform-origin: left;
+      &:nth-of-type(1) {
+        left: 66%;
+      }
+      &:nth-of-type(2) {
+        left: 87%;
+        animation-delay: 300ms;
+      }
+      @keyframes CtaSectionWithShapedImage {
+        0% {
+          transform: scaleX(0);
+        }
+        100% {
+          transform: scaleX(1);
+        }
+      }
+    }
+  }
+</style>

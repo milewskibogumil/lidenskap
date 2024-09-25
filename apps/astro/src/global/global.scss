@@ -45,8 +45,6 @@
 
   --visited-500: #713776;
 
-  --gap: clamp(96px, calc(132vw / 7.68), 152px);
-
   --easing: cubic-bezier(0.17, 0.84, 0.44, 1);
 
   --page-margin: clamp(16px, calc(40vw / 7.68), 40px);
@@ -161,11 +159,6 @@ main,
   width: calc(100% - var(--page-margin) * 2);
   margin: 0 auto;
   height: 100%;
-}
-main {
-  display: grid;
-  row-gap: var(--gap);
-  margin: clamp(32px, calc(80vw / 7.68), 80px) auto var(--gap);
 }
 
 h1,

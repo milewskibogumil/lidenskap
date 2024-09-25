@@ -12,7 +12,7 @@ export default defineType({
   title: title,
   icon,
   fields: [
-    ...defineSlugForDocument({ slug: slug }),
+    ...defineSlugForDocument({ slug }),
     defineField({
       name: 'components',
       type: 'components',
