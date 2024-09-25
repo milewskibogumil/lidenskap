@@ -4,6 +4,7 @@ import SplitContentImageGrid from "./components/SplitContentImageGrid";
 import SimpleHeadingFullImage from "./components/SimpleHeadingFullImage";
 import FeatureAccordionSection from "./components/FeatureAccordionSection";
 import CtaSectionWithShapedImage from "./components/CtaSectionWithShapedImage";
+import ServicesOverview from "./components/ServicesOverview";
 
 export default defineType({
   name: 'components',
@@ -15,6 +16,7 @@ export default defineType({
     SimpleHeadingFullImage,
     FeatureAccordionSection,
     CtaSectionWithShapedImage,
+    ServicesOverview,
   ],
   options: {
     insertMenu: {
