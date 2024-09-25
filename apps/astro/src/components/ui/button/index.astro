@@ -50,8 +50,14 @@ const children = (await Astro.slots.render('default')) ?? text
     &[data-theme='primary'] {
       color: var(--primary-100, #fffefd);
       background-color: var(--primary-700, #ad6116);
+      svg {
+        transition: transform 300ms var(--easing);
+      }
       &:hover {
         background-color: var(--primary-800, #9c5712);
+        svg {
+          transform: translateX(2px);
+        }
       }
     }
     &[data-theme='secondary'] {
