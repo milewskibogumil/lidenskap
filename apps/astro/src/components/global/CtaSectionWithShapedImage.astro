@@ -79,9 +79,22 @@ const { index, heading, paragraph, description, cta, img } = Astro.props
     }
   }
   .img {
+    overflow: hidden;
     width: fit-content;
     max-width: 534px;
     position: relative;
+    img {
+      animation: CtaSectionWithShapedImage 800ms var(--easing) both;
+      transform-origin: top;
+      @keyframes CtaSectionWithShapedImage {
+        from {
+          transform: scale(1.1);
+        }
+        to {
+          transform: scale(1);
+        }
+      }
+    }
     div {
       z-index: 1;
       width: 10px;
@@ -89,16 +102,16 @@ const { index, heading, paragraph, description, cta, img } = Astro.props
       background: var(--background-100, #fffcf9);
       position: absolute;
       top: 0;
-      animation: CtaSectionWithShapedImage 500ms 200ms var(--easing) both;
+      animation: CtaSectionWithShapedImageShape 500ms 500ms var(--easing) both;
       transform-origin: left;
       &:nth-of-type(1) {
         left: 66%;
       }
       &:nth-of-type(2) {
         left: 87%;
-        animation-delay: 300ms;
+        animation-delay: 600ms;
       }
-      @keyframes CtaSectionWithShapedImage {
+      @keyframes CtaSectionWithShapedImageShape {
         0% {
           transform: scaleX(0);
         }
