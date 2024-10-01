@@ -1,53 +1,87 @@
 import { defineField, defineType } from 'sanity';
 
+const name = 'global';
+const title = 'Globalne ustawienia';
+const icon = () => '🌍';
+
 export default defineType({
-  name: 'global',
+  name: name,
   type: 'document',
-  title: 'Global',
-  icon: () => '🌍',
+  title: title,
+  icon,
   fields: [
     defineField({
       name: 'email',
       type: 'string',
-      title: 'Email',
+      title: 'Adres e-mail',
       validation: Rule => Rule.required().email(),
     }),
     defineField({
       name: 'tel',
       type: 'string',
-      title: 'Phone number (optional)',
+      title: 'Numer telefonu',
+      validation: Rule => Rule.required(),
+    }),
+    defineField({
+      name: 'address',
+      type: 'object',
+      title: 'Adres',
+      fields: [
+        defineField({
+          name: 'address',
+          type: 'string',
+          title: 'Adres',
+          validation: Rule => Rule.required(),
+        }),
+        defineField({
+          name: 'link',
+          type: 'url',
+          title: 'Link do wizytówki Google Maps',
+          validation: Rule => Rule.required(),
+        }),
+      ],
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'socials',
       type: 'object',
-      title: 'Social media',
-      options: { collapsible: true },
+      title: 'Social Media',
       fields: [
-        defineField({
-          name: 'instagram',
-          type: 'url',
-          title: 'Instagram',
-          validation: Rule => Rule.uri({ scheme: ['https'] }).error('Provide a valid URL (starting with https://)'),
-        }),
         defineField({
           name: 'facebook',
           type: 'url',
           title: 'Facebook',
-          validation: Rule => Rule.uri({ scheme: ['https'] }).error('Provide a valid URL (starting with https://)'),
+          validation: Rule => Rule.uri({ scheme: ['https'] }).error('Podaj poprawny URL (zaczynając od https://)'),
         }),
         defineField({
-          name: 'tiktok',
+          name: 'instagram',
           type: 'url',
-          title: 'TikTok',
-          validation: Rule => Rule.uri({ scheme: ['https'] }).error('Provide a valid URL (starting with https://)'),
-        }),
-        defineField({
-          name: 'linkedin',
-          type: 'url',
-          title: 'LinkedIn',
-          validation: Rule => Rule.uri({ scheme: ['https'] }).error('Provide a valid URL (starting with https://)'),
+          title: 'Instagram',
+          validation: Rule => Rule.uri({ scheme: ['https'] }).error('Podaj poprawny URL (zaczynając od https://)'),
         }),
       ],
+      options: { collapsible: true },
+      validation: Rule => Rule.required(),
+    }),
+    defineField({
+      name: 'companyInfo',
+      type: 'object',
+      title: 'Informacje o firmie',
+      fields: [
+        defineField({
+          name: 'nip',
+          type: 'string',
+          title: 'NIP',
+          validation: Rule => Rule.required(),
+        }),
+        defineField({
+          name: 'krs',
+          type: 'string',
+          title: 'KRS',
+          validation: Rule => Rule.required(),
+        }),
+      ],
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'seo',
@@ -102,7 +136,7 @@ export default defineType({
   ],
   preview: {
     prepare: () => ({
-      title: 'Global settings',
+      title: title,
     })
   }
 })
