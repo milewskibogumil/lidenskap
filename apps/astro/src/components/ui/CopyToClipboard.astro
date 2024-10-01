@@ -1,0 +1,65 @@
+---
+type Props = {
+  copyData: string
+}
+
+const { copyData } = Astro.props
+---
+
+<button class="CopyToClipboard" data-copydata={copyData} data-success={false} aria-label="Skopiuj">
+  <span>Skopiuj</span>
+  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="34" fill="none">
+    <path stroke="#FFFEFD" stroke-linecap="round" stroke-linejoin="round" d="M1 33.5h46.5V1.267L22.5 25.5 20 23"></path>
+  </svg>
+</button>
+
+<style lang="scss">
+  button {
+    font-size: calc(14rem / 16);
+    line-height: 165%;
+    position: relative;
+    span {
+      transition: 0.5s var(--easing);
+    }
+    &[data-success='true'] {
+      span {
+        opacity: 0;
+      }
+      svg {
+        animation: CopyToClipboard 800ms var(--easing) both;
+      }
+    }
+    svg {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      stroke-dasharray: 118;
+      stroke-dashoffset: 72;
+    }
+  }
+  @keyframes CopyToClipboard {
+    // 100% target doesn't work on Safari, so I have to use 99% and 100% instead
+    99%,
+    100% {
+      stroke-dashoffset: 131;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll('.CopyToClipboard').forEach((element) => {
+    element.addEventListener('click', () => {
+      const copyData = element.getAttribute('data-copydata')
+      if (copyData) {
+        navigator.clipboard.writeText(copyData)
+        element.setAttribute('data-success', 'true')
+        element.setAttribute('aria-label', 'Skopiowano')
+        setTimeout(() => {
+          element.setAttribute('data-success', 'false')
+          element.setAttribute('aria-label', 'Skopiuj')
+        }, 5000)
+      }
+    })
+  })
+</script>
