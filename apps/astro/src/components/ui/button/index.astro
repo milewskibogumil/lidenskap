@@ -1,33 +1,43 @@
 ---
 import type { HTMLAttributes } from 'astro/types'
 
-export type Props = HTMLAttributes<'a' | 'button'> & {
+type Props = {
   text?: string | HTMLElement
-  theme?: 'primary' | 'secondary'
-  type: 'external' | 'internal'
   href?: string
-}
+  theme?: 'primary' | 'secondary'
+  linkType?: 'external' | 'internal' | 'internalId' | undefined
+} & HTMLAttributes<'a'> &
+  HTMLAttributes<'button'>
 
-const { text, theme = 'primary', type, href, ...props } = Astro.props
+export type ButtonDataProps = Props
 
-const Cmp = !!href ? 'a' : 'button'
-const children = (await Astro.slots.render('default')) ?? text
+const { text, theme = 'primary', linkType, href, ...props } = Astro.props
+
+const isExternal = linkType === 'external'
+const renderedChildren = (await Astro.slots.render('default')) || text
 ---
 
-<Cmp
-  data-theme={theme}
-  {...href && { href }}
-  {...type === 'external' && { target: '_blank', rel: 'noreferrer' }}
-  {...props}>
-  {children}
-  {
-    theme === 'primary' && (
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none">
-        <path stroke="#FFFEFD" stroke-linecap="round" stroke-linejoin="round" d="M3 8h10m0 0L9.25 4M13 8l-3.75 4" />
-      </svg>
-    )
-  }
-</Cmp>
+{
+  !!href ? (
+    <a href={href} {...(isExternal ? { target: '_blank', rel: 'noreferrer' } : {})} data-theme={theme} {...props}>
+      {renderedChildren}
+      {theme === 'primary' && (
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none">
+          <path stroke="#FFFEFD" stroke-linecap="round" stroke-linejoin="round" d="M3 8h10m0 0L9.25 4M13 8l-3.75 4" />
+        </svg>
+      )}
+    </a>
+  ) : (
+    <button data-theme={theme} {...props}>
+      {renderedChildren}
+      {theme === 'primary' && (
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none">
+          <path stroke="#FFFEFD" stroke-linecap="round" stroke-linejoin="round" d="M3 8h10m0 0L9.25 4M13 8l-3.75 4" />
+        </svg>
+      )}
+    </button>
+  )
+}
 
 <style lang="scss">
   a,
