@@ -5,6 +5,7 @@ import SimpleHeadingFullImage from "./components/SimpleHeadingFullImage";
 import FeatureAccordionSection from "./components/FeatureAccordionSection";
 import CtaSectionWithShapedImage from "./components/CtaSectionWithShapedImage";
 import ServicesOverview from "./components/ServicesOverview";
+import MetricsSection from "./components/MetricsSection";
 
 export default defineType({
   name: 'components',
@@ -17,6 +18,7 @@ export default defineType({
     FeatureAccordionSection,
     CtaSectionWithShapedImage,
     ServicesOverview,
+    MetricsSection,
   ],
   options: {
     insertMenu: {
