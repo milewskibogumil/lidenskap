@@ -48,7 +48,7 @@
   --easing: cubic-bezier(0.17, 0.84, 0.44, 1);
 
   --page-margin: clamp(16px, calc(40vw / 7.68), 40px);
-  @media (max-width: 899px) and (min-width: 600px) {
+  @media (max-width: calc(899rem / 16)) and (min-width: calc(600rem / 16)) {
     --page-margin: clamp(40px, calc(80vw / 7.68), 80px);
   }
 }

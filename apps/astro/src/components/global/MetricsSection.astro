@@ -1,0 +1,132 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
+import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/image'
+
+export const MetricsSection_Query = `
+  {
+    ${PortableTextQuery('heading')}
+    ${PortableTextQuery('paragraph')}
+    metrics[] {
+      value,
+      label,
+      ${ImageDataQuery('icon')}
+    },
+    ${ImageDataQuery('images[]')}
+  },
+`
+export type Props = {
+  index: number
+  heading: PortableTextValue
+  paragraph: PortableTextValue
+  metrics: {
+    value: string
+    label: string
+    icon: ImageDataProps
+  }[]
+  images: ImageDataProps[]
+}
+
+const { index, heading, paragraph, metrics, images } = Astro.props
+---
+
+<section class="MetricsSection">
+  <header>
+    <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
+    <PortableText value={paragraph} class="paragraph" />
+  </header>
+  <div class="column">
+    <ul class="images">
+      {
+        images.map((img) => (
+          <li>
+            <Image {...img} sizes="(max-width: calc(1149rem / 16)) 25vw, 20vw" />
+          </li>
+        ))
+      }
+    </ul>
+    <ul class="metrics">
+      {
+        metrics.map(({ value, label, icon }) => (
+          <li>
+            <p class="value">
+              <strong>{value}</strong>
+              <Image {...icon} sizes="28px" />
+            </p>
+            <p class="label">{label}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style lang="scss">
+  .MetricsSection {
+    padding: clamp(calc(48rem / 16), calc(60vw / 7.68), calc(80rem / 16)) 0;
+  }
+  header {
+    margin-bottom: clamp(calc(16rem / 16), calc(32vw / 7.68), calc(48rem / 16));
+    display: grid;
+    justify-content: flex-start;
+    gap: 1rem clamp(calc(48rem / 16), calc(64vw / 7.68), calc(112rem / 16));
+    max-width: calc(608rem / 16);
+    @media (min-width: calc(1000rem / 16)) {
+      max-width: unset;
+      grid-template-columns: auto auto;
+      .heading {
+        max-width: calc(360rem / 16);
+      }
+      .paragraph {
+        max-width: calc(426rem / 16);
+      }
+    }
+  }
+  .column {
+    display: grid;
+    align-items: flex-end;
+    gap: clamp(calc(48rem / 16), calc(64vw / 7.68), calc(82rem / 16));
+    @media (min-width: calc(1150rem / 16)) {
+      grid-template-columns: 2.6fr 1fr;
+    }
+  }
+  .images {
+    display: grid;
+    align-items: flex-end;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(calc(8rem / 16), calc(16vw / 7.68), 1rem);
+    @media (max-width: calc(1149rem / 16)) {
+      max-width: calc(928rem / 16);
+    }
+    @media (max-width: calc(899rem / 16)) {
+      margin: 0 calc(var(--page-margin) * -1);
+    }
+  }
+  .metrics {
+    display: grid;
+    gap: clamp(calc(28rem / 16), calc(32vw / 7.68), calc(40rem / 16));
+    @media (min-width: calc(600rem / 16)) and (max-width: calc(1149rem / 16)) {
+      max-width: calc(928rem / 16);
+      grid-template-columns: 1fr 1fr;
+    }
+    .value {
+      font-size: clamp(calc(24rem / 16), calc(32vw / 7.68), calc(32rem / 16));
+      display: grid;
+      grid-template-columns: auto 28px;
+      gap: 1rem;
+      font-variant-numeric: lining-nums tabular-nums;
+      strong {
+        font-weight: 400;
+      }
+      margin-bottom: 0.5rem;
+    }
+    .label {
+      font-size: calc(13rem / 16);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    img {
+      width: 28px;
+      height: 28px;
+    }
+  }
+</style>

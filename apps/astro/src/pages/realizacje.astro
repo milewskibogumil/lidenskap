@@ -1,0 +1,20 @@
+---
+import Layout from '@/src/layouts/Layout.astro'
+import metadataFetch from '@/utils/metadata.fetch'
+import sanityFetch from '@/utils/sanity.fetch'
+import Components, { Components_Query, type ComponentsProps } from '@/components/Components.astro'
+
+const metadata = await metadataFetch('Projects_Page')
+
+const data = await sanityFetch<{ components: ComponentsProps }>({
+  query: `
+    *[_type == "Projects_Page"][0] {
+      ${Components_Query}
+    }
+  `,
+})
+---
+
+<Layout {...metadata}>
+  <Components data={data.components} />
+</Layout>
