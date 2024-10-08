@@ -4,14 +4,16 @@ import redirects from '../schema/singleTypes/redirects';
 import Index_Page from '../schema/singleTypes/Index_Page';
 import Contact_Page from '../schema/singleTypes/Contact_Page';
 import Projects_Page from '../schema/singleTypes/Projects_Page';
+import About_Page from '../schema/singleTypes/About_Page';
 import NotFound_Page from '../schema/singleTypes/NotFound_Page';
 
 const singleTypes = [
   global,
   redirects,
   Index_Page,
-  Contact_Page,
   Projects_Page,
+  About_Page,
+  Contact_Page,
   NotFound_Page,
 ];
 
