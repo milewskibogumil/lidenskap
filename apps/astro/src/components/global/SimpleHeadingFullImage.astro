@@ -38,6 +38,7 @@ const { index, heading, paragraph, cta, image } = Astro.props
 
 <style lang="scss">
   header {
+    margin-bottom: clamp(calc(64rem / 16), calc(64vw / 7.68), calc(80rem / 16));
     padding: clamp(calc(48rem / 16), calc(64vw / 7.68), calc(96rem / 16)) 0;
     display: grid;
     gap: clamp(calc(24rem / 16), calc(32vw / 7.68), calc(32rem / 16))
@@ -47,7 +48,6 @@ const { index, heading, paragraph, cta, image } = Astro.props
       grid-template-columns: 1fr;
       max-width: calc(643rem / 16);
     }
-    margin-bottom: clamp(calc(64rem / 16), calc(64vw / 7.68), calc(80rem / 16));
     .cta {
       margin-top: clamp(calc(24rem / 16), calc(32vw / 7.68), calc(32rem / 16));
     }

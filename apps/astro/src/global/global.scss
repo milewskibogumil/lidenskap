@@ -196,11 +196,19 @@ h3,
 }
 
 .link {
-  line-height: normal;
-  text-decoration: underline;
-  text-underline-offset: 5px;
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0% 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 1px;
+  transition: background-size 500ms var(--easing);
+  padding-bottom: 1px;
+  margin-bottom: -1px;
   &:hover {
-    text-decoration-style: dashed;
+    background-size: 80% 1px;
+  }
+  &:active {
+    background-size: 100% 1px;
   }
   &[target='_blank'] {
     &::after {

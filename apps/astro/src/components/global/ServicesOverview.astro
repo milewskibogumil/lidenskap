@@ -108,13 +108,13 @@ const { index, heading, paragraph, items, ctaDescription, cta } = Astro.props
     .elements {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: calc(32rem / 16) calc(12rem / 16);
       @media (max-width: calc(1199rem / 16)) {
         grid-template-columns: 1fr 1fr 1fr;
       }
       @media (max-width: calc(749rem / 16)) {
         grid-template-columns: 1fr 1fr;
       }
-      gap: calc(32rem / 16) calc(12rem / 16);
       .item {
         .img {
           background-color: var(--primary-300, #f4efe8);
