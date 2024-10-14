@@ -2,7 +2,7 @@ import { defineField } from 'sanity';
 import { toPlainText } from '../../utils/to-plain-text';
 
 const name = 'SimpleCtaSection';
-const title = 'Prosta sekcja z wezwaniem do działania';
+const title = 'Prosta sekcja z CTA';
 const icon = () => '📞';
 
 export default defineField({

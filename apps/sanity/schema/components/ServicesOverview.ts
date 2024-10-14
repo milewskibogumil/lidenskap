@@ -2,7 +2,7 @@ import { defineField } from 'sanity';
 import { toPlainText } from '../../utils/to-plain-text';
 
 const name = 'ServicesOverview';
-const title = 'Przegląd usług';
+const title = 'Sekcja z przeglądem usług';
 const icon = () => '🛠️';
 
 export default defineField({

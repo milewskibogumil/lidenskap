@@ -6,6 +6,7 @@ import FeatureAccordionSection from "./components/FeatureAccordionSection";
 import CtaSectionWithShapedImage from "./components/CtaSectionWithShapedImage";
 import ServicesOverview from "./components/ServicesOverview";
 import MetricsSection from "./components/MetricsSection";
+import Faq from "./components/Faq";
 
 export default defineType({
   name: 'components',
@@ -19,6 +20,7 @@ export default defineType({
     CtaSectionWithShapedImage,
     ServicesOverview,
     MetricsSection,
+    Faq,
   ],
   options: {
     insertMenu: {
