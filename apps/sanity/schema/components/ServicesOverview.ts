@@ -110,11 +110,13 @@ export default defineField({
       name: 'ctaDescription',
       type: 'PortableText',
       title: 'Opis wezwania do działania',
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'cta',
       type: 'cta',
       title: 'Wezwanie do działania',
+      validation: Rule => Rule.required(),
     }),
   ],
   preview: {

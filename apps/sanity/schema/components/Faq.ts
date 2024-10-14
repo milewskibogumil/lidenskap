@@ -14,13 +14,13 @@ export default defineField({
     defineField({
       name: 'heading',
       type: 'Heading',
-      title: 'Heading',
+      title: 'Nagłówek',
       validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'items',
       type: 'array',
-      title: 'Items',
+      title: 'Elementy FAQ',
       of: [
         defineField({
           name: 'item',
@@ -43,9 +43,21 @@ export default defineField({
       validation: Rule => Rule.required().unique(),
     }),
     defineField({
+      name: 'ctaDescription',
+      type: 'PortableText',
+      title: 'Opis wezwania do działania',
+      validation: Rule => Rule.required(),
+    }),
+    defineField({
+      name: 'cta',
+      type: 'cta',
+      title: 'Wezwanie do działania',
+      validation: Rule => Rule.required(),
+    }),
+    defineField({
       name: 'img',
       type: 'image',
-      title: 'Image',
+      title: 'Zdjęcie',
       validation: Rule => Rule.required(),
     }),
   ],

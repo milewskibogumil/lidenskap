@@ -1,0 +1,107 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
+import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/image'
+import Accordion from '@/components/ui/Accordion.astro'
+import Button, { ButtonDataQuery, type ButtonDataProps } from '@/components/ui/button'
+
+export const Faq_Query = `
+  {
+    ${PortableTextQuery('heading')}
+    items[] -> {
+      ${PortableTextQuery('question')}
+      ${PortableTextQuery('answer')}
+    },
+    ${PortableTextQuery('ctaDescription')}
+    ${ButtonDataQuery('cta')}
+    ${ImageDataQuery('img')}
+  },
+`
+export type Props = {
+  index: number
+  heading: PortableTextValue
+  items: {
+    question: PortableTextValue
+    answer: PortableTextValue
+  }[]
+  ctaDescription: PortableTextValue
+  cta: ButtonDataProps
+  img: ImageDataProps
+}
+
+const { index, heading, items, ctaDescription, cta, img } = Astro.props
+---
+
+<section class="Faq">
+  <header>
+    <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
+  </header>
+  <div class="items">
+    {
+      items?.map(({ question, answer }, i) => (
+        <Accordion summary={question} class="accordion" open={i === 0}>
+          <PortableText value={answer} />
+        </Accordion>
+      ))
+    }
+  </div>
+  <div class="highlight">
+    <PortableText value={ctaDescription} class="description" />
+    <Button {...cta} />
+  </div>
+  <Image {...img} sizes="(max-width: calc(499rem / 16)) 100vw, 50vw" priority={index === 0} />
+</section>
+
+<style lang="scss">
+  .Faq {
+    padding: clamp(calc(48rem / 16), calc(60vw / 7.68), calc(80rem / 16)) 0;
+    display: grid;
+    align-items: flex-start;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas: 'header header' 'items items' 'img highlight';
+    grid-template-columns: 1fr 1fr;
+    column-gap: clamp(0.5rem, calc(12vw / 7.68), 1rem);
+    @media (min-width: calc(1000rem / 16)) {
+      column-gap: clamp(6rem, calc(82vw / 7.68), 10rem);
+      grid-template-areas: 'header img' 'items img' 'highlight img';
+    }
+    @media (max-width: calc(499rem / 16)) {
+      grid-template-columns: 1fr;
+      grid-template-areas: 'header' 'items' 'img' 'highlight';
+      .highlight {
+        margin-top: 1rem;
+        min-height: 13rem;
+      }
+    }
+  }
+  header {
+    grid-area: header;
+    margin-bottom: 2rem;
+    max-width: calc(608rem / 16);
+  }
+  .items {
+    grid-area: items;
+    margin-bottom: clamp(2rem, calc(48vw / 7.68), 4rem);
+    max-width: calc(608rem / 16);
+  }
+  .highlight {
+    grid-area: highlight;
+    padding: clamp(calc(16rem / 16), calc(20vw / 7.68), calc(20rem / 16));
+    background-color: var(--primary-300, #f4efe8);
+    display: grid;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    gap: 1rem clamp(calc(24rem / 16), calc(32vw / 7.68), calc(48rem / 16));
+    height: 100%;
+    @media (min-width: calc(1000rem / 16)) {
+      height: unset;
+      grid-template-columns: 1fr auto;
+    }
+    .description {
+      max-width: calc(518rem / 16);
+    }
+  }
+  img {
+    grid-area: img;
+  }
+</style>

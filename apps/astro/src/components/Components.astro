@@ -11,6 +11,8 @@ import CtaSectionWithShapedImage, {
 } from '@/components/global/CtaSectionWithShapedImage.astro'
 import ServicesOverview, { ServicesOverview_Query } from '@/components/global/ServicesOverview.astro'
 import MetricsSection, { MetricsSection_Query } from '@/components/global/MetricsSection.astro'
+import Faq, { Faq_Query } from '@/components/global/Faq.astro'
+
 const components = {
   SimpleCtaSection,
   SplitContentImageGrid,
@@ -19,6 +21,7 @@ const components = {
   CtaSectionWithShapedImage,
   ServicesOverview,
   MetricsSection,
+  Faq,
 }
 
 type ComponentsMap = {
@@ -46,6 +49,7 @@ export const Components_Query = /* groq */ `
     _type == "CtaSectionWithShapedImage" => ${CtaSectionWithShapedImage_Query}
     _type == "ServicesOverview" => ${ServicesOverview_Query}
     _type == "MetricsSection" => ${MetricsSection_Query}
+    _type == "Faq" => ${Faq_Query}
   },
 `
 ---
