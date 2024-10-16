@@ -138,8 +138,10 @@ body {
   overflow-x: clip;
 }
 html {
-  scroll-behavior: smooth;
   scroll-padding-top: 123px;
+  @media (prefers-reduced-motion: no-preference) {
+    scroll-behavior: smooth;
+  }
 }
 body {
   overflow: clip;
@@ -149,8 +151,8 @@ body {
   color: var(--secondary-700, #0c2d63);
   font-family: 'Fixel', sans-serif;
   font-size: 1rem;
-  line-height: 158%;
-  letter-spacing: -0.005em;
+  line-height: 165%;
+  letter-spacing: 0.005rem;
 }
 
 main,
@@ -175,7 +177,7 @@ h6,
 .h6 {
   overflow-wrap: anywhere;
   font-weight: 400;
-  line-height: 120%;
+  line-height: 135%;
   color: var(--secondary-700, #0c2d63);
   font-variant-numeric: lining-nums tabular-nums;
   strong {
