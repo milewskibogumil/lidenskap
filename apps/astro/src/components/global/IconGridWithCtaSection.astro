@@ -1,0 +1,114 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
+import Button, { ButtonDataQuery, type ButtonDataProps } from '@/components/ui/button'
+import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/image'
+
+export const IconGridWithCtaSection_Query = `
+  _type == "IconGridWithCtaSection" => {
+    ${PortableTextQuery('heading')}
+    items[] {
+      ${ImageDataQuery('icon')}
+      label,
+    },
+    ${PortableTextQuery('ctaDescription')}
+    ${ButtonDataQuery('cta')}
+  },
+`
+
+export type Props = {
+  index: number
+  heading: PortableTextValue
+  items: {
+    icon: ImageDataProps
+    label: string
+  }[]
+  ctaDescription: PortableTextValue
+  cta: ButtonDataProps
+}
+
+const { index, heading, items, ctaDescription, cta } = Astro.props
+---
+
+<section class="IconGridWithCtaSection">
+  <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="h2 heading" />
+  <ul class="list">
+    {
+      items.map(({ icon, label }) => (
+        <li class="item">
+          <Image {...icon} sizes="28px" />
+          <p>{label}</p>
+        </li>
+      ))
+    }
+  </ul>
+  <div class="highlight">
+    <PortableText value={ctaDescription} class="ctaDescription" />
+    <Button {...cta} />
+  </div>
+</section>
+
+<style lang="scss">
+  .IconGridWithCtaSection {
+    padding: clamp(3rem, calc(4vw / 0.48), 8rem) 0;
+    display: grid;
+    gap: clamp(2rem, calc(3vw / 0.48), 3rem) 1rem;
+    display: grid;
+    align-items: center;
+    .heading {
+      text-align: center;
+      max-width: 28rem;
+      margin: 0 auto;
+    }
+    @media (min-width: 75rem) {
+      grid-template-columns: 1fr 2fr 1fr;
+      .heading {
+        text-align: left;
+      }
+    }
+  }
+
+  .list {
+    background-color: var(--primary-300, #f4efe8);
+    padding: 0.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    gap: 0.5rem;
+    .item {
+      min-height: 16rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      text-align: center;
+      font-size: 0.875rem;
+      background-color: var(--primary-100, #fffefd);
+      padding: clamp(1rem, calc(1.5vw / 0.48), 1.5rem) 1rem;
+      img {
+        width: 28px;
+        height: 28px;
+      }
+      &::before {
+        content: '';
+      }
+    }
+    @media (max-width: 37rem) {
+      grid-template-columns: unset;
+      .item {
+        text-align: left;
+        min-height: unset;
+        flex-direction: row-reverse;
+        &::before {
+          display: none;
+        }
+      }
+    }
+  }
+  .highlight {
+    text-align: center;
+    .ctaDescription {
+      margin-bottom: clamp(0.75rem, calc(1.25vw / 0.48), 1.25rem);
+    }
+  }
+</style>

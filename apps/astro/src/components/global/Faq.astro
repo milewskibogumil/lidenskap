@@ -5,7 +5,7 @@ import Accordion from '@/components/ui/Accordion.astro'
 import Button, { ButtonDataQuery, type ButtonDataProps } from '@/components/ui/button'
 
 export const Faq_Query = `
-  {
+  _type == "Faq" => {
     ${PortableTextQuery('heading')}
     items[] -> {
       ${PortableTextQuery('question')}
@@ -53,7 +53,7 @@ const { index, heading, items, ctaDescription, cta, img } = Astro.props
 
 <style lang="scss">
   .Faq {
-    padding: clamp(calc(48rem / 16), calc(60vw / 7.68), calc(80rem / 16)) 0;
+    padding: clamp(3rem, calc(4vw / 0.48), 4rem) 0;
     display: grid;
     align-items: flex-start;
     grid-template-rows: auto 1fr auto;

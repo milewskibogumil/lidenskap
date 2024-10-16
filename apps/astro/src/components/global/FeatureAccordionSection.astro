@@ -4,7 +4,7 @@ import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/imag
 import Accordion from '@/components/ui/Accordion.astro'
 
 export const FeatureAccordionSection_Query = `
-  {
+  _type == "FeatureAccordionSection" => {
     ${ImageDataQuery('img')}
     ${PortableTextQuery('heading')}
     list[] {

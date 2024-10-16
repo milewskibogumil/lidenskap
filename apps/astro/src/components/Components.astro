@@ -12,7 +12,7 @@ import CtaSectionWithShapedImage, {
 import ServicesOverview, { ServicesOverview_Query } from '@/components/global/ServicesOverview.astro'
 import MetricsSection, { MetricsSection_Query } from '@/components/global/MetricsSection.astro'
 import Faq, { Faq_Query } from '@/components/global/Faq.astro'
-
+import IconGridWithCtaSection, { IconGridWithCtaSection_Query } from '@/components/global/IconGridWithCtaSection.astro'
 const components = {
   SimpleCtaSection,
   SplitContentImageGrid,
@@ -22,6 +22,7 @@ const components = {
   ServicesOverview,
   MetricsSection,
   Faq,
+  IconGridWithCtaSection,
 }
 
 type ComponentsMap = {
@@ -42,14 +43,15 @@ const { data, indexStart = 0 } = Astro.props
 export const Components_Query = /* groq */ `
   components[] {
     _type,
-    _type == "SimpleCtaSection" => ${SimpleCtaSection_Query}
-    _type == "SplitContentImageGrid" => ${SplitContentImageGrid_Query}
-    _type == "SimpleHeadingFullImage" => ${SimpleHeadingFullImage_Query}
-    _type == "FeatureAccordionSection" => ${FeatureAccordionSection_Query}
-    _type == "CtaSectionWithShapedImage" => ${CtaSectionWithShapedImage_Query}
-    _type == "ServicesOverview" => ${ServicesOverview_Query}
-    _type == "MetricsSection" => ${MetricsSection_Query}
-    _type == "Faq" => ${Faq_Query}
+    ${SimpleCtaSection_Query}
+    ${SplitContentImageGrid_Query}
+    ${SimpleHeadingFullImage_Query}
+    ${FeatureAccordionSection_Query}
+    ${CtaSectionWithShapedImage_Query}
+    ${ServicesOverview_Query}
+    ${MetricsSection_Query}
+    ${Faq_Query}
+    ${IconGridWithCtaSection_Query}
   },
 `
 ---

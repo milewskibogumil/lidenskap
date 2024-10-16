@@ -4,7 +4,7 @@ import Button, { ButtonDataQuery, type ButtonDataProps } from '@/components/ui/b
 import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/image'
 
 export const CtaSectionWithShapedImage_Query = `
-  {
+  _type == "CtaSectionWithShapedImage" => {
     ${PortableTextQuery('heading')}
     ${PortableTextQuery('paragraph')}
     ${PortableTextQuery('description')}

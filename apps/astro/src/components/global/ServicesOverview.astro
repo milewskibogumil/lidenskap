@@ -4,7 +4,7 @@ import Button, { ButtonDataQuery, type ButtonDataProps } from '@/components/ui/b
 import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/image'
 
 export const ServicesOverview_Query = `
-  {
+  _type == "ServicesOverview" => {
     ${PortableTextQuery('heading')}
     ${PortableTextQuery('paragraph')}
     items[] {

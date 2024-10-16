@@ -186,15 +186,18 @@ h6,
 }
 h1,
 .h1 {
-  font-size: clamp(calc(28rem / 16), calc(40vw / 7.68), calc(40rem / 16));
+  font-size: clamp(1.75rem, calc(2.5vw / 0.48), 2.5rem);
   letter-spacing: -0.06em;
 }
 h2,
-.h2,
+.h2 {
+  font-size: clamp(1.5rem, calc(2vw / 0.48), 2rem);
+  letter-spacing: -0.04em;
+}
 h3,
 .h3 {
-  font-size: clamp(calc(24rem / 16), calc(32vw / 7.68), calc(32rem / 16));
-  letter-spacing: -0.04em;
+  font-size: clamp(1.25rem, calc(1.5vw / 0.48), 1.5rem);
+  letter-spacing: -0.06em;
 }
 
 .link {

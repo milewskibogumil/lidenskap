@@ -3,7 +3,7 @@ import PortableText, { PortableTextQuery, type PortableTextValue } from '@/compo
 import Button, { ButtonDataQuery, type ButtonDataProps } from '@/components/ui/button'
 
 export const SimpleCtaSection_Query = `
-  {
+  _type == "SimpleCtaSection" => {
     ${PortableTextQuery('name')}
     ${PortableTextQuery('text')}
     ${ButtonDataQuery('cta')}

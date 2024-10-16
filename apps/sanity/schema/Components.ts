@@ -7,6 +7,7 @@ import CtaSectionWithShapedImage from "./components/CtaSectionWithShapedImage";
 import ServicesOverview from "./components/ServicesOverview";
 import MetricsSection from "./components/MetricsSection";
 import Faq from "./components/Faq";
+import IconGridWithCtaSection from "./components/IconGridWithCtaSection";
 
 export default defineType({
   name: 'components',
@@ -21,6 +22,7 @@ export default defineType({
     ServicesOverview,
     MetricsSection,
     Faq,
+    IconGridWithCtaSection,
   ],
   options: {
     insertMenu: {

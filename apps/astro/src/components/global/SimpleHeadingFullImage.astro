@@ -4,7 +4,7 @@ import Button, { ButtonDataQuery, type ButtonDataProps } from '@/components/ui/b
 import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/image'
 
 export const SimpleHeadingFullImage_Query = `
-  {
+  _type == "SimpleHeadingFullImage" => {
     ${PortableTextQuery('heading')}
     ${PortableTextQuery('paragraph')}
     ${ButtonDataQuery('cta')}
