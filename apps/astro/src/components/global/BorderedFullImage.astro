@@ -1,0 +1,118 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
+import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/image'
+
+export const BorderedFullImage_Query = `
+  _type == "BorderedFullImage" => {
+    ${PortableTextQuery('heading')}
+    ${PortableTextQuery('paragraph')}
+    ${ImageDataQuery('img')}
+  },
+`
+
+export type Props = {
+  index: number
+  heading: PortableTextValue
+  paragraph: PortableTextValue
+  img: ImageDataProps
+}
+
+const { index, heading, paragraph, img } = Astro.props
+---
+
+<section class="BorderedFullImage">
+  <header>
+    <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
+    <PortableText value={paragraph} class="paragraph" />
+  </header>
+  <div class="img">
+    <Image {...img} sizes="100vw" priority={index === 0} />
+  </div>
+</section>
+
+<style lang="scss">
+  .BorderedFullImage {
+    margin: clamp(3rem, calc(4vw / 0.48), 4rem) calc(var(--page-margin) * -1);
+    padding: 1rem 2rem;
+    position: relative;
+    &::before {
+      content: '';
+      position: absolute;
+      left: 2rem;
+      top: 1rem;
+      bottom: 1rem;
+      right: 2rem;
+      z-index: 1;
+      border: 8px solid var(--primary-100, #fffefd);
+    }
+  }
+  header {
+    max-width: 28rem;
+    z-index: 1;
+    position: relative;
+    background-color: var(--primary-100, #fffefd);
+    min-height: clamp(28rem, calc(28vw / 0.48), 39rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: clamp(1rem, calc(2vw / 0.48), 2rem);
+    padding: clamp(1.5rem, calc(2vw / 0.48), 2rem);
+    .heading {
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.035rem;
+      font-weight: 600;
+    }
+    .paragraph {
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--secondary-200, #c0c7db);
+    }
+  }
+  .img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    overflow: clip;
+    img {
+      height: 100%;
+      @supports (animation-timeline: view()) {
+        animation: scroll-image linear forwards;
+        animation-timeline: view();
+        transform-origin: center;
+        @keyframes scroll-image {
+          from {
+            transform: translateY(-5%) scale(1.1);
+          }
+          to {
+            transform: translateY(0%) scale(1);
+          }
+        }
+      }
+    }
+  }
+  @media (max-width: 56rem) {
+    .BorderedFullImage {
+      margin-left: unset;
+      margin-right: unset;
+      padding: unset;
+      display: grid;
+      &::before {
+        display: none;
+      }
+    }
+    header {
+      max-width: 38rem;
+      background-color: unset;
+      min-height: unset;
+      gap: 2rem;
+      padding: clamp(1.5rem, calc(2vw / 0.48), 2rem) 0 0 0;
+    }
+    .img {
+      margin: 0 calc(var(--page-margin) * -1);
+      order: -1;
+      position: relative;
+    }
+  }
+</style>

@@ -8,6 +8,7 @@ import ServicesOverview from "./components/ServicesOverview";
 import MetricsSection from "./components/MetricsSection";
 import Faq from "./components/Faq";
 import IconGridWithCtaSection from "./components/IconGridWithCtaSection";
+import BorderedFullImage from "./components/BorderedFullImage";
 
 export default defineType({
   name: 'components',
@@ -23,6 +24,7 @@ export default defineType({
     MetricsSection,
     Faq,
     IconGridWithCtaSection,
+    BorderedFullImage,
   ],
   options: {
     insertMenu: {

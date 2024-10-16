@@ -13,6 +13,8 @@ import ServicesOverview, { ServicesOverview_Query } from '@/components/global/Se
 import MetricsSection, { MetricsSection_Query } from '@/components/global/MetricsSection.astro'
 import Faq, { Faq_Query } from '@/components/global/Faq.astro'
 import IconGridWithCtaSection, { IconGridWithCtaSection_Query } from '@/components/global/IconGridWithCtaSection.astro'
+import BorderedFullImage, { BorderedFullImage_Query } from '@/components/global/BorderedFullImage.astro'
+
 const components = {
   SimpleCtaSection,
   SplitContentImageGrid,
@@ -23,6 +25,7 @@ const components = {
   MetricsSection,
   Faq,
   IconGridWithCtaSection,
+  BorderedFullImage,
 }
 
 type ComponentsMap = {
@@ -52,6 +55,7 @@ export const Components_Query = /* groq */ `
     ${MetricsSection_Query}
     ${Faq_Query}
     ${IconGridWithCtaSection_Query}
+    ${BorderedFullImage_Query}
   },
 `
 ---
