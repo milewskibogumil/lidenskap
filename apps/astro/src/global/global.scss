@@ -47,9 +47,10 @@
 
   --easing: cubic-bezier(0.17, 0.84, 0.44, 1);
 
-  --page-margin: clamp(16px, calc(40vw / 7.68), 40px);
-  @media (max-width: calc(899rem / 16)) and (min-width: calc(600rem / 16)) {
-    --page-margin: clamp(40px, calc(80vw / 7.68), 80px);
+  // Margins
+  --page-margin: clamp(1rem, calc(2vw / 0.48), 2rem);
+  @media (max-width: 56rem) and (min-width: 38rem) {
+    --page-margin: clamp(2rem, calc(5vw / 0.48), 5rem);
   }
 }
 
@@ -147,17 +148,17 @@ body {
   overflow: clip;
   min-width: 320px;
   -webkit-tap-highlight-color: transparent;
-  background: var(--background-100, #fffcf9);
+  background-color: var(--background-100, #fffcf9);
   color: var(--secondary-700, #0c2d63);
   font-family: 'Fixel', sans-serif;
   font-size: 1rem;
-  line-height: 165%;
+  line-height: 1.65;
   letter-spacing: 0.005rem;
 }
 
 main,
 .max-width {
-  max-width: calc(1380rem / 16);
+  max-width: 86.25rem;
   width: calc(100% - var(--page-margin) * 2);
   margin: 0 auto;
   height: 100%;
@@ -177,7 +178,7 @@ h6,
 .h6 {
   overflow-wrap: anywhere;
   font-weight: 400;
-  line-height: 135%;
+  line-height: 1.35;
   color: var(--secondary-700, #0c2d63);
   font-variant-numeric: lining-nums tabular-nums;
   strong {
@@ -229,16 +230,16 @@ h3,
 .sec-wo-margin {
   margin-left: calc(var(--page-margin) * -1);
   margin-right: calc(var(--page-margin) * -1);
-  @media (min-width: calc(1380rem / 16)) {
-    margin-left: calc((100vw - calc(1300rem / 16)) / -2);
-    margin-right: calc((100vw - calc(1300rem / 16)) / -2);
+  @media (min-width: 90.25rem) {
+    margin-left: calc((100vw - 86.25rem) / -2);
+    margin-right: calc((100vw - 86.25rem) / -2);
   }
 }
 
 .ordered-list,
 .unordered-list {
   display: grid;
-  gap: 8px;
+  gap: 0.5rem;
 }
 .unordered-list {
   li {
@@ -262,5 +263,5 @@ h3,
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: clamp(calc(12rem / 16), calc(16vw / 7.68), 1rem);
+  gap: clamp(0.75rem, calc(16vw / 0.48), 1rem);
 }
