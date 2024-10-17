@@ -160,7 +160,7 @@ const data = await sanityFetch<QueryProps>({
             </path>
           </svg>
           <a href={`tel:${data.tel}`}>{data.tel}</a>
-          <CopyToClipboard copyData={data.tel} />
+          <CopyToClipboard data={data.tel} />
         </p>
         <p class="email">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" fill="none">
@@ -172,7 +172,7 @@ const data = await sanityFetch<QueryProps>({
             </path>
           </svg>
           <a href={`mailto:${data.email}`}>{data.email}</a>
-          <CopyToClipboard copyData={data.email} />
+          <CopyToClipboard data={data.email} />
         </p>
       </div>
       <div>

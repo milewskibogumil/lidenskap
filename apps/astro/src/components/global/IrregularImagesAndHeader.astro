@@ -30,7 +30,7 @@ const { index, heading, paragraph, images } = Astro.props
             <Image
               {...img}
               sizes="(max-width: 689px) 50vw, 25vw"
-              {...(i === 1 ? { style: 'animation-delay: 200ms;' } : {})}
+              {...(i === 1 && { style: 'animation-delay: 200ms;' })}
               loading={index === 0 ? 'eager' : 'lazy'}
             />
           ))

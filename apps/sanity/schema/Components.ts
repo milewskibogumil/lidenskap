@@ -11,6 +11,7 @@ import IconGridWithCtaSection from "./components/IconGridWithCtaSection";
 import BorderedFullImage from "./components/BorderedFullImage";
 import TwoColumnTextWithTags from "./components/TwoColumnTextWithTags";
 import IrregularImagesAndHeader from "./components/IrregularImagesAndHeader";
+import HighlightedPerson from "./components/HighlightedPerson";
 
 export default defineType({
   name: 'components',
@@ -29,6 +30,7 @@ export default defineType({
     BorderedFullImage,
     TwoColumnTextWithTags,
     IrregularImagesAndHeader,
+    HighlightedPerson,
   ],
   options: {
     insertMenu: {
