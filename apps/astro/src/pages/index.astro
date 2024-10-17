@@ -2,6 +2,7 @@
 import Layout from '@/src/layouts/Layout.astro'
 import metadataFetch from '@/utils/metadata.fetch'
 import sanityFetch from '@/utils/sanity.fetch'
+import Breadcrumbs from '@/components/ui/Breadcrumbs.astro'
 import Components, { Components_Query, type ComponentsProps } from '@/components/Components.astro'
 
 const metadata = await metadataFetch('Index_Page')
@@ -16,5 +17,6 @@ const data = await sanityFetch<{ components: ComponentsProps }>({
 ---
 
 <Layout {...metadata}>
+  <Breadcrumbs />
   <Components data={data.components} />
 </Layout>
