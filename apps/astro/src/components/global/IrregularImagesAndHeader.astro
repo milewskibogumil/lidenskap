@@ -1,0 +1,99 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
+import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/image'
+
+export const IrregularImagesAndHeader_Query = `
+  _type == "IrregularImagesAndHeader" => {
+    ${PortableTextQuery('heading')}
+    ${PortableTextQuery('paragraph')}
+    ${ImageDataQuery('images[]')}
+  },
+`
+
+export type Props = {
+  index: number
+  heading: PortableTextValue
+  paragraph: PortableTextValue
+  images: ImageDataProps[]
+}
+
+const { index, heading, paragraph, images } = Astro.props
+---
+
+<section class="IrregularImagesAndHeader">
+  <div class="images">
+    <div>
+      {
+        images
+          .slice(0, 2)
+          .map((img, i) => (
+            <Image
+              {...img}
+              sizes="(max-width: 689px) 50vw, 25vw"
+              {...(i === 1 ? { style: 'animation-delay: 200ms;' } : {})}
+              loading={index === 0 ? 'eager' : 'lazy'}
+            />
+          ))
+      }
+    </div>
+    {
+      images[2] && (
+        <Image
+          {...images[2]}
+          sizes="(max-width: 689px) 50vw, 25vw"
+          style="animation-delay: 100ms;"
+          priority={index === 0}
+        />
+      )
+    }
+  </div>
+  <header>
+    <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="h2" />
+    <PortableText value={paragraph} />
+  </header>
+</section>
+
+<style lang="scss">
+  $images-gap: clamp(0.5rem, calc(0.75vw / 0.48), 0.75rem);
+  .IrregularImagesAndHeader {
+    padding: clamp(3rem, calc(4vw / 0.48), 4rem) 0;
+    max-width: 68rem;
+    margin: 0 auto;
+    display: grid;
+    align-items: center;
+    gap: clamp(2rem, calc(3vw / 0.48), 7rem);
+    @media (min-width: 63rem) {
+      grid-template-columns: 1.25fr 1fr;
+    }
+    header {
+      max-width: 38rem;
+      .h2 {
+        margin-bottom: clamp(1.5rem, calc(2vw / 0.48), 2rem);
+      }
+    }
+    .images {
+      max-width: 536px;
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      align-items: center;
+      gap: $images-gap;
+      div {
+        display: grid;
+        gap: $images-gap;
+      }
+      img {
+        animation: IrregularImagesAndHeader-image 800ms var(--easing) both;
+      }
+      @keyframes IrregularImagesAndHeader-image {
+        from {
+          transform: translateY(21px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+    }
+  }
+</style>

@@ -10,6 +10,7 @@ import Faq from "./components/Faq";
 import IconGridWithCtaSection from "./components/IconGridWithCtaSection";
 import BorderedFullImage from "./components/BorderedFullImage";
 import TwoColumnTextWithTags from "./components/TwoColumnTextWithTags";
+import IrregularImagesAndHeader from "./components/IrregularImagesAndHeader";
 
 export default defineType({
   name: 'components',
@@ -27,6 +28,7 @@ export default defineType({
     IconGridWithCtaSection,
     BorderedFullImage,
     TwoColumnTextWithTags,
+    IrregularImagesAndHeader,
   ],
   options: {
     insertMenu: {

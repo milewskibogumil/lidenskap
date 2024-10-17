@@ -14,19 +14,19 @@ export default defineField({
     defineField({
       name: 'heading',
       type: 'Heading',
-      title: 'Heading',
+      title: 'Nagłówek',
       validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'paragraph',
       type: 'PortableText',
-      title: 'Paragraph',
+      title: 'Paragraf',
       validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'metrics',
       type: 'array',
-      title: 'Metrics',
+      title: 'Metryki',
       of: [
         {
           type: 'object',
@@ -35,19 +35,19 @@ export default defineField({
             defineField({
               name: 'value',
               type: 'string',
-              title: 'Value',
+              title: 'Wartość',
               validation: Rule => Rule.required(),
             }),
             defineField({
               name: 'label',
               type: 'string',
-              title: 'Label',
+              title: 'Etykieta',
               validation: Rule => Rule.required(),
             }),
             defineField({
               name: 'icon',
               type: 'image',
-              title: 'Icon',
+              title: 'Ikona',
               validation: Rule => Rule.required(),
             }),
           ],
@@ -70,7 +70,7 @@ export default defineField({
     defineField({
       name: 'images',
       type: 'array',
-      title: '4 Images',
+      title: '4 Zdjęcia',
       of: [
         { type: 'image' }
       ],
@@ -80,9 +80,8 @@ export default defineField({
   preview: {
     select: {
       heading: 'heading',
-      metrics: 'metrics',
     },
-    prepare: ({ heading, metrics }) => ({
+    prepare: ({ heading }) => ({
       title: title,
       subtitle: toPlainText(heading),
       icon,

@@ -163,6 +163,11 @@ main,
   margin: 0 auto;
   height: 100%;
 }
+main {
+  & > section:first-of-type {
+    padding-top: 2rem !important;
+  }
+}
 
 h1,
 .h1,

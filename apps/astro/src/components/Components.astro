@@ -15,6 +15,9 @@ import Faq, { Faq_Query } from '@/components/global/Faq.astro'
 import IconGridWithCtaSection, { IconGridWithCtaSection_Query } from '@/components/global/IconGridWithCtaSection.astro'
 import BorderedFullImage, { BorderedFullImage_Query } from '@/components/global/BorderedFullImage.astro'
 import TwoColumnTextWithTags, { TwoColumnTextWithTags_Query } from '@/components/global/TwoColumnTextWithTags.astro'
+import IrregularImagesAndHeader, {
+  IrregularImagesAndHeader_Query,
+} from '@/components/global/IrregularImagesAndHeader.astro'
 
 const components = {
   SimpleCtaSection,
@@ -28,6 +31,7 @@ const components = {
   IconGridWithCtaSection,
   BorderedFullImage,
   TwoColumnTextWithTags,
+  IrregularImagesAndHeader,
 }
 
 type ComponentsMap = {
@@ -59,6 +63,7 @@ export const Components_Query = /* groq */ `
     ${IconGridWithCtaSection_Query}
     ${BorderedFullImage_Query}
     ${TwoColumnTextWithTags_Query}
+    ${IrregularImagesAndHeader_Query}
   },
 `
 ---
