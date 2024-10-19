@@ -12,6 +12,7 @@ import BorderedFullImage from "./components/BorderedFullImage";
 import TwoColumnTextWithTags from "./components/TwoColumnTextWithTags";
 import IrregularImagesAndHeader from "./components/IrregularImagesAndHeader";
 import HighlightedPerson from "./components/HighlightedPerson";
+import PeopleShowcase from "./components/PeopleShowcase";
 
 export default defineType({
   name: 'components',
@@ -31,6 +32,7 @@ export default defineType({
     TwoColumnTextWithTags,
     IrregularImagesAndHeader,
     HighlightedPerson,
+    PeopleShowcase,
   ],
   options: {
     insertMenu: {
