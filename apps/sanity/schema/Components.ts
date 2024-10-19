@@ -13,6 +13,7 @@ import TwoColumnTextWithTags from "./components/TwoColumnTextWithTags";
 import IrregularImagesAndHeader from "./components/IrregularImagesAndHeader";
 import HighlightedPerson from "./components/HighlightedPerson";
 import PeopleShowcase from "./components/PeopleShowcase";
+import ImagesMarquee from "./components/ImagesMarquee";
 
 export default defineType({
   name: 'components',
@@ -33,6 +34,7 @@ export default defineType({
     IrregularImagesAndHeader,
     HighlightedPerson,
     PeopleShowcase,
+    ImagesMarquee,
   ],
   options: {
     insertMenu: {

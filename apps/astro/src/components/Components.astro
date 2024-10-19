@@ -20,6 +20,7 @@ import IrregularImagesAndHeader, {
 } from '@/components/global/IrregularImagesAndHeader.astro'
 import HighlightedPerson, { HighlightedPerson_Query } from '@/components/global/HighlightedPerson.astro'
 import PeopleShowcase, { PeopleShowcase_Query } from '@/components/global/PeopleShowcase.astro'
+import ImagesMarquee, { ImagesMarquee_Query } from '@/components/global/ImagesMarquee.astro'
 
 const components = {
   SimpleCtaSection,
@@ -36,6 +37,7 @@ const components = {
   IrregularImagesAndHeader,
   HighlightedPerson,
   PeopleShowcase,
+  ImagesMarquee,
 }
 
 type ComponentsMap = {
@@ -70,6 +72,7 @@ export const Components_Query = /* groq */ `
     ${IrregularImagesAndHeader_Query}
     ${HighlightedPerson_Query}
     ${PeopleShowcase_Query}
+    ${ImagesMarquee_Query}
   },
 `
 ---

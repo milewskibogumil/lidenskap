@@ -1,0 +1,96 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
+import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/image'
+import Button, { ButtonDataQuery, type ButtonDataProps } from '@/components/ui/button'
+
+export const ImagesMarquee_Query = `
+  _type == "ImagesMarquee" => {
+    ${PortableTextQuery('heading')}
+    ${PortableTextQuery('paragraph')}
+    ${ButtonDataQuery('ctas[]')}
+    ${ImageDataQuery('images[]')}
+  },
+`
+
+export type Props = {
+  index: number
+  heading: PortableTextValue
+  paragraph: PortableTextValue
+  ctas: ButtonDataProps[]
+  images: ImageDataProps[]
+}
+
+const { index, heading, paragraph, ctas, images } = Astro.props
+---
+
+<section class="ImagesMarquee">
+  <div class="images">
+    {
+      Array.from({ length: 2 }).map((_, index) => (
+        <ul aria-hidden={index === 1} style={`animation-duration: ${images.length * 3}s;`}>
+          {images?.map((img) => {
+            const aspectRatio = img.asset.metadata.dimensions.width / img.asset.metadata.dimensions.height
+            const minWidth = Math.round(164 * aspectRatio)
+            const maxWidth = Math.round(210 * aspectRatio)
+            const sizes = `(max-width: 768px) ${minWidth}px, ${maxWidth}px`
+            return (
+              <li>
+                <Image {...img} sizes={sizes} loading={index === 0 ? 'eager' : 'lazy'} />
+              </li>
+            )
+          })}
+        </ul>
+      ))
+    }
+  </div>
+  <header>
+    <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="h2" />
+    <PortableText value={paragraph} class="paragraph" />
+    <div class="cta-wrapper">
+      {ctas?.map((cta) => <Button {...cta} />)}
+    </div>
+  </header>
+</section>
+
+<style lang="scss">
+  .ImagesMarquee {
+    padding: clamp(4rem, calc(5vw / 0.48), 5rem) 0;
+    .images {
+      height: clamp(164px, calc(210vw / 7.68), 210px);
+      $gap: 1rem;
+      margin: 0 calc(var(--page-margin) * -1);
+      overflow: hidden;
+      display: flex;
+      gap: $gap;
+      ul {
+        flex-shrink: 0;
+        display: flex;
+        gap: $gap;
+        animation: marquee 10s linear infinite;
+        @keyframes marquee {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(calc(-100% - $gap));
+          }
+        }
+        li {
+          flex-shrink: 0;
+          img {
+            width: auto;
+            height: 100%;
+          }
+        }
+      }
+    }
+    header {
+      max-width: 28rem;
+      margin: clamp(2rem, calc(2vw / 0.48), 3rem) auto 0;
+      text-align: center;
+      .paragraph {
+        margin: 1rem 0 clamp(1.5rem, calc(2vw / 0.48), 2rem);
+      }
+    }
+  }
+</style>
