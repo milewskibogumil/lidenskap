@@ -63,17 +63,15 @@ const { index, heading, paragraph, metrics, images } = Astro.props
 
 <style lang="scss">
   .MetricsSection {
-    padding: clamp(calc(48rem / 16), calc(60vw / 7.68), calc(80rem / 16)) 0;
+    padding: clamp(3rem, calc(4vw / 0.48), 5rem) 0;
   }
   header {
-    padding: 40px calc(32rem / 16) var(--Grid-Margin, 32px) var(--Grid-Margin, 32px);
-
-    margin-bottom: clamp(calc(16rem / 16), calc(32vw / 7.68), calc(48rem / 16));
     display: grid;
     justify-content: flex-start;
-    gap: 1rem clamp(calc(48rem / 16), calc(64vw / 7.68), calc(112rem / 16));
-    max-width: calc(608rem / 16);
-    @media (min-width: calc(1000rem / 16)) {
+    gap: 1rem clamp(3rem, calc(4vw / 0.48), 7rem);
+    margin-bottom: clamp(1rem, calc(2vw / 0.48), 3rem);
+    max-width: 54rem;
+    @media (min-width: 62.5rem) {
       max-width: unset;
       grid-template-columns: auto auto;
       .heading {
@@ -112,7 +110,7 @@ const { index, heading, paragraph, metrics, images } = Astro.props
       grid-template-columns: 1fr 1fr;
     }
     .value {
-      font-size: clamp(calc(24rem / 16), calc(32vw / 7.68), calc(32rem / 16));
+      font-size: clamp(1.5rem, calc(2vw / 0.48), 2rem);
       display: grid;
       grid-template-columns: auto 28px;
       gap: 1rem;
@@ -123,7 +121,7 @@ const { index, heading, paragraph, metrics, images } = Astro.props
       margin-bottom: 0.5rem;
     }
     .label {
-      font-size: calc(13rem / 16);
+      font-size: 0.875rem;
       text-transform: uppercase;
       font-weight: 600;
     }
