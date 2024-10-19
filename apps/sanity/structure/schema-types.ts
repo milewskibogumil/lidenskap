@@ -5,6 +5,7 @@ import Index_Page from '../schema/singleTypes/Index_Page';
 import Contact_Page from '../schema/singleTypes/Contact_Page';
 import Projects_Page from '../schema/singleTypes/Projects_Page';
 import About_Page from '../schema/singleTypes/About_Page';
+import PrivacyPolicy_Page from '../schema/singleTypes/PrivacyPolicy_Page';
 import NotFound_Page from '../schema/singleTypes/NotFound_Page';
 
 const singleTypes = [
@@ -14,6 +15,7 @@ const singleTypes = [
   Projects_Page,
   About_Page,
   Contact_Page,
+  PrivacyPolicy_Page,
   NotFound_Page,
 ];
 

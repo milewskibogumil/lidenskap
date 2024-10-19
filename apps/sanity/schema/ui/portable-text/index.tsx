@@ -1,19 +1,25 @@
-import { defineField, defineType, useClient } from "sanity";
+import { defineField } from "sanity";
 import { CustomInput } from "./CustomInput";
 import { isValidUrl } from "../../../utils/is-valid-url";
 import { InternalLinkableTypes } from "../../../structure/internal-linkable-types";
 
-export default defineType({
-  name: 'PortableText',
+export const PortableText = ({ name, title, allowHeadings = false }: { name?: string, title?: string, allowHeadings?: boolean }) => defineField({
+  name: name || 'PortableText',
   type: 'array',
-  title: 'Portable Text',
+  title: title || 'Portable Text',
   components: {
     // @ts-ignore
     input: CustomInput
   },
   of: [{
     type: 'block',
-    styles: [{ title: 'Normal', value: 'normal' }],
+    styles: [
+      { title: 'Normal', value: 'normal' },
+      ...(allowHeadings ? [
+        { title: 'Heading 2', value: 'h2' },
+        { title: 'Heading 3', value: 'h3' }
+      ] : [])
+    ],
     lists: [
       { title: 'Bullet', value: 'bullet' },
       { title: 'Numbered', value: 'number' }
@@ -46,15 +52,15 @@ export default defineType({
               name: 'external',
               type: 'string',
               title: 'URL',
-              description: 'Specify the full URL. Ensure it starts with "https://" and is a valid URL.',
+              description: 'Specify the full URL. Ensure it starts with "https://", "mailto:" or "tel:" protocol.',
               hidden: ({ parent }) => parent?.type !== 'external',
               validation: (Rule) => [
                 Rule.custom((value, { parent }) => {
                   const type = (parent as { type?: string })?.type;
                   if (type === 'external') {
                     if (!value) return "URL is required";
-                    if (!value.startsWith('https://')) {
-                      return 'External link must start with the "https://" protocol';
+                    if (!value.startsWith('https://') && !value.startsWith('mailto:') && !value.startsWith('tel:')) {
+                      return 'External link must start with the "https://", "mailto:" or "tel:" protocol';
                     }
                     if (!isValidUrl(value)) return 'Invalid URL';
                   }
@@ -87,3 +93,5 @@ export default defineType({
     }
   }],
 });
+
+export default PortableText({});

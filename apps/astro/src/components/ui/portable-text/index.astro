@@ -38,7 +38,15 @@ const valueArray = Array.isArray(value) ? value : [value]
 <style lang="scss">
   [data-portable-text] {
     :global(> *:not(:last-child)) {
-      margin-bottom: calc(8rem / 16);
+      margin-bottom: 0.5rem;
+    }
+    :global(ul) {
+      padding-left: 1.25rem;
+      list-style-type: disc;
+      margin-top: 0.5rem;
+      :global(li:not(:last-child)) {
+        margin-bottom: 0.25rem;
+      }
     }
   }
 </style>
