@@ -1,5 +1,6 @@
 import { defineField } from 'sanity';
 import { toPlainText } from '../../utils/to-plain-text';
+import { sectionPreview } from '../../utils/section-preview';
 
 const name = 'SplitContentImageGrid';
 const title = 'Sekcja z treścią i siatką obrazów';
@@ -44,7 +45,7 @@ export default defineField({
     prepare: ({ heading }) => ({
       title,
       subtitle: toPlainText(heading),
-      icon,
+      ...sectionPreview({ name, icon: icon() }),
     }),
   },
 });

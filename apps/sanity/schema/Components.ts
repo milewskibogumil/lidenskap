@@ -14,6 +14,7 @@ import IrregularImagesAndHeader from "./components/IrregularImagesAndHeader";
 import HighlightedPerson from "./components/HighlightedPerson";
 import PeopleShowcase from "./components/PeopleShowcase";
 import ImagesMarquee from "./components/ImagesMarquee";
+import TextBlockCtaAndImage from "./components/TextBlockCtaAndImage";
 
 export default defineType({
   name: 'components',
@@ -35,6 +36,7 @@ export default defineType({
     HighlightedPerson,
     PeopleShowcase,
     ImagesMarquee,
+    TextBlockCtaAndImage,
   ],
   options: {
     insertMenu: {

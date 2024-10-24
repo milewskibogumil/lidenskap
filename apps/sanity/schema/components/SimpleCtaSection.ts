@@ -1,5 +1,6 @@
 import { defineField } from 'sanity';
 import { toPlainText } from '../../utils/to-plain-text';
+import { sectionPreview } from '../../utils/section-preview';
 
 const name = 'SimpleCtaSection';
 const title = 'Prosta sekcja z CTA';
@@ -32,14 +33,12 @@ export default defineField({
   ],
   preview: {
     select: {
-      heading: 'heading',
-      media: 'list.0.img',
+      name: 'name',
     },
-    prepare: ({ heading, media }) => ({
+    prepare: ({ name }) => ({
       title: title,
-      subtitle: toPlainText(heading),
-      media,
-      icon,
+      subtitle: toPlainText(name),
+      ...sectionPreview({ name, icon: icon() }),
     }),
   },
 });

@@ -1,5 +1,6 @@
 import { defineField } from 'sanity';
 import { toPlainText } from '../../utils/to-plain-text';
+import { sectionPreview } from '../../utils/section-preview';
 
 const name = 'SimpleHeadingFullImage';
 const title = 'Prosty nagłówek z pełnym obrazem';
@@ -39,13 +40,11 @@ export default defineField({
   preview: {
     select: {
       heading: 'heading',
-      media: 'image',
     },
-    prepare: ({ heading, media }) => ({
+    prepare: ({ heading }) => ({
       title: title,
       subtitle: toPlainText(heading),
-      media,
-      icon,
+      ...sectionPreview({ name, icon: icon() }),
     }),
   },
 });

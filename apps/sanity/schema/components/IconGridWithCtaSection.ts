@@ -1,5 +1,6 @@
 import { defineField } from 'sanity';
 import { toPlainText } from '../../utils/to-plain-text';
+import { sectionPreview } from '../../utils/section-preview';
 
 const name = 'IconGridWithCtaSection';
 const title = 'Sekcja z siatką ikon i CTA';
@@ -73,7 +74,7 @@ export default defineField({
     prepare: ({ heading }) => ({
       title: title,
       subtitle: toPlainText(heading),
-      icon,
+      ...sectionPreview({ name, icon: icon() }),
     }),
   },
 });

@@ -1,5 +1,6 @@
 import { defineField } from 'sanity';
 import { toPlainText } from '../../utils/to-plain-text';
+import { sectionPreview } from '../../utils/section-preview';
 
 const name = 'HighlightedPerson';
 const title = 'Sekcja z osobą wyróżnioną';
@@ -67,13 +68,11 @@ export default defineField({
   preview: {
     select: {
       heading: 'heading',
-      media: 'img',
     },
-    prepare: ({ heading, media }) => ({
+    prepare: ({ heading }) => ({
       title: title,
       subtitle: toPlainText(heading),
-      media,
-      icon,
+      ...sectionPreview({ name, icon: icon() }),
     }),
   },
 });
