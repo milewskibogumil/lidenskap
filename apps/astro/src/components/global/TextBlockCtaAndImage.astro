@@ -1,0 +1,91 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
+import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/image'
+import Button, { ButtonDataQuery, type ButtonDataProps } from '@/components/ui/button'
+
+export const TextBlockCtaAndImage_Query = `
+  _type == "TextBlockCtaAndImage" => {
+    isReversed,
+    ${PortableTextQuery('heading')}
+    ${PortableTextQuery('paragraph')}
+    ${ButtonDataQuery('cta')}
+    ${ImageDataQuery('images[]')}
+  },
+`
+
+export type Props = {
+  index: number
+  isReversed: boolean
+  heading: PortableTextValue
+  paragraph: PortableTextValue
+  cta: ButtonDataProps
+  images: ImageDataProps[]
+}
+
+const { index, isReversed, heading, paragraph, cta, images } = Astro.props
+---
+
+<section class="TextBlockCtaAndImage" data-is-reversed={isReversed.toString()}>
+  <header>
+    <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading h2" />
+    <PortableText value={paragraph} class="paragraph" />
+    <Button {...cta} />
+  </header>
+  {images?.map((img, i) => <Image {...img} sizes="100px" sizes={i === 0 ? '60vw' : '40vw'} />)}
+</section>
+
+<style lang="scss">
+  .TextBlockCtaAndImage {
+    padding: clamp(3rem, calc(4vw / 0.48), 5rem) 0;
+    display: grid;
+    gap: 2rem 0.75rem;
+    column-gap: clamp(3rem, calc(5vw / 0.48), 7rem);
+    grid-template-columns: 1.75fr 1fr;
+    grid-template-areas:
+      'img1 img2'
+      'img1 header';
+    &[data-is-reversed='true'] {
+      grid-template-columns: 1fr 1.75fr;
+      grid-template-areas:
+        'img2 img1'
+        'header img1';
+    }
+    header {
+      grid-area: header;
+      .paragraph {
+        margin: 1.25rem 0 2rem;
+      }
+    }
+    img {
+      &:nth-of-type(1) {
+        grid-area: img1;
+      }
+      &:nth-of-type(2) {
+        grid-area: img2;
+      }
+    }
+    @media (max-width: 72rem) {
+      column-gap: 0.75rem;
+      grid-template-columns: 1fr 1.75fr;
+      grid-template-areas:
+        'img2 img1'
+        'img2 header';
+      &[data-is-reversed='true'] {
+        grid-template-columns: 1.75fr 1fr;
+        grid-template-areas:
+          'img1 img2'
+          'header img2';
+      }
+    }
+    @media (max-width: 47rem) {
+      grid-template-areas:
+        'img2 img1'
+        'header header';
+      &[data-is-reversed='true'] {
+        grid-template-areas:
+          'img1 img2'
+          'header header';
+      }
+    }
+  }
+</style>
