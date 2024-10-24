@@ -75,11 +75,11 @@ import Button from '@/components/ui/button'
         </li>
       </ul>
     </nav>
-    <Button theme="primary" type="internal" href="/kontakt" class="cta">Kontakt</Button>
+    <Button theme="primary" linkType="internal" href="/kontakt" class="cta">Kontakt</Button>
     <button class="nav-toggle"><div></div><div></div><div></div></button>
   </div>
 </header>
-<div class="overlay" aria-role="button" aira-hidden="true"></div>
+<div class="overlay" aria-role="button" aira-hidden="true" aria-label="Zamknij menu"></div>
 
 <style lang="scss">
   $nav-max-breakpoint: 899px;
@@ -238,9 +238,6 @@ import Button from '@/components/ui/button'
     }
   }
   .overlay {
-    @media (min-width: $nav-max-breakpoint + 1) {
-      display: none;
-    }
     position: fixed;
     left: 0;
     right: 0;
@@ -252,15 +249,18 @@ import Button from '@/components/ui/button'
     opacity: 0;
     pointer-events: none;
     transition: opacity 500ms var(--easing);
-  }
-  .nav-toggle {
     @media (min-width: $nav-max-breakpoint + 1) {
       display: none;
     }
+  }
+  .nav-toggle {
     display: grid;
     gap: 5px;
     padding: 16px 12px;
     margin: 0 -12px;
+    @media (min-width: $nav-max-breakpoint + 1) {
+      display: none;
+    }
     div {
       width: 24px;
       height: 2px;
