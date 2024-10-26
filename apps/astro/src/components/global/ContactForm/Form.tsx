@@ -30,7 +30,7 @@ export default function Form({ email, tel, facebook, instagram }: { email: strin
         setStatus({ sending: false, success: true });
         reset();
       } else {
-        setStatus({ sending: false, success: true });
+        setStatus({ sending: false, success: false });
       }
     } catch {
       setStatus({ sending: false, success: false });

@@ -37,7 +37,7 @@ export const POST: APIRoute = async ({ request }) => {
         'Authorization': `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: 'Formularz kontaktowy | Lidenskap <formularz@send.`lidenskap`.pl>',
+        from: 'Formularz kontaktowy | Lidenskap <formularz@send.lidenskap.pl>',
         to: 'biuro@lidenskap.pl',
         reply_to: email,
         subject: `Wiadomość z formularza kontaktowego | Lidenskap`,
