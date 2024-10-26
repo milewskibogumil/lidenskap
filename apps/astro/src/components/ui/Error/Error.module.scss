@@ -1,0 +1,21 @@
+.Error {
+  font-size: 0.75rem;
+  line-height: 1.55;
+  color: var(--error-500, #c8452e);
+  width: fit-content;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.25rem;
+  svg {
+    margin-top: 0.1rem;
+  }
+  animation: error 500ms var(--easing);
+  @keyframes error {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
