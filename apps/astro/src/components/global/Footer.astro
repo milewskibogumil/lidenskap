@@ -1,5 +1,5 @@
 ---
-import Button from '@/components/ui/button'
+import Button from '@/src/components/ui/Button'
 import sanityFetch from '@/src/utils/sanity.fetch'
 import CopyToClipboard from '@/components/ui/CopyToClipboard.astro'
 
@@ -82,7 +82,7 @@ const data = await sanityFetch<QueryProps>({
         <a href="/o-lidenskap">O Lidenskap</a>
       </li>
       <li>
-        <Button theme="primary" href="/kontakt" class="cta">Skontaktuj się z nami</Button>
+        <Button theme="primary" href="/kontakt" className="cta">Skontaktuj się z nami</Button>
       </li>
       <li>
         <a href="/realizacje">Realizacje</a>
@@ -201,83 +201,90 @@ const data = await sanityFetch<QueryProps>({
     padding-bottom: clamp(calc(64rem / 16), calc(82vw / 7.68), calc(82rem / 16));
     background-color: var(--secondary-800, #0b2348);
     color: var(--primary-100, #fffefd);
-  }
-  .logo {
-    margin-bottom: clamp(calc(32rem / 16), calc(48vw / 7.68), calc(48rem / 16));
-  }
-  .links {
-    columns: 2;
-    gap: 2rem;
-    max-width: calc(768rem / 16);
-    .cta {
-      width: fit-content;
-    }
-    & > li {
-      break-inside: avoid;
-      & > ul {
-        margin-top: calc(24rem / 16);
+    .link {
+      &[target='_blank'] {
+        &::after {
+          content: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMyIgdmlld0JveD0iMCAwIDEyIDEzIiBmaWxsPSJub25lIj48cGF0aCBzdHJva2U9IiNGRkZFRkQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZD0iTTEwLjUgMkg3LjEyNU0xMC41IDJ2My4zNzVNMTAuNSAyIDYuMzc1IDYuMTI1TTQuNyAyYy0xLjEyIDAtMS42OCAwLTIuMTA4LjIxOGEyIDIgMCAwIDAtLjg3NC44NzRDMS41IDMuNTIgMS41IDQuMDggMS41IDUuMnYyLjZjMCAxLjEyIDAgMS42OC4yMTggMi4xMDhhMiAyIDAgMCAwIC44NzQuODc0QzMuMDIgMTEgMy41OCAxMSA0LjcgMTFoMi42YzEuMTIgMCAxLjY4IDAgMi4xMDgtLjIxOGEyIDIgMCAwIDAgLjg3NC0uODc0Yy4yMTgtLjQyOC4yMTgtLjk4OC4yMTgtMi4xMDh2LS41NSIvPjwvc3ZnPg==');
+        }
       }
     }
-    li + li {
-      margin-top: 1rem;
+    .logo {
+      margin-bottom: clamp(calc(32rem / 16), calc(48vw / 7.68), calc(48rem / 16));
     }
-    @media (max-width: calc(499rem / 16)) {
-      columns: 1;
-      & > li:has(ul) {
-        margin-top: 2rem !important;
+    .links {
+      columns: 2;
+      gap: 2rem;
+      max-width: calc(768rem / 16);
+      .cta {
+        width: fit-content;
+      }
+      & > li {
+        break-inside: avoid;
+        & > ul {
+          margin-top: calc(24rem / 16);
+        }
+      }
+      li + li {
+        margin-top: 1rem;
+      }
+      @media (max-width: calc(499rem / 16)) {
+        columns: 1;
+        & > li:has(ul) {
+          margin-top: 2rem !important;
+        }
       }
     }
-  }
-  .info {
-    display: flex;
-    flex-wrap: wrap;
-    gap: calc(24rem / 16) calc(64rem / 16);
-    align-items: center;
-    margin-top: clamp(calc(24rem / 16), calc(32vw / 7.68), calc(32rem / 16));
-    padding-top: clamp(calc(24rem / 16), calc(32vw / 7.68), calc(32rem / 16));
-    border-top: 1px solid var(--secondary-700, #0c2d63);
-    & > * {
-      display: grid;
-      gap: 1rem;
-    }
-  }
-  .socials {
-    display: flex;
-    align-items: center;
-    gap: calc(8rem / 16);
-    margin: -11.5px -12px;
-    a {
-      display: block;
-      padding: 11.5px 12px;
-    }
-  }
-  .address {
-    font-size: calc(14rem / 16);
-  }
-  .address,
-  .tel,
-  .email,
-  .krs,
-  .nip {
-    display: flex;
-    align-items: center;
-    gap: calc(8rem / 16);
-  }
-  .copyright {
-    font-size: calc(14rem / 16);
-    margin-top: clamp(calc(24rem / 16), calc(32vw / 7.68), calc(32rem / 16));
-    padding-top: clamp(calc(24rem / 16), calc(32vw / 7.68), calc(32rem / 16));
-    border-top: 1px solid var(--secondary-700, #0c2d63);
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 1rem 2rem;
-    > div {
+    .info {
       display: flex;
       flex-wrap: wrap;
+      gap: calc(24rem / 16) calc(64rem / 16);
+      align-items: center;
+      margin-top: clamp(calc(24rem / 16), calc(32vw / 7.68), calc(32rem / 16));
+      padding-top: clamp(calc(24rem / 16), calc(32vw / 7.68), calc(32rem / 16));
+      border-top: 1px solid var(--secondary-700, #0c2d63);
+      & > * {
+        display: grid;
+        gap: 1rem;
+      }
+    }
+    .socials {
+      display: flex;
+      align-items: center;
+      gap: calc(8rem / 16);
+      margin: -11.5px -12px;
+      a {
+        display: block;
+        padding: 11.5px 12px;
+      }
+    }
+    .address {
+      font-size: calc(14rem / 16);
+    }
+    .address,
+    .tel,
+    .email,
+    .krs,
+    .nip {
+      display: flex;
+      align-items: center;
+      gap: calc(8rem / 16);
+    }
+    .copyright {
+      font-size: calc(14rem / 16);
+      margin-top: clamp(calc(24rem / 16), calc(32vw / 7.68), calc(32rem / 16));
+      padding-top: clamp(calc(24rem / 16), calc(32vw / 7.68), calc(32rem / 16));
+      border-top: 1px solid var(--secondary-700, #0c2d63);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
       align-items: flex-end;
       gap: 1rem 2rem;
+      > div {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        gap: 1rem 2rem;
+      }
     }
   }
 </style>
