@@ -2,9 +2,10 @@
   font-size: 0.75rem;
   color: var(--secondary-500, #374776);
   line-height: 1.55;
-  margin-bottom: 0.25rem;
   .label {
+    margin-bottom: 0.25rem;
     display: flex;
+    justify-content: space-between;
     flex-wrap: wrap;
     align-items: center;
     gap: 0.5rem 1rem;
@@ -37,7 +38,7 @@
   }
   textarea {
     min-height: 5rem;
-    max-height: 13rem;
+    max-height: 8rem;
     resize: none;
   }
 }

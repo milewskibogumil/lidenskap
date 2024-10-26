@@ -1,4 +1,5 @@
 import { defineConfig } from "astro/config";
+import preact from '@astrojs/preact';
 import vercel from "@astrojs/vercel/serverless";
 import sitemap from "@astrojs/sitemap";
 import { DOMAIN } from "./src/global/constants";
@@ -8,6 +9,7 @@ import redirects from "./redirects";
 export default defineConfig({
   site: DOMAIN,
   integrations: [
+    preact({ compat: true }),
     sitemap(),
   ],
   image: {
@@ -15,6 +17,11 @@ export default defineConfig({
       protocol: "https",
       hostname: "cdn.sanity.io"
     }],
+  },
+  vite: {
+    ssr: {
+      noExternal: ['react-hook-form']
+    }
   },
   prefetch: {
     prefetchAll: true

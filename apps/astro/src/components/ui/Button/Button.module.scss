@@ -10,7 +10,7 @@
   overflow: hidden;
   transition: background-color 0.5s var(--easing);
   z-index: 1;
-  @media (max-width: calc(499rem / 16)) {
+  @media (max-width: 32rem) {
     width: 100%;
   }
   &[data-theme='primary'] {

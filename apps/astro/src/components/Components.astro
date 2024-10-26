@@ -22,6 +22,7 @@ import HighlightedPerson, { HighlightedPerson_Query } from '@/components/global/
 import PeopleShowcase, { PeopleShowcase_Query } from '@/components/global/PeopleShowcase.astro'
 import ImagesMarquee, { ImagesMarquee_Query } from '@/components/global/ImagesMarquee.astro'
 import TextBlockCtaAndImage, { TextBlockCtaAndImage_Query } from '@/components/global/TextBlockCtaAndImage.astro'
+import ContactForm, { ContactForm_Query } from '@/components/global/ContactForm'
 
 const components = {
   SimpleCtaSection,
@@ -40,6 +41,7 @@ const components = {
   PeopleShowcase,
   ImagesMarquee,
   TextBlockCtaAndImage,
+  ContactForm,
 }
 
 type ComponentsMap = {
@@ -76,6 +78,7 @@ export const Components_Query = /* groq */ `
     ${PeopleShowcase_Query}
     ${ImagesMarquee_Query}
     ${TextBlockCtaAndImage_Query}
+    ${ContactForm_Query}
   },
 `
 ---

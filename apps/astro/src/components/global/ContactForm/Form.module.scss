@@ -1,0 +1,45 @@
+.form {
+  position: relative;
+  display: grid;
+  gap: 1.25rem;
+  .cta {
+    width: fit-content;
+    margin-top: 1rem;
+  }
+  &:has([data-form-state]) {
+    & > *:not([data-form-state]) {
+      visibility: hidden;
+    }
+  }
+
+  .contact {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 1rem;
+    .tel,
+    .email {
+      min-height: 2.75rem;
+      display: flex;
+      align-items: center;
+      gap: calc(8rem / 16);
+    }
+  }
+  .socials {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 1rem;
+    a {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.25rem;
+      align-items: center;
+      min-height: 2.75rem;
+    }
+  }
+}
