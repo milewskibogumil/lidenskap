@@ -215,6 +215,7 @@ h3,
   transition: background-size 500ms var(--easing);
   padding-bottom: 1px;
   margin-bottom: -1px;
+  padding-bottom: 4px;
   &:hover {
     background-size: 80% 1px;
   }
