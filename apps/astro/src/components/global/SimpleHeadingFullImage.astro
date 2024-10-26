@@ -28,7 +28,7 @@ const { index, heading, paragraph, cta, image } = Astro.props
     <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} />
     <div>
       <PortableText value={paragraph} />
-      <Button {...cta} class="cta" />
+      <Button {...cta} className="cta" />
     </div>
   </header>
   <div class="image">
