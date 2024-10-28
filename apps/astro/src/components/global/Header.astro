@@ -40,25 +40,25 @@ import Button from '@/src/components/ui/Button'
           <ul class="dropdown">
             <li class="dropdown-item-img">
               <a href="/realizacje">
-                <img src="https://via.placeholder.com/100" />
+                <img src="https://via.placeholder.com/100" alt="" />
                 Poznań, ul. Półwiejska 5
               </a>
             </li>
             <li class="dropdown-item-img">
               <a href="/realizacje">
-                <img src="https://via.placeholder.com/100" />
+                <img src="https://via.placeholder.com/100" alt="" />
                 Poznań, ul. Garbary 12
               </a>
             </li>
             <li class="dropdown-item-img">
               <a href="/realizacje">
-                <img src="https://via.placeholder.com/100" />
+                <img src="https://via.placeholder.com/100" alt="" />
                 Poznań, ul. Hetmańska
               </a>
             </li>
             <li class="dropdown-item-img">
               <a href="/realizacje">
-                <img src="https://via.placeholder.com/100" />
+                <img src="https://via.placeholder.com/100" alt="" />
                 Poznań, ul. Hetmańska
               </a>
             </li>
@@ -76,10 +76,10 @@ import Button from '@/src/components/ui/Button'
       </ul>
     </nav>
     <Button theme="primary" linkType="internal" href="/kontakt" className="cta">Kontakt</Button>
-    <button class="nav-toggle"><div></div><div></div><div></div></button>
+    <button class="nav-toggle" aria-label="Otwórz menu"><div></div><div></div><div></div></button>
   </div>
 </header>
-<div class="overlay" aria-role="button" aira-hidden="true" aria-label="Zamknij menu"></div>
+<div class="overlay" role="button" aria-hidden="true" aria-label="Zamknij menu"></div>
 
 <style lang="scss">
   $nav-max-breakpoint: 899px;
@@ -328,12 +328,9 @@ import Button from '@/src/components/ui/Button'
   navToggle.addEventListener('click', () => {
     const isExpanded = header.getAttribute('aria-expanded') === 'true'
     header.setAttribute('aria-expanded', String(!isExpanded))
+    navToggle.setAttribute('aria-label', isExpanded ? 'Otwórz menu' : 'Zamknij menu')
     const navHeight = nav.scrollHeight + 2
-    if (!isExpanded) {
-      nav.style.height = `${navHeight}px`
-    } else {
-      nav.style.height = '0'
-    }
+    nav.style.height = `${isExpanded ? 0 : navHeight}px`
   })
   overlay.addEventListener('click', () => {
     header.setAttribute('aria-expanded', 'false')
