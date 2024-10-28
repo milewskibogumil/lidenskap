@@ -27,8 +27,8 @@ const { index, img, heading, list } = Astro.props
 ---
 
 <section class="FeatureAccordionSection">
-  <Image {...img} sizes="(max-width: calc(499rem / 16)) 100vw, 50vw" priority={index === 0} />
-  <div>
+  <Image {...img} sizes="(max-width: 56rem) 298px, 45vw" priority={index === 0} />
+  <div class="content">
     <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="heading" />
     {
       list?.map(({ title, description }, i) => (
@@ -42,28 +42,31 @@ const { index, img, heading, list } = Astro.props
 
 <style lang="scss">
   .FeatureAccordionSection {
-    padding: clamp(calc(48rem / 16), calc(64vw / 7.68), calc(96rem / 16)) 0;
+    padding: clamp(3rem, calc(4vw / 0.48), 6rem) 0;
     display: grid;
     align-items: flex-start;
-    gap: clamp(calc(32rem / 16), calc(48vw / 7.68), calc(48rem / 16))
-      clamp(calc(64rem / 16), calc(82vw / 7.68), calc(124rem / 16));
-    grid-template-columns: 1fr 1.2fr;
-    @media (max-width: calc(899rem / 16)) {
+    gap: clamp(2rem, calc(3vw / 0.48), 3rem) clamp(5rem, calc(5vw / 0.48), 8rem);
+    grid-template-columns: 1fr 1fr;
+    padding-right: 7rem;
+    .heading {
+      margin-bottom: clamp(calc(32rem / 16), calc(48vw / 7.68), calc(48rem / 16));
+    }
+    .accordion {
+      &:not(:last-child) {
+        margin-bottom: clamp(calc(24rem / 16), calc(48vw / 7.68), calc(48rem / 16));
+      }
+    }
+    @media (max-width: 69rem) {
+      padding-right: 0;
+    }
+    @media (max-width: 56rem) {
       grid-template-columns: 1fr;
       img {
         width: 298px;
       }
     }
-    & > div {
+    .content {
       max-width: calc(608rem / 16);
-    }
-  }
-  .heading {
-    margin-bottom: clamp(calc(32rem / 16), calc(48vw / 7.68), calc(48rem / 16));
-  }
-  .accordion {
-    &:not(:last-child) {
-      margin-bottom: clamp(calc(24rem / 16), calc(48vw / 7.68), calc(48rem / 16));
     }
   }
 </style>
