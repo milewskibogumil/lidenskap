@@ -5,7 +5,7 @@
  * @constant
  * @type {string}
  */
-export const THEME_COLOR: string = "#F4EFE8";
+export const THEME_COLOR: string = "#fffefd";
 
 /**
  * Global declaration of background color in HEX format.
@@ -13,7 +13,7 @@ export const THEME_COLOR: string = "#F4EFE8";
  * @constant
  * @type {string}
  */
-export const BACKGROUND_COLOR: string = "#FFFEFD";
+export const BACKGROUND_COLOR: string = "#fffcf9";
 
 /**
  * Global declaration of the locale (language) for the application.
