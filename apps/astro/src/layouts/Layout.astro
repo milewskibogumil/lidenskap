@@ -7,12 +7,14 @@ import Footer from '@/components/global/Footer.astro'
 import SmoothScroll from './smooth-scroll.astro'
 
 type Props = HeadProps
+
+const { ...props } = Astro.props
 ---
 
 <!doctype html>
 <html lang={LOCALE}>
   <head>
-    <Head {...Astro.props} />
+    <Head {...props} />
   </head>
   <body>
     <Header />
