@@ -16,6 +16,14 @@
   font-display: swap;
   font-style: normal;
 }
+@font-face {
+  font-family: 'Fixel Fallback';
+  src: local('Arial');
+  ascent-override: 81.71%;
+  descent-override: 17.25%;
+  line-gap-override: 26.33%;
+  size-adjust: 110.14%;
+}
 
 *,
 *::before,
@@ -150,7 +158,7 @@ body {
   -webkit-tap-highlight-color: transparent;
   background-color: var(--background-100, #fffcf9);
   color: var(--secondary-700, #0c2d63);
-  font-family: 'Fixel', sans-serif;
+  font-family: 'Fixel', 'Fixel Fallback', sans-serif;
   font-size: 1rem;
   line-height: 1.65;
   letter-spacing: 0.005rem;
