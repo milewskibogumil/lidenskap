@@ -101,14 +101,14 @@ import Button from '@/src/components/ui/Button'
   .logo {
     position: fixed;
     left: var(--page-margin);
-    @media (min-width: 90.25rem) {
-      left: calc((100vw - 86.25rem) / 2);
-    }
     top: calc(($header-height / 2) - clamp(10px, calc(12vw / 7.68), 12px));
     mix-blend-mode: difference;
     z-index: 10;
     svg {
       width: clamp(89px, calc(106vw / 7.68), 106px);
+    }
+    @media (min-width: 90.25rem) {
+      left: calc((100vw - 86.25rem) / 2);
     }
   }
   header {
