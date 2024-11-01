@@ -11,6 +11,7 @@ export default defineType({
   type: 'document',
   title: title,
   icon,
+  options: { documentPreview: true },
   fields: [
     ...defineSlugForDocument({ slug: slug }),
     defineField({

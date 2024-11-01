@@ -1,9 +1,7 @@
 
 import type { StructureResolver } from 'sanity/structure'
-import { createSingleton } from './create-singleton';
-import { createCollection } from './create-collection';
-
-export const TYPES_TO_EXCLUDE_PREVIEWS = ['global', 'redirects', 'Faq_Collection'];
+import { createSingleton } from '../utils/create-singleton';
+import { createCollection } from '../utils/create-collection';
 
 export const structure: StructureResolver = (S) =>
   S.list()

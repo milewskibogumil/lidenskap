@@ -1,11 +1,11 @@
-
 import type { StructureBuilder } from 'sanity/structure'
-import { schemaTypes } from "./schema-types";
+import { schemaTypes } from "../structure/schema-types";
 import { Preview } from './preview';
-import { TYPES_TO_EXCLUDE_PREVIEWS } from '.';
 
 export const createSingleton = (S: StructureBuilder, name: string) => {
-  const { title, icon } = schemaTypes.find(item => item.name === name) as { title: string, icon: React.ReactNode };
+  const { title, icon, options } = schemaTypes.find(item => item.name === name) as { title: string, icon: React.ReactNode, options: { documentPreview?: boolean } };
+  const documentPreview = options?.documentPreview ?? false
+
   return S.listItem()
     .id(name)
     .title(title)
@@ -17,7 +17,7 @@ export const createSingleton = (S: StructureBuilder, name: string) => {
         .title(title)
         .views([
           S.view.form().title('Editor').icon(() => '🖋️'),
-          ...(!TYPES_TO_EXCLUDE_PREVIEWS.includes(name) ? [
+          ...(documentPreview ? [
             S.view
               .component(Preview)
               .title('Preview')
