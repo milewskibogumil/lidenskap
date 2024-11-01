@@ -4,6 +4,7 @@ import redirects from '../schema/singleTypes/redirects';
 import Index_Page from '../schema/singleTypes/Index_Page';
 import Contact_Page from '../schema/singleTypes/Contact_Page';
 import Projects_Page from '../schema/singleTypes/Projects_Page';
+import Investments_Page from '../schema/singleTypes/Investments_Page';
 import About_Page from '../schema/singleTypes/About_Page';
 import PrivacyPolicy_Page from '../schema/singleTypes/PrivacyPolicy_Page';
 import NotFound_Page from '../schema/singleTypes/NotFound_Page';
@@ -13,6 +14,7 @@ const singleTypes = [
   redirects,
   Index_Page,
   Projects_Page,
+  Investments_Page,
   About_Page,
   Contact_Page,
   PrivacyPolicy_Page,
@@ -20,9 +22,11 @@ const singleTypes = [
 ];
 
 // Collections Types
+import Investment_Collection from '../schema/collectionTypes/Investment_Collection';
 import Faq_Collection from '../schema/collectionTypes/Faq_Collection';
 
 const collectionTypes = [
+  Investment_Collection,
   Faq_Collection,
 ];
 

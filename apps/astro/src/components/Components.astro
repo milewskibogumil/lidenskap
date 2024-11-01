@@ -54,10 +54,10 @@ export type ComponentsProps = Array<ComponentsMap[keyof typeof components]>
 
 type Props = {
   data: ComponentsProps
-  indexStart?: number
+  hasPreviousSections?: boolean
 }
 
-const { data, indexStart = 0 } = Astro.props
+const { data, hasPreviousSections = false } = Astro.props
 
 export const Components_Query = /* groq */ `
   components[] {
@@ -87,6 +87,6 @@ export const Components_Query = /* groq */ `
   data?.map((item, i) => {
     const DynamicComponent = components[item._type] as any
     if (!DynamicComponent) return null
-    return <DynamicComponent {...item} index={indexStart + i} />
+    return <DynamicComponent {...item} index={hasPreviousSections ? i + 1 : i} />
   })
 }
