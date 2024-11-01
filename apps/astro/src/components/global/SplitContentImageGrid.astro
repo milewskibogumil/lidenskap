@@ -26,8 +26,8 @@ const { index, heading, paragraph, cta, images } = Astro.props
 <section class="SplitContentImageGrid sec-wo-margin">
   <div class="max-width">
     <header>
-      <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="h3" />
-      <PortableText value={paragraph} class="paragraph h3" />
+      <PortableText value={heading} heading={index === 0 ? 'h1' : 'h2'} class="h2" />
+      <PortableText value={paragraph} class="paragraph h2" />
       <Button {...cta} />
     </header>
     <div class="images">
@@ -83,6 +83,10 @@ const { index, heading, paragraph, cta, images } = Astro.props
       gap: clamp(calc(8rem / 16), calc(12vw / 7.68), calc(12rem / 16));
       animation: SplitContentImageGridUp 1s forwards;
       animation-timeline: view();
+      grid-template-rows: 1fr 1fr;
+      img {
+        height: 100%;
+      }
       &:last-child {
         animation: SplitContentImageGridDown 1s forwards;
         animation-timeline: view();
