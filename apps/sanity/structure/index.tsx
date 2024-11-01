@@ -20,6 +20,7 @@ export const structure: StructureResolver = (S) =>
       createSingleton(S, "PrivacyPolicy_Page"),
       createSingleton(S, "NotFound_Page"),
       S.divider(),
+      createCollection(S, "Project_Collection"),
       createCollection(S, "Investment_Collection"),
       S.divider(),
       createCollection(S, "Faq_Collection"),

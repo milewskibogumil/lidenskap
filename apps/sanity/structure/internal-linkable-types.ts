@@ -11,4 +11,5 @@ export const InternalLinkableTypes: { type: string }[] = [
   { type: 'About_Page' },
   { type: 'Contact_Page' },
   { type: 'PrivacyPolicy_Page' },
+  { type: 'Project_Collection' },
 ];

@@ -22,10 +22,12 @@ const singleTypes = [
 ];
 
 // Collections Types
+import Project_Collection from '../schema/collectionTypes/Project_Collection';
 import Investment_Collection from '../schema/collectionTypes/Investment_Collection';
 import Faq_Collection from '../schema/collectionTypes/Faq_Collection';
 
 const collectionTypes = [
+  Project_Collection,
   Investment_Collection,
   Faq_Collection,
 ];

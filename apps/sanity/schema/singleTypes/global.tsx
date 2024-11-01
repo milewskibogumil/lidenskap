@@ -84,6 +84,33 @@ export default defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
+      name: 'feauturedProjects',
+      type: 'array',
+      title: '3 wyróżnione projekty',
+      description: '3 wyróżnione projekty będą widoczne w nawigacji oraz w stopce.',
+      of: [
+        defineField({
+          name: 'project',
+          type: 'reference',
+          to: { type: 'Project_Collection' },
+          options: {
+            disableNew: true,
+            filter: ({ parent }) => {
+              const selectedIds = (parent as { _ref?: string }[])?.filter(item => item._ref).map(item => item._ref) || [];
+              if (selectedIds.length > 0) {
+                return {
+                  filter: '!(_id in $selectedIds) && !(_id in path("drafts.**"))',
+                  params: { selectedIds }
+                }
+              }
+              return {}
+            }
+          }
+        })
+      ],
+      validation: Rule => Rule.required().min(3).max(3),
+    }),
+    defineField({
       name: 'seo',
       type: 'object',
       title: 'Global SEO',

@@ -1,12 +1,13 @@
 import { defineField, defineType } from "sanity";
 
+const name = 'Investment_Collection';
 const title = 'Zbiór inwestycji';
 const icon = () => '💰';
 
 export default defineType({
-  name: 'Investment_Collection',
+  name: name,
   type: 'document',
-  title,
+  title: title,
   icon,
   fields: [
     defineField({
