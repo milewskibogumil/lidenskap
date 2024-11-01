@@ -101,6 +101,7 @@ export default defineType({
       name: 'style',
       title: 'Style',
       options: {
+        collapsible: false,
         columns: 2,
       }
     },

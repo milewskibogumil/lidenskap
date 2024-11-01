@@ -32,6 +32,28 @@ export default defineType({
           title: 'Paragraf',
           validation: Rule => Rule.required(),
         }),
+        defineField({
+          name: 'ctaBox',
+          type: 'object',
+          title: 'Sekcja z CTA wewnątrz listingu',
+          fields: [
+            defineField({
+              name: 'text',
+              type: 'Heading',
+              title: 'Tekst',
+              validation: Rule => Rule.required(),
+            }),
+            defineField({
+              name: 'cta',
+              type: 'cta',
+              title: 'Wezwanie do działania',
+              options: {
+                collapsible: false,
+              },
+              validation: Rule => Rule.required(),
+            }),
+          ],
+        }),
       ],
       validation: Rule => Rule.required(),
     }),
