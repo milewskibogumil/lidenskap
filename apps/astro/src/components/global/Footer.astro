@@ -1,4 +1,5 @@
 ---
+import type { feauturedProjectsProps } from '@/src/layouts/Layout.astro'
 import Button from '@/src/components/ui/Button'
 import sanityFetch from '@/src/utils/sanity.fetch'
 import CopyToClipboard from '@/components/ui/CopyToClipboard.astro'
@@ -40,6 +41,8 @@ const data = await sanityFetch<QueryProps>({
     }
   `,
 })
+
+const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProjectsProps[] }
 ---
 
 <footer id="footer">
@@ -87,15 +90,13 @@ const data = await sanityFetch<QueryProps>({
       <li>
         <a href="/realizacje">Realizacje</a>
         <ul>
-          <li>
-            <a href="#">Kamienica – Bydgoska 2A, Poznań</a>
-          </li>
-          <li>
-            <a href="#">Kamienica – Jackowskiego 33, Poznań</a>
-          </li>
-          <li>
-            <a href="#">Kamienica – Poznańska 50, Poznań</a>
-          </li>
+          {
+            feauturedProjects?.map(({ name, slug }) => (
+              <li>
+                <a href={slug}>{name}</a>
+              </li>
+            ))
+          }
         </ul>
       </li>
     </ul>
@@ -195,6 +196,7 @@ const data = await sanityFetch<QueryProps>({
     </div>
   </div>
 </footer>
+
 <style lang="scss">
   footer {
     padding: clamp(calc(32rem / 16), calc(48vw / 7.68), calc(48rem / 16)) 0;

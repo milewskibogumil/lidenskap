@@ -1,5 +1,9 @@
 ---
+import type { feauturedProjectsProps } from '@/src/layouts/Layout.astro'
 import Button from '@/src/components/ui/Button'
+import Image from '@/components/ui/Image'
+
+const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProjectsProps[] }
 ---
 
 <a href="#main" class="skip-link">Przejdź do treści</a>
@@ -38,30 +42,16 @@ import Button from '@/src/components/ui/Button'
             <path stroke="#0C2D63" stroke-linecap="round" stroke-linejoin="round" d="m4 6 4 4 4-4"></path>
           </svg>
           <ul class="dropdown">
-            <li class="dropdown-item-img">
-              <a href="/realizacje">
-                <img src="" alt="" />
-                Poznań, ul. Półwiejska 5
-              </a>
-            </li>
-            <li class="dropdown-item-img">
-              <a href="/realizacje">
-                <img src="" alt="" />
-                Poznań, ul. Garbary 12
-              </a>
-            </li>
-            <li class="dropdown-item-img">
-              <a href="/realizacje">
-                <img src="" alt="" />
-                Poznań, ul. Hetmańska
-              </a>
-            </li>
-            <li class="dropdown-item-img">
-              <a href="/realizacje">
-                <img src="" alt="" />
-                Poznań, ul. Hetmańska
-              </a>
-            </li>
+            {
+              feauturedProjects?.map(({ img, name, slug }) => (
+                <li class="dropdown-item-img">
+                  <a href={slug}>
+                    <Image {...img} sizes="36px" />
+                    {name}
+                  </a>
+                </li>
+              ))
+            }
             <li class="main-link">
               <a href="/realizacje">Zobacz wszystkie realizacje</a>
             </li>
@@ -176,7 +166,7 @@ import Button from '@/src/components/ui/Button'
               width: 36px;
               height: 36px;
               object-fit: cover;
-              margin: calc(8rem / 16) 0;
+              margin: 0.5rem 0;
             }
           }
           .main-link {

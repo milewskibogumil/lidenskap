@@ -2,6 +2,8 @@
 import '@/global/global.scss'
 import { LOCALE } from '@/global/constants'
 import Head, { type Props as HeadProps } from './Head.astro'
+import sanityFetch from '@/utils/sanity.fetch'
+import { ImageDataQuery, type ImageDataProps } from '@/components/ui/Image'
 import Header from '@/components/global/Header.astro'
 import Footer from '@/components/global/Footer.astro'
 import SmoothScroll from './smooth-scroll.astro'
@@ -9,6 +11,22 @@ import SmoothScroll from './smooth-scroll.astro'
 type Props = HeadProps
 
 const { ...props } = Astro.props
+
+export type feauturedProjectsProps = {
+  img: ImageDataProps
+  name: string
+  slug: string
+}
+
+const feauturedProjects = await sanityFetch<feauturedProjectsProps[]>({
+  query: `
+    *[_type == "global"][0].feauturedProjects[] -> {
+      ${ImageDataQuery('img')}
+      name,
+      "slug": slug.current,
+    }
+  `,
+})
 ---
 
 <!doctype html>
@@ -17,11 +35,11 @@ const { ...props } = Astro.props
     <Head {...props} />
   </head>
   <body>
-    <Header />
+    <Header feauturedProjects={feauturedProjects} />
     <main id="main">
       <slot />
     </main>
-    <Footer />
+    <Footer feauturedProjects={feauturedProjects} />
     <SmoothScroll />
   </body>
 </html>
