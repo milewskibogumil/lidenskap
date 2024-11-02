@@ -46,7 +46,7 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
               feauturedProjects?.map(({ img, name, slug }) => (
                 <li class="dropdown-item-img">
                   <a href={slug}>
-                    <Image {...img} sizes="36px" />
+                    <Image {...img} sizes="36px" loading="eager" />
                     {name}
                   </a>
                 </li>
