@@ -1,0 +1,152 @@
+---
+type Props = {
+  options: {
+    value: string
+    label: string
+  }[]
+}
+
+const { options } = Astro.props
+---
+
+<button
+  type="button"
+  class="dropdown"
+  data-dropdown
+  aria-haspopup="listbox"
+  aria-expanded="false"
+  aria-controls="dropdown-list"
+  aria-labelledby="sort-label">
+  <p id="sort-label">Sortowanie: <span id="current-sort">{options[0].label}</span></p>
+  <svg role="presentation" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 20 20">
+    <path stroke="#374776" stroke-linecap="round" stroke-linejoin="round" d="m5 7.5 5 5 5-5"></path>
+  </svg>
+  <ul id="dropdown-list" role="listbox" class="dropdown-list" tabindex="-1">
+    {
+      options.map(({ value, label }) => (
+        <li role="none">
+          <a
+            href={`?sort=${value}`}
+            role="option"
+            class="dropdown-item"
+            data-value={value}
+            data-label={label}
+            aria-selected={value === options[0].value ? 'true' : 'false'}>
+            {label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</button>
+
+<style lang="scss">
+  .dropdown {
+    height: 2.75rem;
+    min-width: 16rem;
+    padding: 0 0.75rem;
+    border: 1px solid var(--secondary-300, #7d8fc1);
+    font-size: 0.875rem;
+    z-index: 1;
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    position: relative;
+    &[aria-expanded='true'] {
+      .dropdown-list {
+        visibility: visible;
+      }
+    }
+    #current-sort {
+      font-weight: 600;
+    }
+    .dropdown-list {
+      position: absolute;
+      background-color: var(--background-100, #fffcf9);
+      border: 1px solid var(--secondary-300, #7d8fc1);
+      top: calc(100% + 0.25rem);
+      left: -1px;
+      width: calc(100% + 2px);
+      padding: 0.25rem;
+      visibility: hidden;
+      cursor: default;
+      li {
+        &:not(:last-child) {
+          border-bottom: 1px solid var(--secondary-100, #dee1e6);
+        }
+      }
+      .dropdown-item {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        height: 2.75rem;
+        padding: 0 0.75rem;
+        &:hover {
+          background-color: rgba(222, 225, 230, 0.34);
+        }
+        &[aria-selected='true'] {
+          background-color: var(--secondary-100, #dee1e6);
+        }
+      }
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.dropdown[data-dropdown]').forEach((dropdown) => {
+    const currentSort = dropdown.querySelector('#current-sort')!
+    const dropdownList = dropdown.querySelector('.dropdown-list')!
+
+    const urlParams = new URLSearchParams(window.location.search)
+    const initialSort = urlParams.get('sort') || 'newest'
+    const initialOption = dropdown.querySelector(`.dropdown-item[data-value="${initialSort}"]`)
+
+    if (initialOption) {
+      currentSort.textContent = initialOption.getAttribute('data-label')
+      dropdown.querySelectorAll('.dropdown-item').forEach((item) => {
+        item.setAttribute('aria-selected', (item === initialOption).toString())
+      })
+    }
+
+    document.addEventListener('click', () => {
+      dropdown.setAttribute('aria-expanded', 'false')
+      dropdown.blur()
+    })
+
+    dropdown.addEventListener('click', (e) => {
+      e.stopPropagation()
+      const isExpanded = dropdown.getAttribute('aria-expanded') === 'true'
+      dropdown.setAttribute('aria-expanded', (!isExpanded).toString())
+    })
+
+    dropdown.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        dropdown.setAttribute('aria-expanded', 'false')
+        dropdown.blur()
+      }
+    })
+
+    dropdown.querySelectorAll<HTMLAnchorElement>('.dropdown-item').forEach((item) => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault()
+
+        const value = item.getAttribute('data-value')
+        const label = item.getAttribute('data-label')
+
+        const url = new URL(window.location.href)
+        url.searchParams.set('sort', value!)
+        window.history.replaceState({}, '', url)
+
+        currentSort!.textContent = label
+
+        document.dispatchEvent(new CustomEvent('filterSortUpdate'))
+
+        dropdownList.querySelectorAll('.dropdown-item').forEach((option) => {
+          option.setAttribute('aria-selected', (option === item).toString())
+        })
+      })
+    })
+  })
+</script>
