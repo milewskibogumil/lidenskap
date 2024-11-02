@@ -1,0 +1,468 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
+import Button, { ButtonDataQuery, type ButtonDataProps } from '@/components/ui/Button'
+import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/Image'
+import Dropdown from '@/components/ui/Dropdown.astro'
+import { slugify } from '@/src/utils/slugify'
+
+export const Hero_Query = `
+  hero {
+    ${PortableTextQuery('heading')}
+    ${PortableTextQuery('paragraph')}
+    ctaBox {
+      ${PortableTextQuery('text')}
+      ${ButtonDataQuery('cta')}
+    },
+    "listing": *[_type == "Project_Collection"][] | order(endDate desc) {
+      ${ImageDataQuery('img')}
+      name,
+      type,
+      city,
+      "slug": slug.current,
+      startDate,
+      endDate,
+    }
+  },
+`
+
+export type HeroProps = {
+  heading: PortableTextValue
+  paragraph: PortableTextValue
+  ctaBox: {
+    text: PortableTextValue
+    cta: ButtonDataProps
+  }
+  listing: Array<{
+    img: ImageDataProps
+    name: string
+    slug: string
+    city: string
+    type: string
+    startDate: string
+    endDate?: string
+  }>
+}
+
+const { heading, paragraph, ctaBox, listing } = Astro.props as HeroProps
+
+const cities = [...new Set(listing.map((item) => item.city))]
+const types = [...new Set(listing.map((item) => item.type))]
+
+const ITEMS_PER_PAGE = 11
+---
+
+<section class="Hero">
+  <header>
+    <PortableText value={heading} heading="h1" class="h2 heading" />
+    <PortableText value={paragraph} />
+  </header>
+  <div class="filters">
+    <Dropdown
+      options={[
+        { value: 'newest', label: 'od najnowszych' },
+        { value: 'oldest', label: 'od najstarszych' },
+      ]}
+    />
+    <div class="filter-group">
+      <p>Miasto</p>
+      <div class="filter-tags">
+        <a href="?" data-filter="city" data-value="" class="filter-tag" aria-disabled="true">
+          Wszystkie <span class="count">({listing.length})</span>
+        </a>
+        {
+          cities.map((city) => {
+            const cityCount = listing.filter((item) => item.city === city).length
+            return (
+              <a href={`?city=${slugify(city)}`} data-filter="city" data-value={slugify(city)} class="filter-tag">
+                {city} <span class="count">({cityCount})</span>
+              </a>
+            )
+          })
+        }
+      </div>
+    </div>
+    <div class="filter-group">
+      <p>Rodzaj projektu</p>
+      <div class="filter-tags">
+        <a href="?" data-filter="type" data-value="" class="filter-tag">
+          Wszystkie <span class="count">({listing.length})</span>
+        </a>
+        {
+          types.map((type) => {
+            const typeCount = listing.filter((item) => item.type === type).length
+            return (
+              <a href={`?type=${slugify(type)}`} data-filter="type" data-value={slugify(type)} class="filter-tag">
+                {type} <span class="count">({typeCount})</span>
+              </a>
+            )
+          })
+        }
+      </div>
+    </div>
+  </div>
+  <div class="listing">
+    {
+      listing.map(({ img, name, slug, city, type, endDate }, index) => (
+        <article
+          data-city={slugify(city)}
+          data-type={slugify(type)}
+          data-end-date={endDate || ''}
+          style={index >= ITEMS_PER_PAGE ? 'display: none;' : ''}>
+          <a href={slug} class="listing-link">
+            <div class="img">
+              <Image
+                {...img}
+                sizes="(max-width: 35rem) 100vw, (max-width: 60rem) 50vw, (max-width: 75rem) 34vw, 25vw"
+              />
+            </div>
+            <h2 class="h3">{name}</h2>
+          </a>
+        </article>
+      ))
+    }
+    <div class="ctaBox">
+      <svg xmlns="http://www.w3.org/2000/svg" width="81" height="19" fill="#374777" viewBox="0 0 81 19">
+        <path
+          d="M6.74 2.894a1.277 1.277 0 0 1-.388-.955A1.284 1.284 0 0 1 6.75.965 1.439 1.439 0 0 1 7.784.588c.45 0 .814.125 1.093.377a1.254 1.254 0 0 1 .416.974 1.23 1.23 0 0 1-.418.955c-.277.251-.642.377-1.092.378-.435 0-.783-.126-1.043-.378ZM6.553 4.66h2.465V15H6.553V4.66ZM12.728 14.832a4.055 4.055 0 0 1-1.462-1.055 4.986 4.986 0 0 1-.944-1.609 5.951 5.951 0 0 1-.338-2.058v-.556a6.035 6.035 0 0 1 .338-2.069 4.85 4.85 0 0 1 .944-1.61 4.116 4.116 0 0 1 1.462-1.043 4.625 4.625 0 0 1 1.848-.369h.179a4.512 4.512 0 0 1 1.7.307c.51.208.974.518 1.362.91V.688h2.465V15h-1.948a3.676 3.676 0 0 1-.18-.566 5.762 5.762 0 0 1-.119-.646v-.02a3.965 3.965 0 0 1-1.421 1.053 4.548 4.548 0 0 1-1.878.378h-.16a4.623 4.623 0 0 1-1.848-.367Zm2.544-1.6c.365.003.726-.078 1.054-.24.316-.157.595-.38.817-.656.235-.298.41-.639.517-1.003a4.37 4.37 0 0 0 .178-1.283v-.496a4.053 4.053 0 0 0-.189-1.273 2.992 2.992 0 0 0-.526-.985 2.445 2.445 0 0 0-.806-.636 2.349 2.349 0 0 0-1.043-.228h-.16a2.29 2.29 0 0 0-1.838.864c-.23.295-.405.628-.517.985-.13.411-.194.841-.189 1.273v.496c-.004.438.06.874.19 1.293.108.364.283.704.516 1.004.216.27.487.49.796.645.323.162.68.244 1.043.24h.157ZM24.102 14.821a4.847 4.847 0 0 1-1.61-1.043 4.537 4.537 0 0 1-1.046-1.61 5.686 5.686 0 0 1-.367-2.078v-.398a5.67 5.67 0 0 1 .378-2.106 5.073 5.073 0 0 1 1.02-1.64c.443-.465.978-.831 1.572-1.074a5.2 5.2 0 0 1 2.037-.388h.239a4.914 4.914 0 0 1 1.869.348 4.25 4.25 0 0 1 2.415 2.485c.227.621.338 1.279.328 1.94v1.353h-7.395c.036.356.126.705.269 1.033.128.303.321.574.565.795.252.22.541.394.855.51.35.129.721.193 1.094.188h.204a3.242 3.242 0 0 0 1.62-.388c.44-.243.829-.571 1.143-.964l1.372 1.491a5.469 5.469 0 0 1-.854.796 5.293 5.293 0 0 1-1.014.596c-.366.162-.746.291-1.134.387-.396.1-.804.15-1.212.15h-.28a5.462 5.462 0 0 1-2.068-.383Zm4.513-5.884v-.04a3.516 3.516 0 0 0-.224-1.034 2.499 2.499 0 0 0-.477-.785 1.923 1.923 0 0 0-.715-.496 2.471 2.471 0 0 0-.933-.17h-.18a2.317 2.317 0 0 0-1.67.676c-.222.228-.4.494-.527.786-.147.34-.25.697-.306 1.063h5.032ZM31.733 4.66h1.928c.088.232.156.47.204.714.055.25.092.502.11.756a4.8 4.8 0 0 1 1.57-1.225 4.507 4.507 0 0 1 2.008-.448h.102c1.14 0 2.011.338 2.614 1.014.604.677.905 1.644.905 2.903v6.62h-2.468V8.897c0-.755-.153-1.324-.458-1.71-.305-.385-.788-.577-1.45-.576h-.12a2.51 2.51 0 0 0-1.013.204 2.27 2.27 0 0 0-.786.557c-.225.25-.4.54-.517.855-.13.362-.192.745-.184 1.13v5.646h-2.445V4.66ZM43.83 14.821a6.964 6.964 0 0 1-2.097-1.113l1.233-1.79c.22.21.468.391.735.538a5.944 5.944 0 0 0 1.73.626c.295.059.594.089.895.09.237.002.473-.02.705-.07a1.43 1.43 0 0 0 .511-.204.949.949 0 0 0 .306-.357c.074-.149.111-.312.11-.477a.844.844 0 0 0-.205-.607 1.6 1.6 0 0 0-.586-.358 8.538 8.538 0 0 0-.934-.288 12.16 12.16 0 0 1-1.243-.398 10.48 10.48 0 0 1-1.03-.34 3.769 3.769 0 0 1-.935-.517 2.231 2.231 0 0 1-.656-.806 2.61 2.61 0 0 1-.239-1.162c-.007-.451.08-.899.259-1.313.168-.379.424-.712.745-.974a3.654 3.654 0 0 1 1.189-.628 4.953 4.953 0 0 1 1.55-.229c.727 0 1.45.12 2.137.358a7.329 7.329 0 0 1 1.86.934l-1.155 1.75a5.587 5.587 0 0 0-1.393-.726 4.55 4.55 0 0 0-1.532-.268c-.2-.002-.4.017-.596.059a1.204 1.204 0 0 0-.437.189.951.951 0 0 0-.279.306.89.89 0 0 0-.102.437.714.714 0 0 0 .204.527c.155.15.333.274.527.368a3.3 3.3 0 0 0 .756.258c.291.067.596.14.92.219.408.093.825.21 1.252.348.406.132.791.322 1.143.563.335.229.617.527.825.875.212.351.318.805.318 1.361.008.462-.088.919-.279 1.338-.182.387-.45.727-.785.994-.372.29-.793.509-1.243.647a5.257 5.257 0 0 1-1.634.239 7.958 7.958 0 0 1-2.55-.399ZM51.038.687h2.464v8.33h.16l3.797-4.357h2.763l-4.354 4.79 4.474 5.547h-2.947l-3.738-4.91h-.159v4.91h-2.46V.687Z">
+        </path>
+        <path
+          d="M61.798 14.98c-.4-.132-.772-.34-1.094-.612a2.703 2.703 0 0 1-.705-.965 3.107 3.107 0 0 1-.249-1.263v-.198c0-1.113.477-1.945 1.43-2.495s2.424-.825 4.413-.825h.835v-.437c0-.53-.165-.947-.497-1.253-.331-.306-.815-.458-1.451-.457h-.12a4.93 4.93 0 0 0-1.56.268 6.324 6.324 0 0 0-1.56.785l-.975-1.75a8.118 8.118 0 0 1 2.043-.963 7.408 7.408 0 0 1 2.236-.352h.18c1.271 0 2.262.329 2.972.985.71.656 1.064 1.575 1.063 2.757v4.673c0 .367.036.733.11 1.092.07.35.16.695.268 1.034H66.79a1.817 1.817 0 0 1-.179-.546c-.04-.219-.074-.434-.102-.646A4.8 4.8 0 0 1 65 14.834a4.58 4.58 0 0 1-1.83.367 4.19 4.19 0 0 1-1.372-.22Zm3.41-2.106a3.755 3.755 0 0 0 1.225-.935v-1.73h-.613c-1.273 0-2.207.13-2.803.388-.595.259-.894.668-.894 1.226v.102c-.004.183.037.364.118.527a1.358 1.358 0 0 0 .836.676c.206.06.42.091.636.09.518 0 1.028-.118 1.494-.344ZM69.733 4.66h1.949c.074.186.13.38.168.577.046.224.083.444.11.655.399-.45.89-.81 1.44-1.054a4.518 4.518 0 0 1 1.86-.378h.18a4.554 4.554 0 0 1 1.838.37c.563.244 1.205.592 1.61 1.043a4.85 4.85 0 0 1 .944 1.61c.232.664.347 1.364.338 2.067v.557a5.95 5.95 0 0 1-.338 2.058 4.988 4.988 0 0 1-.945 1.61c-.408.457-1.046.808-1.61 1.053a4.552 4.552 0 0 1-1.838.368h-.178a4.518 4.518 0 0 1-1.7-.306 4.04 4.04 0 0 1-1.357-.903v4.99h-2.47V4.66Zm5.169 8.568a2.26 2.26 0 0 0 1.044-.239c.308-.156.58-.376.795-.645.233-.3.408-.64.517-1.004.129-.419.193-.855.19-1.293V9.55a4.086 4.086 0 0 0-.19-1.272 3.117 3.117 0 0 0-.517-.985 2.29 2.29 0 0 0-1.838-.864h-.16a2.349 2.349 0 0 0-1.043.228 2.383 2.383 0 0 0-.805.647 3.104 3.104 0 0 0-.527.984c-.13.408-.194.834-.189 1.262v.497c-.002.439.067.876.205 1.293.115.365.297.705.537 1.004.218.267.488.486.794.645a2.2 2.2 0 0 0 1.034.24h.153ZM1.9 14.405c-.418-.465-.626-1.214-.627-2.247V.687h2.465V11.7c0 .504.073.845.219 1.022.146.177.378.266.696.267.176 0 .351-.01.526-.03a2.65 2.65 0 0 0 .488-.088v1.907a4.156 4.156 0 0 1-.925.24 6.723 6.723 0 0 1-1.004.079c-.808.002-1.421-.229-1.839-.692ZM1.273 2.078l-.9-.767V.687h.9v1.39Z">
+        </path>
+        <path d="M.232.687h1.124v.624H.368a1.686 1.686 0 0 1-.085-.292C.264.905.245.794.233.687Z"></path>
+      </svg>
+      <PortableText value={ctaBox.text} class="text" />
+      <Button {...ctaBox.cta} />
+    </div>
+  </div>
+  <div class="load-more">
+    Wyświetlono
+    <div class="indicator">
+      <div class="indicator-barWrapper">
+        <div class="indicator-bar" style={`transform: scaleX(${ITEMS_PER_PAGE / listing.length})`}></div>
+      </div>
+      <p><span class="current">{ITEMS_PER_PAGE}</span>/<span class="total">{listing.length}</span></p>
+    </div>
+    <button class="load-more-btn link">Wczytaj więcej realizacji</button>
+  </div>
+</section>
+
+<style lang="scss">
+  .Hero {
+    padding: clamp(3rem, calc(4vw / 0.48), 5rem) 0;
+    header {
+      max-width: 34rem;
+      margin-bottom: clamp(2rem, calc(3vw / 0.48), 3rem);
+      .heading {
+        margin-bottom: clamp(1rem, calc(1.5vw / 0.48), 1.5rem);
+      }
+    }
+    .listing {
+      display: grid;
+      gap: 0.75rem;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      .listing-link {
+        display: block;
+        &:hover,
+        &:focus-visible {
+          img {
+            transform: scale(1.03);
+          }
+        }
+        .img {
+          aspect-ratio: 48/61;
+          overflow: hidden;
+          img {
+            height: 100%;
+            transition: transform 500ms var(--easing);
+          }
+        }
+        h2 {
+          margin-top: 0.25rem;
+        }
+      }
+      .ctaBox {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        background-color: var(--primary-300, #f4efe8);
+        aspect-ratio: 48/61;
+        align-self: flex-start;
+        padding: 2rem 1.25rem;
+        svg {
+          margin-bottom: 3rem;
+        }
+        .text {
+          margin-top: auto;
+          margin-bottom: 1.25rem;
+        }
+      }
+    }
+    @media (max-width: 75rem) {
+      .listing {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+    }
+    @media (max-width: 60rem) {
+      max-width: 38rem;
+      .listing {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    @media (max-width: 35rem) {
+      .listing {
+        grid-template-columns: 1fr;
+        .ctaBox {
+          aspect-ratio: unset;
+        }
+      }
+    }
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem clamp(2rem, calc(3vw / 0.48), 3rem);
+    font-size: 0.875rem;
+    margin-bottom: clamp(1.5rem, calc(2vw / 0.48), 2rem);
+    .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem 0.75rem;
+      align-items: center;
+      .filter-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+        .filter-tag {
+          display: inline-flex;
+          align-items: center;
+          height: 2.75rem;
+          padding: 0 0.5rem;
+          border: 1px solid var(--secondary-700, #0c2d63);
+          &[data-active='true'] {
+            background-color: var(--secondary-700, #0c2d63);
+            color: var(--primary-100, #fffefd);
+          }
+          &[aria-disabled='true'] {
+            pointer-events: none;
+          }
+          .count {
+            margin-left: 0.25rem;
+            opacity: 0.7;
+          }
+        }
+      }
+    }
+  }
+
+  .load-more {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem 1rem;
+    margin-top: clamp(2rem, calc(3vw / 0.48), 3rem);
+    .indicator {
+      text-align: center;
+      .indicator-barWrapper {
+        width: 2.5rem;
+        background: var(--secondary-200, #c0c7db);
+        .indicator-bar {
+          height: 0.0625rem;
+          background: var(--secondary-500, #374776);
+          transform-origin: left;
+          transition: transform 800ms var(--easing);
+        }
+      }
+    }
+  }
+</style>
+
+<script>
+  const ITEMS_PER_PAGE = 11
+
+  function updateLoadMoreIndicators(visibleCount: number, totalCount: number) {
+    const loadMoreElement = document.querySelector<HTMLDivElement>('.load-more')!
+    const currentElement = document.querySelector<HTMLSpanElement>('.load-more .current')!
+    const totalElement = document.querySelector<HTMLSpanElement>('.load-more .total')!
+    const indicatorBar = document.querySelector<HTMLDivElement>('.load-more .indicator-bar')!
+
+    loadMoreElement.style.display = visibleCount >= totalCount ? 'none' : ''
+
+    currentElement.textContent = visibleCount.toString()
+    totalElement.textContent = totalCount.toString()
+    const scale = visibleCount / totalCount
+    indicatorBar.style.transform = `scaleX(${scale})`
+  }
+
+  function updateFilters() {
+    const searchParams = new URLSearchParams(window.location.search)
+    const currentCity = searchParams.get('city')
+    const currentType = searchParams.get('type')
+    const currentSort = searchParams.get('sort') || 'newest'
+
+    const articles = Array.from(document.querySelectorAll<HTMLDivElement>('.listing article'))
+    const listing = document.querySelector<HTMLDivElement>('.listing')!
+    const ctaBox = document.querySelector<HTMLDivElement>('.ctaBox')!
+
+    // First sort all articles
+    const sortedArticles = articles.sort((a, b) => {
+      const dateA = a.getAttribute('data-end-date') || '9999-12-31'
+      const dateB = b.getAttribute('data-end-date') || '9999-12-31'
+      return currentSort === 'newest' ? dateB.localeCompare(dateA) : dateA.localeCompare(dateB)
+    })
+
+    // Reorder DOM elements
+    listing.innerHTML = ''
+    sortedArticles.forEach((article) => listing.appendChild(article))
+    listing.appendChild(ctaBox)
+
+    // Then filter matching articles from sorted list
+    const matchingArticles = sortedArticles.filter((article) => {
+      const articleCity = article.getAttribute('data-city')
+      const articleType = article.getAttribute('data-type')
+
+      const cityMatch = !currentCity || articleCity === currentCity
+      const typeMatch = !currentType || articleType === currentType
+
+      return cityMatch && typeMatch
+    })
+
+    // Update visibility based on filters and pagination
+    sortedArticles.forEach((article) => {
+      const articleCity = article.getAttribute('data-city')
+      const articleType = article.getAttribute('data-type')
+
+      const cityMatch = !currentCity || articleCity === currentCity
+      const typeMatch = !currentType || articleType === currentType
+
+      const index = matchingArticles.indexOf(article)
+      const paginationMatch = index < ITEMS_PER_PAGE
+
+      if (cityMatch && typeMatch) {
+        article.style.display = paginationMatch ? '' : 'none'
+      } else {
+        article.style.display = 'none'
+      }
+    })
+
+    // Update load more indicators
+    const visibleCount = matchingArticles.filter((article) => article.style.display !== 'none').length
+    const totalCount = matchingArticles.length
+    updateLoadMoreIndicators(visibleCount, totalCount)
+
+    // Update counts in filter tags
+    document.querySelectorAll('.filter-tag').forEach((link) => {
+      const filterType = link.getAttribute('data-filter')
+      const filterValue = link.getAttribute('data-value')
+
+      if (filterValue === '') {
+        // Update "All" count based on other active filter
+        const visibleCount = articles.filter((article) => {
+          if (filterType === 'city') {
+            return !currentType || article.getAttribute('data-type') === currentType
+          } else {
+            return !currentCity || article.getAttribute('data-city') === currentCity
+          }
+        }).length
+        link.querySelector('.count')!.textContent = `(${visibleCount})`
+      } else {
+        // Update individual filter counts
+        const count = articles.filter((article) => {
+          const matches =
+            filterType === 'city'
+              ? article.getAttribute('data-city') === filterValue
+              : article.getAttribute('data-type') === filterValue
+
+          // Apply other active filter
+          if (filterType === 'city' && currentType) {
+            return matches && article.getAttribute('data-type') === currentType
+          } else if (filterType === 'type' && currentCity) {
+            return matches && article.getAttribute('data-city') === currentCity
+          }
+          return matches
+        }).length
+        link.querySelector('.count')!.textContent = `(${count})`
+      }
+
+      // Rest of the existing active state logic
+      const value = link.getAttribute('data-value')
+      const type = link.getAttribute('data-filter')
+      const isAll = value === ''
+
+      if (
+        (type === 'city' && ((!currentCity && value === '') || value === currentCity)) ||
+        (type === 'type' && ((!currentType && value === '') || value === currentType))
+      ) {
+        link.setAttribute('data-active', 'true')
+        if (isAll) {
+          link.setAttribute('aria-disabled', 'true')
+        } else {
+          link.setAttribute('aria-disabled', 'false')
+        }
+      } else {
+        link.setAttribute('data-active', 'false')
+        if (isAll) {
+          link.setAttribute('aria-disabled', 'false')
+        }
+      }
+    })
+  }
+
+  // Update load more button handler
+  document.querySelector<HTMLButtonElement>('.load-more-btn')?.addEventListener('click', () => {
+    const articles = Array.from(document.querySelectorAll<HTMLDivElement>('.listing article'))
+    const searchParams = new URLSearchParams(window.location.search)
+    const currentCity = searchParams.get('city')
+    const currentType = searchParams.get('type')
+
+    let visibleCount = 0
+    const matchingArticles = articles.filter((article) => {
+      const articleCity = article.getAttribute('data-city')
+      const articleType = article.getAttribute('data-type')
+      const cityMatch = !currentCity || articleCity === currentCity
+      const typeMatch = !currentType || articleType === currentType
+      return cityMatch && typeMatch
+    })
+
+    matchingArticles.forEach((article) => {
+      if (article.style.display === 'none') {
+        if (visibleCount < ITEMS_PER_PAGE) {
+          article.style.display = ''
+          visibleCount++
+        }
+      }
+    })
+
+    // Update indicators after loading more
+    const currentlyVisible = matchingArticles.filter((article) => article.style.display !== 'none').length
+    updateLoadMoreIndicators(currentlyVisible, matchingArticles.length)
+  })
+
+  document.querySelectorAll('.filter-tag').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault()
+      const searchParams = new URLSearchParams(window.location.search)
+      const filterType = link.getAttribute('data-filter')!
+      const filterValue = link.getAttribute('data-value')!
+
+      if (filterValue === '') {
+        searchParams.delete(filterType)
+      } else if (filterValue === searchParams.get(filterType)) {
+        searchParams.delete(filterType)
+      } else {
+        searchParams.set(filterType, filterValue)
+      }
+
+      const newUrl = `${window.location.pathname}?${searchParams.toString()}`
+      window.history.replaceState({ path: newUrl }, '', newUrl)
+
+      updateFilters()
+    })
+  })
+
+  updateFilters()
+  window.addEventListener('popstate', updateFilters)
+  document.addEventListener('filterSortUpdate', updateFilters)
+</script>

@@ -2,14 +2,16 @@ import { defineField } from "sanity";
 import { slugify } from "./slugify";
 import { isUniqueSlug } from "./is-unique-slug";
 
-export const defineSlugForDocument = ({ prefix = '', slug }: { prefix?: string, slug?: string }) => [
-  defineField({
-    name: 'title',
-    type: 'string',
-    title: 'Title',
-    description: 'The title of the document, used for display in the Breadcrumbs.',
-    validation: Rule => Rule.required(),
-  }),
+export const defineSlugForDocument = ({ source, prefix = '', slug }: { source?: string, prefix?: string, slug?: string }) => [
+  ...(source ? [] : [
+    defineField({
+      name: 'title',
+      type: 'string',
+      title: 'Title',
+      description: 'The title of the document, used for display in the Breadcrumbs.',
+      validation: Rule => Rule.required(),
+    }),
+  ]),
   defineField({
     name: 'slug',
     type: 'slug',
@@ -26,7 +28,7 @@ export const defineSlugForDocument = ({ prefix = '', slug }: { prefix?: string, 
       readOnly: true,
     },
     options: {
-      source: 'title',
+      source: source || 'title',
       slugify: (slug: string) => `${prefix || '/'}${slugify(slug)}`,
       isUnique: isUniqueSlug,
     },
@@ -34,6 +36,9 @@ export const defineSlugForDocument = ({ prefix = '', slug }: { prefix?: string, 
       Rule.required().custom((value) => {
         if (prefix && value?.current && !value.current.startsWith(prefix)) {
           return `Slug should start with ${prefix}`;
+        }
+        if (!slug && value?.current && value.current.replace(prefix, '') !== slugify(value.current.replace(prefix, ''))) {
+          return 'There is a typo in the slug. Remember that slug can contain only lowercase letters, numbers and dashes.';
         }
         return true;
       })

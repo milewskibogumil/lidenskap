@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { defineSlugForDocument } from "../../utils/define-slug-for-document";
 
 const name = 'Project_Collection';
 const title = 'Zbiór realizacji';
@@ -25,6 +26,7 @@ export default defineType({
       title: 'Nazwa',
       validation: Rule => Rule.required(),
     }),
+    ...defineSlugForDocument({ source: 'name', prefix: '/realizacje/' }),
     defineField({
       name: 'type',
       type: 'string',
@@ -52,6 +54,18 @@ export default defineType({
         layout: 'radio',
       },
       validation: Rule => Rule.required(),
+    }),
+    defineField({
+      name: 'startDate',
+      type: 'date',
+      title: 'Data rozpoczęcia projektu',
+      validation: Rule => Rule.required(),
+    }),
+    defineField({
+      name: 'endDate',
+      type: 'date',
+      title: 'Data zakończenia projektu (opcjonalnie)',
+      description: 'Jeśli to pole jest puste, projekt będzie traktowany jako w trakcie realizacji.'
     }),
   ],
   preview: {

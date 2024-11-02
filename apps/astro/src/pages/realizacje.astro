@@ -3,15 +3,17 @@ import Layout from '@/src/layouts/Layout.astro'
 import metadataFetch from '@/utils/metadata.fetch'
 import sanityFetch from '@/utils/sanity.fetch'
 import Breadcrumbs from '@/components/ui/Breadcrumbs.astro'
+import Hero, { Hero_Query, type HeroProps } from '@/components/Projects/Hero.astro'
 import Components, { Components_Query, type ComponentsProps } from '@/components/Components.astro'
 
 const metadata = await metadataFetch('Projects_Page')
 
-const data = await sanityFetch<{ name: string; slug: string; components: ComponentsProps }>({
+const data = await sanityFetch<{ name: string; slug: string; hero: HeroProps; components: ComponentsProps }>({
   query: `
     *[_type == "Projects_Page"][0] {
       "name": title,
       "slug": slug.current,
+      ${Hero_Query}
       ${Components_Query}
     }
   `,
@@ -20,5 +22,6 @@ const data = await sanityFetch<{ name: string; slug: string; components: Compone
 
 <Layout {...metadata}>
   <Breadcrumbs data={[{ name: data.name, path: data.slug }]} />
-  <Components data={data.components} />
+  <Hero {...data.hero} />
+  <Components data={data.components} hasPreviousSections={true} />
 </Layout>
