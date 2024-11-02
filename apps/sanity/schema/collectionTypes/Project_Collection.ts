@@ -67,6 +67,18 @@ export default defineType({
       title: 'Data zakończenia projektu (opcjonalnie)',
       description: 'Jeśli to pole jest puste, projekt będzie traktowany jako w trakcie realizacji.'
     }),
+    defineField({
+      name: 'seo',
+      type: 'seo',
+      title: 'SEO',
+      group: 'seo',
+    }),
+  ],
+  groups: [
+    {
+      name: 'seo',
+      title: 'SEO',
+    },
   ],
   preview: {
     select: {
