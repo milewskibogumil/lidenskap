@@ -138,9 +138,13 @@ const ITEMS_PER_PAGE = 11
     Wyświetlono
     <div class="indicator">
       <div class="indicator-barWrapper">
-        <div class="indicator-bar" style={`transform: scaleX(${ITEMS_PER_PAGE / listing.length})`}></div>
+        <div class="indicator-bar" style={`transform: scaleX(${Math.min(1, ITEMS_PER_PAGE / listing.length)})`}></div>
       </div>
-      <p><span class="current">{ITEMS_PER_PAGE}</span>/<span class="total">{listing.length}</span></p>
+      <p>
+        <span class="current">{Math.min(ITEMS_PER_PAGE, listing.length)}</span>/<span class="total">
+          {listing.length}
+        </span>
+      </p>
     </div>
     <button class="load-more-btn link">Wczytaj więcej realizacji</button>
   </div>
