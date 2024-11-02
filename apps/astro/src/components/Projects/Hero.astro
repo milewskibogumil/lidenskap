@@ -113,6 +113,7 @@ const ITEMS_PER_PAGE = 11
               <Image
                 {...img}
                 sizes="(max-width: 35rem) 100vw, (max-width: 60rem) 50vw, (max-width: 75rem) 34vw, 25vw"
+                priority={index === 0}
               />
             </div>
             <h2 class="h3">{name}</h2>

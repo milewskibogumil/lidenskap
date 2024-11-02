@@ -43,13 +43,14 @@ const { heading, paragraph, ctaBox, listing } = Astro.props as HeroProps
   </header>
   <div class="listing">
     {
-      listing.map(({ img, name, url }) => (
+      listing.map(({ img, name, url }, index) => (
         <article>
           <a href={url} target="_blank" rel="noopener" class="listing-link">
             <div class="img">
               <Image
                 {...img}
                 sizes="(max-width: 35rem) 100vw, (max-width: 60rem) 50vw, (max-width: 75rem) 34vw, 25vw"
+                priority={index === 0}
               />
             </div>
             <h2 class="h3">{name}</h2>
