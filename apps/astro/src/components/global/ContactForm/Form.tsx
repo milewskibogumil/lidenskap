@@ -7,6 +7,7 @@ import Button from '@/components/ui/Button';
 import Loader from '@/components/ui/Loader';
 import FormState from '@/components/ui/FormState';
 import { REGEX } from '@/global/constants';
+import { sendContactEmail, type Props as sendContactEmailProps } from '@/src/pages/api/contact/sendContactEmail';
 
 export default function Form({ email, tel, facebook, instagram }: { email: string, tel: string, facebook: string, instagram: string }) {
   const [status, setStatus] = useState<{ sending: boolean, success: boolean | undefined }>({ sending: false, success: undefined });
@@ -19,20 +20,11 @@ export default function Form({ email, tel, facebook, instagram }: { email: strin
 
   const onSubmit = async (data: FieldValues) => {
     setStatus({ sending: true, success: undefined });
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-      const responseData = await response.json();
-      if (response.ok && responseData.success) {
-        setStatus({ sending: false, success: true });
-        reset();
-      } else {
-        setStatus({ sending: false, success: false });
-      }
-    } catch {
+    const response = await sendContactEmail(data as sendContactEmailProps);
+    if (response.success) {
+      setStatus({ sending: false, success: true });
+      reset();
+    } else {
       setStatus({ sending: false, success: false });
     }
   };
