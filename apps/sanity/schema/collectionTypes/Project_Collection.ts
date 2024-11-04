@@ -21,12 +21,26 @@ export default defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
+      name: 'beforeImg',
+      type: 'image',
+      title: 'Zdjęcie przed realizacją (opcjonalnie)',
+      options: {
+        collapsed: true,
+      }
+    }),
+    defineField({
       name: 'name',
       type: 'string',
       title: 'Nazwa',
       validation: Rule => Rule.required(),
     }),
     ...defineSlugForDocument({ source: 'name', prefix: '/realizacje/' }),
+    defineField({
+      name: 'description',
+      type: 'PortableText',
+      title: 'Krótki opis (opcjonalnie)',
+      description: 'Krótki opis projektu, pojawi się na początku strony konkretnej realizacji.',
+    }),
     defineField({
       name: 'type',
       type: 'string',

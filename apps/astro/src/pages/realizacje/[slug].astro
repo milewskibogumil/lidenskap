@@ -1,11 +1,11 @@
 ---
-export const prerender = true
+export const prerender = false
 
 import Layout from '@/src/layouts/Layout.astro'
 import sanityFetch from '@/utils/sanity.fetch'
 import metadataFetch from '@/utils/metadata.fetch'
 import Breadcrumbs from '@/components/ui/Breadcrumbs.astro'
-import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/Image'
+import Hero, { Hero_Query, type HeroProps } from '@/components/Projects/Project/Hero.astro'
 
 export const slugPrefix = '/realizacje/'
 
@@ -22,14 +22,11 @@ export async function getStaticPaths() {
 
 const { slug } = Astro.params
 
-const page = await sanityFetch<{
-  name: string
-  img: ImageDataProps
-}>({
+const page = await sanityFetch<{ name: string; hero: HeroProps }>({
   query: `
     *[_type == 'Project_Collection' && slug.current == $slug][0] {
       name,
-      ${ImageDataQuery('img')}
+      ${Hero_Query}
     }
   `,
   params: { slug: `${slugPrefix}${slug}` },
@@ -46,6 +43,5 @@ const metadata = await metadataFetch('Project_Collection', `${slugPrefix}${slug}
       { name: page.name, path: `/realizacje/${slug}` },
     ]}
   />
-  <h1>{page.name}</h1>
-  <Image {...page.img} sizes="100vw" priority={true} />
+  <Hero {...page.hero} />
 </Layout>

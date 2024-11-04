@@ -1,0 +1,209 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
+import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/Image'
+
+export const Hero_Query = `
+  "hero": {
+    ${ImageDataQuery('img')}
+    ${ImageDataQuery('beforeImg')}
+    name,
+    ${PortableTextQuery('description')}
+  }
+`
+
+export type HeroProps = {
+  img: ImageDataProps
+  beforeImg?: ImageDataProps
+  name: string
+  description?: PortableTextValue
+}
+
+const { img, beforeImg, name, description } = Astro.props as HeroProps
+---
+
+<section class="Hero">
+  <header>
+    <h1 class="h1">{name}</h1>
+    {description && <PortableText value={description} />}
+  </header>
+  <div class="img-compare-container">
+    <Image {...img} sizes="(max-width: 66rem) 100vw, 50vw" priority={true} class="img-after" />
+    {
+      beforeImg && (
+        <>
+          <Image {...beforeImg} sizes="50vw" loading="eager" class="img-before" />
+          <div class="slider-line" />
+          <div class="slider-handle">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 20 20">
+              <path
+                stroke="#0C2D63"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M8.333 14.167 4.167 10l4.166-4.167M11.667 5.833 15.833 10l-4.166 4.167"
+              />
+            </svg>
+          </div>
+        </>
+      )
+    }
+  </div>
+</section>
+
+<style lang="scss">
+  .Hero {
+    padding: clamp(3rem, calc(4vw / 0.48), 5rem) 0;
+    margin-top: -4rem;
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(2rem, calc(3vw / 0.48), 5rem);
+    header {
+      margin-top: 2rem;
+      max-width: 28rem;
+      h1 {
+        margin-bottom: clamp(1rem, calc(1.5vw / 0.48), 1.5rem);
+      }
+    }
+    .img-compare-container {
+      max-width: 38rem;
+      position: relative;
+      width: 100%;
+      width: fit-content;
+      &:has(.img-before) {
+        user-select: none;
+        cursor: ew-resize;
+      }
+      .img-before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        clip-path: inset(0 50% 0 0);
+        animation: beforeAndAfter 1.8s ease-in-out;
+      }
+      @keyframes beforeAndAfter {
+        30% {
+          clip-path: inset(0 40% 0 0);
+        }
+        70% {
+          clip-path: inset(0 60% 0 0);
+        }
+        100% {
+          clip-path: inset(0 50% 0 0);
+        }
+      }
+      .slider-line {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 1px;
+        height: 100%;
+        background: var(--secondary-700, #0c2d63);
+        pointer-events: none;
+        animation: sliderLineScale 800ms var(--easing) both 1.8s;
+      }
+      @keyframes sliderLineScale {
+        0% {
+          transform: scaleY(0);
+        }
+        100% {
+          transform: scaleY(1);
+        }
+      }
+      .slider-handle {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: 50%;
+        border: 1px solid var(--secondary-700, #0c2d63);
+        background-color: var(--primary-300, #f4efe8);
+        display: grid;
+        place-items: center;
+        cursor: ew-resize;
+        user-select: none;
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        animation: sliderHandle 500ms var(--easing) both 1.8s;
+      }
+      @keyframes sliderHandle {
+        0% {
+          transform: translate(-50%, -50%) scale(0);
+        }
+        100% {
+          transform: translate(-50%, -50%) scale(1);
+        }
+      }
+    }
+    @media (max-width: 66rem) {
+      grid-template-columns: 1fr;
+      max-width: 38rem;
+      margin-top: 0;
+      header {
+        margin-top: 0;
+      }
+    }
+  }
+  @media (min-width: 66rem) {
+    .Hero {
+      padding-top: 0 !important;
+    }
+    :global(.Breadcrumbs) {
+      max-width: 50% !important;
+    }
+  }
+</style>
+
+<script>
+  function initImageCompare() {
+    const container = document.querySelector('.img-compare-container')!
+    const beforeImg = container.querySelector<HTMLImageElement>('.img-before')!
+    const sliderHandle = container.querySelector<HTMLDivElement>('.slider-handle')!
+    const sliderLine = container.querySelector<HTMLDivElement>('.slider-line')!
+
+    if (!beforeImg) return
+
+    setTimeout(() => {
+      sliderHandle.style.animation = 'none'
+      sliderLine.style.animation = 'none'
+      sliderHandle.style.left = '0'
+      sliderLine.style.left = '0'
+    }, 2300)
+
+    function updatePosition(clientX: number) {
+      const rect = container.getBoundingClientRect()
+      const x = clientX - rect.left
+      const percentage = (x / rect.width) * 100
+
+      const clampedPercentage = Math.min(Math.max(percentage, 0), 100)
+      beforeImg.style.clipPath = `inset(0 ${100 - clampedPercentage}% 0 0)`
+      sliderHandle.style.transform = `translate(calc(${rect.width * (clampedPercentage / 100)}px - 50%), -50%)`
+      sliderLine.style.transform = `translateX(${rect.width * (clampedPercentage / 100)}px)`
+    }
+
+    updatePosition(container.getBoundingClientRect().left + container.getBoundingClientRect().width / 2)
+
+    container.addEventListener('mousedown', ((e: MouseEvent) => {
+      e.preventDefault()
+      updatePosition(e.clientX)
+
+      const handleMouseMove = (e: MouseEvent) => {
+        requestAnimationFrame(() => updatePosition(e.clientX))
+      }
+
+      window.addEventListener('mousemove', handleMouseMove as EventListener)
+      window.addEventListener(
+        'mouseup',
+        () => {
+          window.removeEventListener('mousemove', handleMouseMove as EventListener)
+        },
+        { once: true }
+      )
+    }) as EventListener)
+  }
+  initImageCompare()
+</script>
