@@ -82,6 +82,31 @@ export default defineType({
       description: 'Jeśli to pole jest puste, projekt będzie traktowany jako w trakcie realizacji.'
     }),
     defineField({
+      name: 'gallery',
+      type: 'object',
+      title: 'Galeria (opcjonalna)',
+      fields: [
+        defineField({
+          name: 'heading',
+          type: 'Heading',
+          title: 'Nagłówek',
+          validation: Rule => Rule.required(),
+        }),
+        defineField({
+          name: 'images',
+          type: 'array',
+          title: 'Zdjęcia',
+          of: [{ type: 'image' }],
+          description: (
+            <>
+              Zawsze pamiętaj o optymalizacji zdjęć do formatu <em>WEBP</em>, dla najlepszej wydajności strony. Użyj narzędzi takich jak <a href="https://anywebp.com/convert-to-webp" target="_blank" rel="noopener">anywebp</a> lub <a href="https://squoosh.app" target="_blank" rel="noopener">Squoosh</a>
+            </>
+          ),
+          validation: Rule => Rule.required(),
+        }),
+      ],
+    }),
+    defineField({
       name: 'seo',
       type: 'seo',
       title: 'SEO',
