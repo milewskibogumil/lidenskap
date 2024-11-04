@@ -18,6 +18,7 @@
     "@sanity/client": "^6.21.3",
     "astro": "^4.15.8",
     "astro-portabletext": "^0.10.0",
+    "fslightbox": "^3.4.2",
     "lenis": "^1.1.13",
     "react-hook-form": "^7.53.1",
     "sharp-ico": "^0.1.5",

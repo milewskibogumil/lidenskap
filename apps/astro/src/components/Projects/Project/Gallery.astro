@@ -1,0 +1,72 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
+import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/Image'
+
+export const Gallery_Query = `
+  gallery {
+    ${PortableTextQuery('heading')}
+    ${ImageDataQuery('images[]')}
+  },
+`
+
+export type Props = {
+  heading: PortableTextValue
+  images: ImageDataProps[]
+}
+
+const { heading, images } = Astro.props
+---
+
+<section class="Gallery">
+  <header>
+    <PortableText value={heading} heading="h2" />
+  </header>
+  {
+    images.map((image, index) => (
+      <a data-fslightbox="gallery" href={`#gallery-${index}`}>
+        <Image {...image} sizes="(max-width: 56rem) 50vw, (max-width: 74rem) 33vw, 25vw" />
+      </a>
+    ))
+  }
+</section>
+
+<div class="hidden-gallery">
+  {images.map((image, index) => <Image {...image} sizes="100vw" id={`gallery-${index}`} />)}
+</div>
+
+<style lang="scss">
+  .Gallery {
+    padding: clamp(3rem, calc(4vw / 0.48), 5rem) 0;
+    $gap: clamp(0.5rem, calc(1vw / 0.48), 1rem);
+    columns: 4;
+    gap: $gap;
+    margin-top: calc($gap * -1);
+    a {
+      margin-top: $gap;
+      display: block;
+      overflow: hidden;
+      &:hover {
+        img {
+          transform: scale(1.03);
+        }
+      }
+      img {
+        transition: transform 500ms var(--easing);
+      }
+    }
+    @media (max-width: 74rem) {
+      columns: 3;
+    }
+    @media (max-width: 56rem) {
+      columns: 2;
+    }
+  }
+
+  .hidden-gallery {
+    display: none;
+  }
+</style>
+
+<script>
+  import 'fslightbox'
+</script>
