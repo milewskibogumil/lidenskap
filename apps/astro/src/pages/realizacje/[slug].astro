@@ -43,8 +43,6 @@ const page = await sanityFetch<{
 })
 if (!page) return Astro.rewrite('/404')
 
-console.log(page.overview)
-
 const metadata = await metadataFetch('Project_Collection', `${slugPrefix}${slug}`)
 ---
 
@@ -52,7 +50,7 @@ const metadata = await metadataFetch('Project_Collection', `${slugPrefix}${slug}
   <Breadcrumbs
     data={[
       { name: 'Realizacje', path: '/realizacje' },
-      { name: page.name, path: `/realizacje/${slug}` },
+      { name: page.name, path: slug },
     ]}
   />
   <Hero {...page.hero} />
