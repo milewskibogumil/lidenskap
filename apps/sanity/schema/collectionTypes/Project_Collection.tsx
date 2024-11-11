@@ -105,6 +105,51 @@ export default defineType({
       }
     }),
     defineField({
+      name: 'overview',
+      type: 'array',
+      title: 'Przegląd realizacji (opcjonalne)',
+      of: [
+        defineField({
+          name: 'item',
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'icon',
+              type: 'image',
+              title: 'Ikona',
+              validation: Rule => Rule.required(),
+            }),
+            defineField({
+              name: 'label',
+              type: 'string',
+              title: 'Etykieta',
+              validation: Rule => Rule.required(),
+            }),
+            defineField({
+              name: 'value',
+              type: 'array',
+              of: [{ type: 'string' }],
+              title: 'Wartość',
+              description: 'Jeśli dodasz więcej niż jedną wartość, wartość automatycznie wyświetli się w formie tagów.',
+              validation: Rule => Rule.required(),
+            }),
+          ],
+          preview: {
+            select: {
+              icon: 'icon',
+              label: 'label',
+              value: 'value',
+            },
+            prepare: ({ icon, label, value }) => ({
+              media: icon,
+              title: label,
+              subtitle: value.join('; '),
+            })
+          }
+        })
+      ],
+    }),
+    defineField({
       name: 'gallery',
       type: 'object',
       title: 'Galeria (opcjonalna)',

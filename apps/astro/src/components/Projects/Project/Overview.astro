@@ -1,0 +1,91 @@
+---
+import Image, { ImageDataQuery, type ImageDataProps } from '@/components/ui/Image'
+
+export const Overview_Query = `
+  "overview": {
+    overview[] {
+      ${ImageDataQuery('icon')}
+      label,
+      value[]
+    },
+  },
+`
+
+export type Props = {
+  overview: {
+    icon: ImageDataProps
+    label: string
+    value: string[]
+  }[]
+}
+
+const { overview } = Astro.props
+---
+
+{
+  overview?.length > 0 && (
+    <section class="Overview sec-wo-margin">
+      <ul class="max-width">
+        {overview.map(({ icon, label, value }) => (
+          <li class="item">
+            <Image {...icon} sizes="24px" class="icon" />
+            <div>
+              <p class="label">{label}</p>
+              {value?.length > 1 ? (
+                <ul>
+                  {value?.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p>{value[0]}</p>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+<style lang="scss">
+  .Overview {
+    background-color: var(--secondary-800, #0b2348);
+    color: var(--primary-100, #fffefd);
+    margin-top: clamp(3rem, calc(4vw / 0.48), 5rem);
+    margin-bottom: clamp(3rem, calc(4vw / 0.48), 5rem);
+    padding: var(--page-margin) 0;
+    > ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: clamp(1.75rem, calc(2.5vw / 0.48), 2.5rem);
+    }
+    .item {
+      max-width: 42rem;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1rem;
+      .icon {
+        width: 24px;
+        height: 24px;
+      }
+      .label {
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        margin-bottom: 0.25rem;
+      }
+      ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+        li {
+          @media (max-width: 32rem) {
+            flex-grow: 1;
+          }
+          background-color: var(--secondary-700, #0c2d63);
+          padding: 0.375rem 1rem;
+        }
+      }
+    }
+  }
+</style>
