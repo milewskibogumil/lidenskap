@@ -46,5 +46,5 @@ const metadata = await metadataFetch('Project_Collection', `${slugPrefix}${slug}
     ]}
   />
   <Hero {...page.hero} />
-  <Gallery {...page.gallery} />
+  {page.gallery?.images.length > 0 && <Gallery {...page.gallery} />}
 </Layout>
