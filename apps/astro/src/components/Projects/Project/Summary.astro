@@ -1,0 +1,33 @@
+---
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
+
+export const Summary_Query = `
+  summary {
+    ${PortableTextQuery('heading')}
+    ${PortableTextQuery('paragraph')}
+  },
+`
+
+export type Props = {
+  heading: PortableTextValue
+  paragraph: PortableTextValue
+}
+
+const { heading, paragraph } = Astro.props
+---
+
+<section class="Summary">
+  <PortableText value={heading} heading="h2" />
+  <PortableText value={paragraph} />
+</section>
+
+<style lang="scss">
+  .Summary {
+    padding: clamp(3rem, calc(4vw / 0.48), 5rem) 0;
+    max-width: 38rem;
+    margin: 0 auto;
+    h2 {
+      margin-bottom: clamp(1.5rem, calc(2vw / 0.48), 2rem);
+    }
+  }
+</style>

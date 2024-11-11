@@ -82,6 +82,29 @@ export default defineType({
       description: 'Jeśli to pole jest puste, projekt będzie traktowany jako w trakcie realizacji.'
     }),
     defineField({
+      name: 'summary',
+      type: 'object',
+      title: 'Podsumowanie projektu (opcjonalne)',
+      fields: [
+        defineField({
+          name: 'heading',
+          type: 'Heading',
+          title: 'Nagłówek',
+          validation: Rule => Rule.required(),
+        }),
+        defineField({
+          name: 'paragraph',
+          type: 'PortableText',
+          title: 'Paragraf',
+          validation: Rule => Rule.required(),
+        }),
+      ],
+      options: {
+        collapsible: true,
+        collapsed: false,
+      }
+    }),
+    defineField({
       name: 'gallery',
       type: 'object',
       title: 'Galeria (opcjonalna)',
@@ -105,6 +128,10 @@ export default defineType({
           validation: Rule => Rule.required(),
         }),
       ],
+      options: {
+        collapsible: true,
+        collapsed: false,
+      }
     }),
     defineField({
       name: 'seo',

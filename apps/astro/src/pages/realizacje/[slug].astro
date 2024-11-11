@@ -5,7 +5,7 @@ import metadataFetch from '@/utils/metadata.fetch'
 import Breadcrumbs from '@/components/ui/Breadcrumbs.astro'
 import Hero, { Hero_Query, type HeroProps } from '@/components/Projects/Project/Hero.astro'
 import Gallery, { Gallery_Query, type Props as GalleryProps } from '@/components/Projects/Project/Gallery.astro'
-
+import Summary, { Summary_Query, type Props as SummaryProps } from '@/components/Projects/Project/Summary.astro'
 export const slugPrefix = '/realizacje/'
 
 export async function getStaticPaths() {
@@ -21,11 +21,12 @@ export async function getStaticPaths() {
 
 const { slug } = Astro.params
 
-const page = await sanityFetch<{ name: string; hero: HeroProps; gallery: GalleryProps }>({
+const page = await sanityFetch<{ name: string; hero: HeroProps; summary: SummaryProps; gallery: GalleryProps }>({
   query: `
     *[_type == 'Project_Collection' && slug.current == $slug][0] {
       name,
       ${Hero_Query}
+      ${Summary_Query}
       ${Gallery_Query}
     }
   `,
@@ -44,5 +45,6 @@ const metadata = await metadataFetch('Project_Collection', `${slugPrefix}${slug}
     ]}
   />
   <Hero {...page.hero} />
-  {page.gallery?.images.length > 0 && <Gallery {...page.gallery} />}
+  {page?.summary && <Summary {...page.summary} />}
+  {page?.gallery?.images.length > 0 && <Gallery {...page.gallery} />}
 </Layout>
