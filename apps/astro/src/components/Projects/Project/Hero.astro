@@ -55,12 +55,13 @@ const { img, beforeImg, name, description } = Astro.props as HeroProps
     margin-top: -4rem;
     display: grid;
     grid-template-columns: auto auto;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
-    gap: clamp(2rem, calc(3vw / 0.48), 5rem);
+    gap: clamp(1rem, calc(2vw / 0.48), 2rem) clamp(2rem, calc(3vw / 0.48), 5rem);
     header {
-      margin-top: 2rem;
-      max-width: 28rem;
+      background-color: var(--primary-300, #f4efe8);
+      padding: clamp(1rem, calc(2vw / 0.48), 3rem);
+      max-width: 34rem;
       h1 {
         margin-bottom: clamp(1rem, calc(1.5vw / 0.48), 1.5rem);
       }
@@ -144,6 +145,7 @@ const { img, beforeImg, name, description } = Astro.props as HeroProps
       max-width: 38rem;
       margin-top: 0;
       header {
+        max-width: 38rem;
         margin-top: 0;
       }
     }
