@@ -1,0 +1,71 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+
+type Props = HTMLAttributes<'span'>
+
+const { ...props } = Astro.props
+
+const value = await Astro.slots.render('default')
+---
+
+<p {...props} data-count-up>{value}</p>
+
+<script>
+  const easeOutCubic = (x: number) => 1 - Math.pow(1 - x, 3)
+
+  function animateValue(element: HTMLElement, duration: number) {
+    const countFrom = 0
+    const originalFormat = (element.getAttribute('data-original') || element.textContent)!
+    const countTo = parseInt(originalFormat.replace(/\s+/g, ''), 10)
+    let startTimestamp: number
+
+    const hasSpaces = /\d\s+\d/.test(originalFormat)
+
+    const formatNumber = (num: number) => {
+      return hasSpaces ? num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') : num.toString()
+    }
+
+    const step = (timestamp: number) => {
+      if (!startTimestamp) startTimestamp = timestamp
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1)
+      const easedProgress = easeOutCubic(progress)
+      const currentValue = Math.floor(easedProgress * (countTo - countFrom) + countFrom)
+      element.textContent = progress === 1 ? originalFormat : formatNumber(currentValue)
+      if (progress < 1) window.requestAnimationFrame(step)
+    }
+    setTimeout(() => {
+      const parent = element.closest<HTMLElement>('[data-count-up]')
+      if (parent) parent.removeAttribute('style')
+    }, duration)
+    window.requestAnimationFrame(step)
+  }
+
+  function wrapNumbersInSpans(element: HTMLElement) {
+    const text = element.textContent || ''
+    const initialWidth = element.getBoundingClientRect().width
+    element.style.width = `${initialWidth}px`
+    const parts = text.split(/(\d+(?:\s*\d+)*(?:\.\d+)?)/)
+    element.innerHTML = parts
+      .map((part) => {
+        const num = parseInt(part.replace(/\s+/g, ''))
+        return isNaN(num) ? part : `<span class="number" data-original="${part}">${num}</span>`
+      })
+      .join('')
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(({ isIntersecting, target }) => {
+      if (isIntersecting) {
+        const element = target as HTMLElement
+        const numberElements = element.querySelectorAll<HTMLElement>('.number')
+        numberElements.forEach((numberElement) => animateValue(numberElement, 3000))
+        observer.unobserve(element)
+      }
+    })
+  })
+
+  document.querySelectorAll('[data-count-up]').forEach((element) => {
+    wrapNumbersInSpans(element as HTMLElement)
+    observer.observe(element)
+  })
+</script>
