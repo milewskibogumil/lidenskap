@@ -44,6 +44,9 @@ const valueArray = Array.isArray(value) ? value : [value]
       padding-left: 1.25rem;
       list-style-type: disc;
       margin-top: 0.5rem;
+      :global(ul) {
+        list-style-type: circle;
+      }
       :global(li:not(:last-child)) {
         margin-bottom: 0.25rem;
       }
