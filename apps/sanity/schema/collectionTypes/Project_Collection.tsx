@@ -71,7 +71,16 @@ export default defineType({
         direction: "horizontal",
         layout: 'radio',
       },
-      validation: Rule => Rule.required(),
+      validation: Rule => [
+        Rule.required(),
+        Rule.custom((value, context) => {
+          const name = (context.parent as { name: string })?.name;
+          if (name && value && name.includes(value)) {
+            return true;
+          }
+          return 'Zweryfikuj poprawność miasta'
+        }).warning(),
+      ],
     }),
     defineField({
       name: 'startDate',
