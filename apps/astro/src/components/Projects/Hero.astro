@@ -135,20 +135,23 @@ const ITEMS_PER_PAGE = 11
       <Button {...ctaBox.cta} />
     </div>
   </div>
-  <div class="load-more">
-    Wyświetlono
-    <div class="indicator">
-      <div class="indicator-barWrapper">
-        <div class="indicator-bar" style={`transform: scaleX(${Math.min(1, ITEMS_PER_PAGE / listing.length)})`}></div>
+  {
+    listing.length > ITEMS_PER_PAGE && (
+      <div class="load-more">
+        Wyświetlono
+        <div class="indicator">
+          <div class="indicator-barWrapper">
+            <div class="indicator-bar" style={`transform: scaleX(${Math.min(1, ITEMS_PER_PAGE / listing.length)})`} />
+          </div>
+          <p>
+            <span class="current">{Math.min(ITEMS_PER_PAGE, listing.length)}</span>/
+            <span class="total">{listing.length}</span>
+          </p>
+        </div>
+        <button class="load-more-btn link">Wczytaj więcej realizacji</button>
       </div>
-      <p>
-        <span class="current">{Math.min(ITEMS_PER_PAGE, listing.length)}</span>/<span class="total">
-          {listing.length}
-        </span>
-      </p>
-    </div>
-    <button class="load-more-btn link">Wczytaj więcej realizacji</button>
-  </div>
+    )
+  }
 </section>
 
 <style lang="scss">
@@ -289,10 +292,11 @@ const ITEMS_PER_PAGE = 11
   const ITEMS_PER_PAGE = 11
 
   function updateLoadMoreIndicators(visibleCount: number, totalCount: number) {
-    const loadMoreElement = document.querySelector<HTMLDivElement>('.load-more')!
-    const currentElement = document.querySelector<HTMLSpanElement>('.load-more .current')!
-    const totalElement = document.querySelector<HTMLSpanElement>('.load-more .total')!
-    const indicatorBar = document.querySelector<HTMLDivElement>('.load-more .indicator-bar')!
+    const loadMoreElement = document.querySelector<HTMLDivElement>('.load-more')
+    if (!loadMoreElement) return
+    const currentElement = loadMoreElement.querySelector<HTMLSpanElement>('.current')!
+    const totalElement = loadMoreElement.querySelector<HTMLSpanElement>('.total')!
+    const indicatorBar = loadMoreElement.querySelector<HTMLDivElement>('.indicator-bar')!
 
     loadMoreElement.style.display = visibleCount >= totalCount ? 'none' : ''
 
