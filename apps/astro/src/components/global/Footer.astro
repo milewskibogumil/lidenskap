@@ -203,6 +203,9 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
     padding-bottom: clamp(calc(64rem / 16), calc(82vw / 7.68), calc(82rem / 16));
     background-color: var(--secondary-800, #0b2348);
     color: var(--primary-100, #fffefd);
+    :global(:focus-visible) {
+      outline: 2px solid var(--primary-100, #fffefd);
+    }
     .link {
       &[target='_blank'] {
         &::after {
