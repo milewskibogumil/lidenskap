@@ -7,6 +7,7 @@ import Hero, { Hero_Query, type HeroProps } from '@/components/Projects/Project/
 import Gallery, { Gallery_Query, type Props as GalleryProps } from '@/components/Projects/Project/Gallery.astro'
 import Summary, { Summary_Query, type Props as SummaryProps } from '@/components/Projects/Project/Summary.astro'
 import Overview, { Overview_Query, type Props as OverviewProps } from '@/components/Projects/Project/Overview.astro'
+import Components, { Components_Query, type ComponentsProps } from '@/components/Components.astro'
 
 export const slugPrefix = '/realizacje/'
 
@@ -29,6 +30,7 @@ const page = await sanityFetch<{
   summary: SummaryProps
   overview: OverviewProps
   gallery: GalleryProps
+  components: ComponentsProps
 }>({
   query: `
     *[_type == 'Project_Collection' && slug.current == $slug][0] {
@@ -37,6 +39,7 @@ const page = await sanityFetch<{
       ${Summary_Query}
       ${Overview_Query}
       ${Gallery_Query}
+      ${Components_Query}
     }
   `,
   params: { slug: `${slugPrefix}${slug}` },
@@ -57,4 +60,5 @@ const metadata = await metadataFetch('Project_Collection', `${slugPrefix}${slug}
   <Summary {...page.summary} />
   <Overview {...page.overview} />
   <Gallery {...page.gallery} />
+  <Components data={page.components} hasPreviousSections={true} />
 </Layout>
