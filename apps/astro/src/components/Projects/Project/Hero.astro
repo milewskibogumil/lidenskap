@@ -24,7 +24,7 @@ const { img, beforeImg, name, description } = Astro.props as HeroProps
 <section class="Hero">
   <header>
     <h1 class="h1">{name}</h1>
-    {description && <PortableText value={description} />}
+    {description && <PortableText value={description} class="description" />}
   </header>
   <div class="img-compare-container">
     <Image {...img} sizes="(max-width: 66rem) 100vw, 50vw" priority={true} class="img-after" />
@@ -62,8 +62,8 @@ const { img, beforeImg, name, description } = Astro.props as HeroProps
       background-color: var(--primary-300, #f4efe8);
       padding: clamp(1rem, calc(2vw / 0.48), 3rem);
       max-width: 34rem;
-      h1 {
-        margin-bottom: clamp(1rem, calc(1.5vw / 0.48), 1.5rem);
+      .description {
+        margin-top: clamp(1rem, calc(1.5vw / 0.48), 1.5rem);
       }
     }
     .img-compare-container {

@@ -17,22 +17,24 @@ export type Props = {
 const { heading, images } = Astro.props
 ---
 
-<section class="Gallery">
-  <header>
-    <PortableText value={heading} heading="h2" />
-  </header>
-  {
-    images.map((image, index) => (
-      <a data-fslightbox="gallery" href={`#gallery-${index}`}>
-        <Image {...image} sizes="(max-width: 56rem) 50vw, (max-width: 74rem) 33vw, 25vw" />
-      </a>
-    ))
-  }
-</section>
+{
+  heading && images?.length > 0 && (
+    <section class="Gallery">
+      <header>
+        <PortableText value={heading} heading="h2" />
+      </header>
+      {images.map((image, index) => (
+        <a data-fslightbox="gallery" href={`#gallery-${index}`}>
+          <Image {...image} sizes="(max-width: 56rem) 50vw, (max-width: 74rem) 33vw, 25vw" />
+        </a>
+      ))}
+    </section>
+    <div class="hidden-gallery">
+      {images.map((image, index) => <Image {...image} sizes="100vw" id={`gallery-${index}`} />)}
+    </div>
+  )
+}
 
-<div class="hidden-gallery">
-  {images.map((image, index) => <Image {...image} sizes="100vw" id={`gallery-${index}`} />)}
-</div>
 
 <style lang="scss">
   .Gallery {

@@ -16,10 +16,14 @@ export type Props = {
 const { heading, paragraph } = Astro.props
 ---
 
-<section class="Summary">
-  <PortableText value={heading} heading="h2" />
-  <PortableText value={paragraph} />
-</section>
+{
+  heading && paragraph && (
+    <section class="Summary">
+      <PortableText value={heading} heading="h2" />
+      <PortableText value={paragraph} />
+    </section>
+  )
+}
 
 <style lang="scss">
   .Summary {
