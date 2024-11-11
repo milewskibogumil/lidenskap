@@ -46,6 +46,7 @@ const page = await sanityFetch<{
   `,
   params: { slug: slug },
 })
+
 if (!page) return Astro.rewrite('/404')
 
 const metadata = await metadataFetch('Project_Collection', slug)

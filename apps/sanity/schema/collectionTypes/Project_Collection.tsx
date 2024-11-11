@@ -62,7 +62,11 @@ export default defineType({
       options: {
         list: [
           'Warszawa',
-          'Poznań'
+          'Poznań',
+          'Plaszew',
+          'Wrocław',
+          'Trzebieradz',
+          'Broniszewice',
         ],
         direction: "horizontal",
         layout: 'radio',
