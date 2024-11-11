@@ -1,6 +1,7 @@
 ---
 import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
 import Image, { ImageDataQuery, type ImageDataProps } from '@/src/components/ui/Image'
+import CountUp from '@/components/ui/CountUp.astro'
 
 export const MetricsSection_Query = `
   _type == "MetricsSection" => {
@@ -49,10 +50,10 @@ const { index, heading, paragraph, metrics, images } = Astro.props
       {
         metrics.map(({ value, label, icon }) => (
           <li>
-            <p class="value">
-              <strong>{value}</strong>
+            <div class="wrapper">
+              <CountUp class="value">{value}</CountUp>
               <Image {...icon} sizes="28px" />
-            </p>
+            </div>
             <p class="label">{label}</p>
           </li>
         ))
@@ -109,13 +110,13 @@ const { index, heading, paragraph, metrics, images } = Astro.props
       max-width: calc(928rem / 16);
       grid-template-columns: 1fr 1fr;
     }
-    .value {
+    .wrapper {
       font-size: clamp(1.5rem, calc(2vw / 0.48), 2rem);
       display: grid;
       grid-template-columns: auto 28px;
       gap: 1rem;
       font-variant-numeric: lining-nums tabular-nums;
-      strong {
+      .value {
         font-weight: 400;
       }
       margin-bottom: 0.5rem;
