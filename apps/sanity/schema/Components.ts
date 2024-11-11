@@ -16,6 +16,7 @@ import PeopleShowcase from "./components/PeopleShowcase";
 import ImagesMarquee from "./components/ImagesMarquee";
 import TextBlockCtaAndImage from "./components/TextBlockCtaAndImage";
 import ContactForm from "./components/ContactForm";
+import FeaturedProjects from "./components/FeaturedProjects";
 
 export default defineType({
   name: 'components',
@@ -39,6 +40,7 @@ export default defineType({
     ImagesMarquee,
     TextBlockCtaAndImage,
     ContactForm,
+    FeaturedProjects,
   ],
   options: {
     insertMenu: {

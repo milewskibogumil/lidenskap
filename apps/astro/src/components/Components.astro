@@ -23,6 +23,7 @@ import PeopleShowcase, { PeopleShowcase_Query } from '@/components/global/People
 import ImagesMarquee, { ImagesMarquee_Query } from '@/components/global/ImagesMarquee.astro'
 import TextBlockCtaAndImage, { TextBlockCtaAndImage_Query } from '@/components/global/TextBlockCtaAndImage.astro'
 import ContactForm, { ContactForm_Query } from '@/components/global/ContactForm'
+import FeaturedProjects, { FeaturedProjects_Query } from '@/components/global/FeaturedProjects.astro'
 
 const components = {
   SimpleCtaSection,
@@ -42,6 +43,7 @@ const components = {
   ImagesMarquee,
   TextBlockCtaAndImage,
   ContactForm,
+  FeaturedProjects,
 }
 
 type ComponentsMap = {
@@ -55,9 +57,10 @@ export type ComponentsProps = Array<ComponentsMap[keyof typeof components]>
 type Props = {
   data: ComponentsProps
   hasPreviousSections?: boolean
+  [x: string]: string | ComponentsProps | boolean | undefined
 }
 
-const { data, hasPreviousSections = false } = Astro.props
+const { data, hasPreviousSections = false, ...attrProps } = Astro.props
 
 export const Components_Query = /* groq */ `
   components[] {
@@ -79,6 +82,7 @@ export const Components_Query = /* groq */ `
     ${ImagesMarquee_Query}
     ${TextBlockCtaAndImage_Query}
     ${ContactForm_Query}
+    ${FeaturedProjects_Query}
   },
 `
 ---
@@ -87,6 +91,6 @@ export const Components_Query = /* groq */ `
   data?.map((item, i) => {
     const DynamicComponent = components[item._type] as any
     if (!DynamicComponent) return null
-    return <DynamicComponent {...item} index={hasPreviousSections ? i + 1 : i} />
+    return <DynamicComponent {...item} index={hasPreviousSections ? i + 1 : i} {...attrProps} />
   })
 }
