@@ -1,0 +1,88 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+
+type Props = {
+  asLabel?: boolean
+  inputProps?: HTMLAttributes<'input'>
+} & HTMLAttributes<'label'>
+
+const { inputProps, asLabel, ...props } = Astro.props
+
+const Element = asLabel ? 'label' : 'div'
+---
+
+<Element data-switch-element {...props}>
+  <input type="checkbox" {...inputProps} />
+  <div class="toggle-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" width="0.625rem" height="0.5rem" fill="none" viewBox="0 0 10 8">
+      <path stroke="#0B2348" stroke-linecap="round" stroke-linejoin="round" d="M9 1 3.034 7 1 4.955"></path>
+    </svg>
+  </div>
+</Element>
+
+<style lang="scss">
+  [data-switch-element] {
+    box-sizing: content-box;
+    cursor: pointer;
+    width: 3.375rem;
+    height: 2rem;
+    border-radius: 3.375rem;
+    border: 1px solid var(--secondary-500, #374776);
+    background-color: var(--background-100, #fffcf9);
+    $tap-increment: 0.375rem;
+    position: relative;
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: -$tap-increment;
+      bottom: -$tap-increment;
+    }
+    transition:
+      border-color 500ms var(--easing),
+      background-color 500ms var(--easing);
+    &:hover {
+      background-color: var(--primary-300, #f4efe8);
+    }
+    &:has(input:focus-visible) {
+      outline: 2px solid var(--primary-400, #f4cb5b);
+      outline-offset: 5px;
+    }
+    &:has(input:checked) {
+      border-color: var(--secondary-800, #0b2348);
+      background-color: var(--secondary-800, #0b2348);
+      .toggle-icon {
+        transform: translateX(1.375rem);
+        background-color: var(--primary-100, #fffefd);
+        svg {
+          stroke-dashoffset: 24;
+        }
+      }
+    }
+    &:has(input:disabled) {
+      opacity: 0.62;
+    }
+    input {
+      position: absolute;
+      opacity: 0;
+    }
+  }
+  .toggle-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    margin: 0.125rem;
+    border-radius: 50%;
+    background-color: var(--secondary-500, #374776);
+    display: grid;
+    place-items: center;
+    transition:
+      transform 500ms var(--easing),
+      background-color 500ms var(--easing);
+    svg {
+      stroke-dasharray: 12;
+      stroke-dashoffset: 12;
+      transition: stroke-dashoffset 500ms var(--easing);
+    }
+  }
+</style>
