@@ -32,7 +32,7 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
     <path d="M4.971 10.638v.073l1.974 1.973-1.457 1.456-3.332-3.335v-.261l3.332-3.335 1.457 1.456-1.974 1.973Z"></path>
   </svg>
 </a>
-<header class="header" aria-expanded="false">
+<header class="header" data-component="Header" aria-expanded="false">
   <div class="max-width">
     <nav data-lenis-prevent>
       <ul>
@@ -310,7 +310,7 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
 </style>
 
 <script>
-  const header = document.querySelector<HTMLDivElement>('.header')!
+  const header = document.querySelector<HTMLDivElement>('.header[data-component="Header"]')!
   const nav = header.querySelector<HTMLElement>('nav')!
   const navToggle = header.querySelector<HTMLButtonElement>('.nav-toggle')!
   const overlay = header.nextElementSibling!
