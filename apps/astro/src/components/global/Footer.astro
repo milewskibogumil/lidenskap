@@ -202,7 +202,7 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
     padding: clamp(calc(32rem / 16), calc(48vw / 7.68), calc(48rem / 16)) 0;
     padding-bottom: clamp(calc(64rem / 16), calc(82vw / 7.68), calc(82rem / 16));
     background-color: var(--secondary-800, #0b2348);
-    color: var(--primary-100, #fffefd);
+    color: var(--primary-300, #fffefd);
     :global(:focus-visible) {
       outline: 2px solid var(--primary-100, #fffefd);
     }
@@ -223,10 +223,21 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
       .cta {
         width: fit-content;
       }
+      a:not(.cta) {
+        width: fit-content;
+        display: block;
+        transition: opacity 500ms var(--easing);
+        &:hover {
+          opacity: 0.8;
+        }
+      }
       & > li {
         break-inside: avoid;
         & > ul {
-          margin-top: calc(24rem / 16);
+          margin-top: 1rem;
+          a {
+            font-size: 0.875rem;
+          }
         }
       }
       li + li {
@@ -242,10 +253,10 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
     .info {
       display: flex;
       flex-wrap: wrap;
-      gap: calc(24rem / 16) calc(64rem / 16);
+      gap: 1.5rem 4rem;
       align-items: center;
-      margin-top: clamp(calc(24rem / 16), calc(32vw / 7.68), calc(32rem / 16));
-      padding-top: clamp(calc(24rem / 16), calc(32vw / 7.68), calc(32rem / 16));
+      padding-top: clamp(2rem, calc(3vw / 0.48), 3rem);
+      margin-top: clamp(1.5rem, calc(2vw / 0.48), 2rem);
       border-top: 1px solid var(--secondary-700, #0c2d63);
       & > * {
         display: grid;
@@ -255,7 +266,7 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
     .socials {
       display: flex;
       align-items: center;
-      gap: calc(8rem / 16);
+      gap: 0.5rem;
       margin: -11.5px -12px;
       a {
         display: block;
@@ -263,7 +274,7 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
       }
     }
     .address {
-      font-size: calc(14rem / 16);
+      font-size: 0.875rem;
     }
     .address,
     .tel,
@@ -272,12 +283,12 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
     .nip {
       display: flex;
       align-items: center;
-      gap: calc(8rem / 16);
+      gap: 0.5rem;
     }
     .copyright {
-      font-size: calc(14rem / 16);
-      margin-top: clamp(calc(24rem / 16), calc(32vw / 7.68), calc(32rem / 16));
-      padding-top: clamp(calc(24rem / 16), calc(32vw / 7.68), calc(32rem / 16));
+      font-size: 0.875rem;
+      margin-top: clamp(2rem, calc(3vw / 0.48), 3rem);
+      padding-top: clamp(1.5rem, calc(2vw / 0.48), 2rem);
       border-top: 1px solid var(--secondary-700, #0c2d63);
       display: flex;
       flex-wrap: wrap;
