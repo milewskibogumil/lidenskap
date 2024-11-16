@@ -4,7 +4,9 @@ import 'lenis/dist/lenis.css'
 
 <script>
   import Lenis from 'lenis'
-  const lenis = new Lenis()
+  const lenis = new Lenis({
+    prevent: (node) => node.classList.contains('cookie-consent'),
+  })
   function raf(time: number) {
     lenis.raf(time)
     requestAnimationFrame(raf)
