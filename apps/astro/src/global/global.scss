@@ -219,16 +219,16 @@ h3,
   background-image: linear-gradient(currentColor, currentColor);
   background-position: 0% 100%;
   background-repeat: no-repeat;
-  background-size: 100% 1px;
+  background-size: 100% 0.03125rem;
   transition: background-size 500ms var(--easing);
   padding-bottom: 1px;
   margin-bottom: -1px;
   padding-bottom: 4px;
   &:hover {
-    background-size: 80% 1px;
+    background-size: 80% 0.03125rem;
   }
   &:active {
-    background-size: 100% 1px;
+    background-size: 100% 0.03125rem;
   }
   &[target='_blank'] {
     &::after {
