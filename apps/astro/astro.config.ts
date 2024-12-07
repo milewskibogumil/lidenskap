@@ -34,6 +34,6 @@ export default defineConfig({
     prefetchAll: true
   },
   redirects: redirects,
-  output: isPreviewDeployment ? "server" : 'static',
+  output: isPreviewDeployment ? "server" : "static",
   adapter: vercel({}),
 });

@@ -18,8 +18,13 @@
     "@sanity/client": "^6.24.1",
     "astro": "^5.0.3",
     "astro-portabletext": "^0.10.1",
+    "autoprefixer": "^10.4.20",
+    "cssnano": "^7.0.6",
     "fslightbox": "^3.4.2",
     "lenis": "^1.1.18",
+    "postcss-combine-media-query": "^1.0.1",
+    "postcss-import": "^16.1.0",
+    "postcss-mixins": "^11.0.3",
     "react-hook-form": "^7.54.0",
     "sharp-ico": "^0.1.5",
     "typescript": "^5.7.2"
