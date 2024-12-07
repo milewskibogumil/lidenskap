@@ -21,6 +21,13 @@ export default defineConfig({
   vite: {
     ssr: {
       noExternal: ['react-hook-form']
+    },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: "modern",
+        }
+      }
     }
   },
   prefetch: {
