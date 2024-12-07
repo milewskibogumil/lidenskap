@@ -29,7 +29,7 @@ const { index, heading, paragraph, images } = Astro.props
           .map((img, i) => (
             <Image
               {...img}
-              sizes="(max-width: 689px) 50vw, 25vw"
+              sizes="(max-width: 63rem) 40vw, 25vw"
               {...(i === 1 && { style: 'animation-delay: 200ms;' })}
               loading={index === 0 ? 'eager' : 'lazy'}
             />
@@ -40,7 +40,7 @@ const { index, heading, paragraph, images } = Astro.props
       images[2] && (
         <Image
           {...images[2]}
-          sizes="(max-width: 689px) 50vw, 25vw"
+          sizes="(max-width: 63rem) 60vw, 25vw"
           style="animation-delay: 100ms;"
           priority={index === 0}
         />
