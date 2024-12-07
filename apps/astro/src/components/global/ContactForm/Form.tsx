@@ -111,8 +111,6 @@ export default function Form({ email, tel, facebook, instagram }: { email: strin
           </>
         }}
         isSuccess={status.success}
-        email={email}
-        tel={tel}
       />
 
       <Input

@@ -1,16 +1,12 @@
-
-import Button from '@/src/components/ui/Button';
 import styles from './FormState.module.scss';
 
 type Props = {
   success: { heading: string, paragraph: React.ReactNode, additionalInfo?: React.ReactNode };
   error: { heading: string, paragraph: React.ReactNode, additionalInfo?: React.ReactNode };
   isSuccess: boolean | undefined;
-  email?: string;
-  tel?: string;
 }
 
-export default function FormState({ success, error, isSuccess, email, tel }: Props) {
+export default function FormState({ success, error, isSuccess }: Props) {
   return (
     isSuccess !== undefined && (
       <div
