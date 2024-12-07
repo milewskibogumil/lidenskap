@@ -1,6 +1,6 @@
 import { defineConfig } from "astro/config";
 import preact from '@astrojs/preact';
-import vercel from "@astrojs/vercel/serverless";
+import vercel from "@astrojs/vercel";
 import sitemap from "@astrojs/sitemap";
 import { DOMAIN } from "./src/global/constants";
 import { isPreviewDeployment } from "./src/utils/is-preview-deployment";
@@ -34,6 +34,6 @@ export default defineConfig({
     prefetchAll: true
   },
   redirects: redirects,
-  output: isPreviewDeployment ? "server" : 'hybrid',
-  adapter: vercel(),
+  output: isPreviewDeployment ? "server" : 'static',
+  adapter: vercel({}),
 });
