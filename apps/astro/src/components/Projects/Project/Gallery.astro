@@ -24,7 +24,7 @@ const { heading, images } = Astro.props
         <PortableText value={heading} heading="h2" />
       </header>
       {images.map((image, index) => (
-        <a data-fslightbox="gallery" href={`#gallery-${index}`}>
+        <a data-fslightbox="gallery" href={`#gallery-${index}`} aria-label={`Przybliż ${index + 1} zdjęcie`}>
           <Image {...image} sizes="(max-width: 56rem) 50vw, (max-width: 74rem) 33vw, 25vw" />
         </a>
       ))}
