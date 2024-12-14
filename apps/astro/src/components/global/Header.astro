@@ -326,4 +326,10 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
     header.setAttribute('aria-expanded', 'false')
     nav.style.height = '0'
   })
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      header.setAttribute('aria-expanded', 'false')
+      nav.style.height = '0'
+    }
+  })
 </script>
