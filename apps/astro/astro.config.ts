@@ -20,7 +20,7 @@ export default defineConfig({
   },
   vite: {
     ssr: {
-      noExternal: ['react-hook-form']
+      noExternal: ['react-hook-form', 'fslightbox']
     },
     css: {
       preprocessorOptions: {
