@@ -67,6 +67,7 @@ export default defineType({
           'Wrocław',
           'Trzebieradz',
           'Broniszewice',
+          'Kalisz'
         ],
         direction: "horizontal",
         layout: 'radio',

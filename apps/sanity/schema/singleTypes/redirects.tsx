@@ -12,7 +12,6 @@ type RedirectTypes = {
 const SlugValidation = (Rule: SlugRule) => Rule.custom((value) => {
   if (!value || !value.current) return "The value can't be blank";
   if (!value.current.startsWith("/")) return "The path must be a relative path (starts with /)";
-  if (value.current !== '/' && value.current.endsWith('/')) return 'Source paths must not end with a trailing slash (/)';
   return true;
 });
 
@@ -44,7 +43,7 @@ const ProcessJsonButton = (props: { value: any; renderDefault: any; }) => {
       toast.push({
         status: 'error',
         title: 'Error',
-        description: 'Failed to process and update redirects'
+        description: 'Failed to process and update redirects. Check if there are any changes in the JSON.'
       });
     } finally {
       setIsLoading(false);
@@ -95,9 +94,8 @@ const ProcessJsonButton = (props: { value: any; renderDefault: any; }) => {
             </Stack>
           </Box>
         </Dialog>
-      )
-      }
-    </Stack >
+      )}
+    </Stack>
   );
 };
 
@@ -221,8 +219,6 @@ export default defineType({
               return 'Each redirect must have a "source" property with a string value';
             if (!redirect.source.startsWith('/'))
               return 'Source paths must start with a forward slash (/)';
-            if (redirect.source !== '/' && redirect.source.endsWith('/'))
-              return 'Source paths must not end with a trailing slash (/)';
             if (!redirect.destination || typeof redirect.destination !== 'string')
               return 'Each redirect must have a "destination" property with a string value';
             if (!redirect.destination.startsWith('/'))
