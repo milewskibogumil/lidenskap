@@ -71,6 +71,9 @@ const { img, beforeImg, name, description } = Astro.props as HeroProps
       position: relative;
       width: 100%;
       width: fit-content;
+      img {
+        aspect-ratio: 1/1.08;
+      }
       &:has(.img-before) {
         user-select: none;
         cursor: ew-resize;
