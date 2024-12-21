@@ -5,7 +5,7 @@ import sanityFetch from '@/utils/sanity.fetch'
 import Breadcrumbs from '@/components/ui/Breadcrumbs.astro'
 import PortableText, { PortableTextQuery, type PortableTextValue } from '@/components/ui/portable-text'
 
-const metadata = await metadataFetch('PrivacyPolicy_Page')
+const metadata = await metadataFetch('/polityka-prywatnosci')
 
 const data = await sanityFetch<{
   name: string

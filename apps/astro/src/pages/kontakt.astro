@@ -5,7 +5,7 @@ import sanityFetch from '@/utils/sanity.fetch'
 import Breadcrumbs from '@/components/ui/Breadcrumbs.astro'
 import Components, { Components_Query, type ComponentsProps } from '@/components/Components.astro'
 
-const metadata = await metadataFetch('Contact_Page')
+const metadata = await metadataFetch('/kontakt')
 
 const data = await sanityFetch<{ name: string; slug: string; components: ComponentsProps }>({
   query: `
