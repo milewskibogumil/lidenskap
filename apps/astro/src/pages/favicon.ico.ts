@@ -3,7 +3,7 @@ export const prerender = true;
 import type { APIRoute } from "astro";
 import sharp from "sharp";
 import ico from "sharp-ico";
-import favicon from "@/src/assets/favicon.svg?raw";
+import favicon from "@/assets/favicon.svg?raw";
 
 export const GET: APIRoute = async () => {
   const processedFavicon = await sharp(Buffer.from(favicon))
