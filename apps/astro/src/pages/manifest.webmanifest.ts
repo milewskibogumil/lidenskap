@@ -5,7 +5,7 @@ import { getImage } from "astro:assets";
 import icon from "@/assets/icon.png";
 import { BACKGROUND_COLOR, DEFAULT_DESCRIPTION, DEFAULT_TITLE, THEME_COLOR } from "@/global/constants";
 
-const sizes = [192, 512];
+const sizes = [144, 192, 512];
 
 export const GET: APIRoute = async () => {
   const icons = await Promise.all(
