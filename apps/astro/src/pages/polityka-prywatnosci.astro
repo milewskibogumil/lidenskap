@@ -1,9 +1,9 @@
 ---
-import Layout from '@/src/layouts/Layout.astro'
-import metadataFetch from '@/utils/metadata.fetch'
-import sanityFetch from '@/utils/sanity.fetch'
-import Breadcrumbs from '@/components/ui/Breadcrumbs.astro'
-import PortableText, { PortableTextQuery, type PortableTextValue } from '@/src/components/ui/PortableText'
+import Layout from '@layouts/Layout.astro'
+import metadataFetch from '@utils/metadata.fetch'
+import sanityFetch from '@utils/sanity.fetch'
+import Breadcrumbs from '@components/ui/Breadcrumbs.astro'
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@components/ui/PortableText'
 
 const metadata = await metadataFetch('/polityka-prywatnosci')
 

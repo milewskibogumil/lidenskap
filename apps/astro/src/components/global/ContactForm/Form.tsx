@@ -1,13 +1,13 @@
 import { useState } from 'preact/hooks';
 import { useForm, type FieldValues } from 'react-hook-form';
 import styles from './Form.module.scss';
-import Input from '@/components/ui/Input'
-import Checkbox from '@/components/ui/Checkbox'
-import Button from '@/components/ui/Button';
-import Loader from '@/components/ui/Loader';
-import FormState from '@/components/ui/FormState';
-import { REGEX } from '@/global/constants';
-import { sendContactEmail, type Props as sendContactEmailProps } from '@/src/pages/api/contact/sendContactEmail';
+import Input from '@components/ui/Input'
+import Checkbox from '@components/ui/Checkbox'
+import Button from '@components/ui/Button';
+import Loader from '@components/ui/Loader';
+import FormState from '@components/ui/FormState';
+import { REGEX } from '@global/constants';
+import { sendContactEmail, type Props as sendContactEmailProps } from '@pages/api/contact/sendContactEmail';
 
 export default function Form({ email, tel, facebook, instagram }: { email: string, tel: string, facebook: string, instagram: string }) {
   const [status, setStatus] = useState<{ sending: boolean, success: boolean | undefined }>({ sending: false, success: undefined });

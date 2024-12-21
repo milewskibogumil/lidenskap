@@ -1,9 +1,9 @@
 ---
-import sanityFetch from '@/src/utils/sanity.fetch'
+import sanityFetch from '@utils/sanity.fetch'
 import Form from './Form.tsx'
-import PortableText, { PortableTextQuery, type PortableTextValue } from '@/src/components/ui/PortableText/index.ts'
-import Image, { ImageDataQuery, type ImageDataProps } from '@/src/components/ui/Image'
-import CopyToClipboard from '@/components/ui/CopyToClipboard.astro'
+import PortableText, { PortableTextQuery, type PortableTextValue } from '@components/ui/PortableText/index.ts'
+import Image, { ImageDataQuery, type ImageDataProps } from '@components/ui/Image'
+import CopyToClipboard from '@components/ui/CopyToClipboard.astro'
 
 export const ContactForm_Query = `
   _type == "ContactForm" => {

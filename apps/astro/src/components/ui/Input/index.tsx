@@ -1,6 +1,6 @@
 import type { FieldErrors } from 'react-hook-form'
 import styles from './Input.module.scss'
-import Error from '@/src/components/ui/Error'
+import Error from '@components/ui/Error'
 import Textarea from './Textarea'
 
 type Props = {

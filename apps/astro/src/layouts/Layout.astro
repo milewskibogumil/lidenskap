@@ -1,12 +1,12 @@
 ---
-import '@/global/global.scss'
-import { LOCALE } from '@/global/constants'
+import '@global/global.scss'
+import { LOCALE } from '@global/constants'
 import Head, { type HeadProps } from './Head.astro'
-import sanityFetch from '@/utils/sanity.fetch'
-import { ImageDataQuery, type ImageDataProps } from '@/components/ui/Image'
-import CookieConsent from '@/components/global/CookieConsent.astro'
-import Header from '@/components/global/Header.astro'
-import Footer from '@/components/global/Footer.astro'
+import sanityFetch from '@utils/sanity.fetch'
+import { ImageDataQuery, type ImageDataProps } from '@components/ui/Image'
+import CookieConsent from '@components/global/CookieConsent.astro'
+import Header from '@components/global/Header.astro'
+import Footer from '@components/global/Footer.astro'
 import SmoothScroll from './smooth-scroll.astro'
 
 type Props = HeadProps

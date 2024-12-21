@@ -2,8 +2,8 @@ export const prerender = true
 
 import type { APIRoute } from "astro";
 import { getImage } from "astro:assets";
-import icon from "@/assets/icon.png";
-import { BACKGROUND_COLOR, DEFAULT_DESCRIPTION, DEFAULT_TITLE, THEME_COLOR } from "@/global/constants";
+import icon from "@assets/icon.png";
+import { BACKGROUND_COLOR, DEFAULT_DESCRIPTION, DEFAULT_TITLE, THEME_COLOR } from "@global/constants";
 
 const sizes = [144, 192, 512];
 

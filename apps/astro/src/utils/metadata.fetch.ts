@@ -1,5 +1,5 @@
-import sanityFetch from "@/utils/sanity.fetch";
-import { type HeadProps } from '@/src/layouts/Head.astro'
+import sanityFetch from "@utils/sanity.fetch";
+import { type HeadProps } from '@layouts/Head.astro'
 
 export default async function metadataFetch(slug: string): Promise<HeadProps> {
   const seo = await sanityFetch<HeadProps>({

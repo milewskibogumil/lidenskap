@@ -1,4 +1,4 @@
-import Error from '@/src/components/ui/Error'
+import Error from '@components/ui/Error'
 import styles from './Checkbox.module.scss'
 import type { FieldErrors } from 'react-hook-form';
 
