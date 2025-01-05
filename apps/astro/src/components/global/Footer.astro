@@ -187,7 +187,6 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
     <div class="copyright">
       <p>Wykonane przez <a href="https://milewski.me" class="link">milewski.me</a></p>
       <div>
-        <button class="set-cookie-preferences link">Zarządzaj plikami cookies</button>
         <a href="/polityka-prywatnosci" class="link">Polityka prywatności</a>
       </div>
     </div>
@@ -310,17 +309,3 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
     }
   }
 </style>
-
-<script>
-  const footer = document.querySelector('footer[data-component="Footer"]')!
-  const setCookiePreferences = footer.querySelector('.set-cookie-preferences')!
-
-  setCookiePreferences.addEventListener('click', () => {
-    document.cookie.split(';').forEach((cookie) => {
-      const eqPos = cookie.indexOf('=')
-      const name = eqPos > -1 ? cookie.substring(0, eqPos).trim() : cookie.trim()
-      document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`
-    })
-    window.location.reload()
-  })
-</script>
