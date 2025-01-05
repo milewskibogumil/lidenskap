@@ -50,6 +50,9 @@ export default defineField({
               type: 'image',
               title: 'Ikona',
               validation: Rule => Rule.required(),
+              options: {
+                accept: '.svg',
+              },
             }),
           ],
           preview: {
