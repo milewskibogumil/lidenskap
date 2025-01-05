@@ -36,7 +36,7 @@ export const POST: APIRoute = async ({ request }) => {
       },
       body: JSON.stringify({
         from: 'Formularz kontaktowy | Lidenskap <formularz@send.lidenskap.pl>',
-        to: 'biuro@lidenskap.pl',
+        to: 'kontakt@lidenskap.pl',
         reply_to: email,
         subject: `Wiadomość z formularza kontaktowego | Lidenskap`,
         html: htmlTemplate,
