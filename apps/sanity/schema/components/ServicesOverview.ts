@@ -73,6 +73,9 @@ export default defineField({
                         const isIcon = (context.parent as { isIcon: boolean }).isIcon;
                         return value || !isIcon ? true : 'To pole jest wymagane';
                       }),
+                      options: {
+                        accept: '.svg',
+                      },
                     }),
                     defineField({
                       name: 'name',

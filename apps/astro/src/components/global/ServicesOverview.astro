@@ -55,16 +55,17 @@ const { index, heading, paragraph, items, ctaDescription, cta } = Astro.props
             <ul class="elements">
               {services?.map(({ isIcon, img, icon, name }) => (
                 <li class="item">
-                  <div class="img">
-                    {isIcon ? (
+                  {isIcon ? (
+                    <div class="icon-wrapper">
                       <Image {...icon} sizes="28px" />
-                    ) : (
-                      <Image
-                        {...img}
-                        sizes="(max-width: calc(749rem / 16)) 50vw, (max-width: calc(1199rem / 16)) 33vw, 25vw"
-                      />
-                    )}
-                  </div>
+                    </div>
+                  ) : (
+                    <Image
+                      {...img}
+                      sizes="(max-width: calc(749rem / 16)) 50vw, (max-width: calc(1199rem / 16)) 33vw, 25vw"
+                      class="img"
+                    />
+                  )}
                   <PortableText value={name} class="name" />
                 </li>
               ))}
@@ -114,16 +115,27 @@ const { index, heading, paragraph, items, ctaDescription, cta } = Astro.props
       }
       @media (max-width: calc(749rem / 16)) {
         grid-template-columns: 1fr 1fr;
+        .item {
+          .icon-wrapper {
+            aspect-ratio: 100/34;
+          }
+          .img {
+            aspect-ratio: 100/55;
+          }
+        }
       }
       .item {
+        .icon-wrapper,
         .img {
-          background-color: var(--primary-300, #f4efe8);
           aspect-ratio: 206/138;
+        }
+        .icon-wrapper {
+          background-color: var(--primary-300, #f4efe8);
           display: grid;
           place-items: center;
-          margin-bottom: calc(8rem / 16);
         }
         .name {
+          margin-top: calc(8rem / 16);
           font-size: calc(14rem / 16);
         }
       }
