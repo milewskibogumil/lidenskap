@@ -4,7 +4,6 @@ import { LOCALE } from '@global/constants'
 import Head, { type HeadProps } from './Head.astro'
 import sanityFetch from '@utils/sanity.fetch'
 import { ImageDataQuery, type ImageDataProps } from '@components/ui/Image'
-import CookieConsent from '@components/global/CookieConsent.astro'
 import Header from '@components/global/Header.astro'
 import Footer from '@components/global/Footer.astro'
 import SmoothScroll from './smooth-scroll.astro'
@@ -34,9 +33,9 @@ const feauturedProjects = await sanityFetch<feauturedProjectsProps[]>({
 <html lang={LOCALE}>
   <head>
     <Head {...props} />
+    <script is:inline src="https://analytics.ahrefs.com/analytics.js" data-key="aXa2hx1VgC/dy7pJ+MCH0A" async></script>
   </head>
   <body>
-    <CookieConsent />
     <Header feauturedProjects={feauturedProjects} />
     <main id="main">
       <slot />
