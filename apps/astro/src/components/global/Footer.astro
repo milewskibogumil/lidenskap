@@ -79,15 +79,6 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
     </svg>
     <ul class="links">
       <li>
-        <a href="/inwestycje">Inwestycje</a>
-      </li>
-      <li>
-        <a href="/o-lidenskap">O Lidenskap</a>
-      </li>
-      <li>
-        <Button theme="primary" href="/kontakt" className="cta">Skontaktuj się z nami</Button>
-      </li>
-      <li>
         <a href="/realizacje">Realizacje</a>
         <ul>
           {
@@ -98,6 +89,15 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
             ))
           }
         </ul>
+      </li>
+      <li>
+        <a href="/inwestycje">Inwestycje</a>
+      </li>
+      <li>
+        <a href="/o-lidenskap">O Lidenskap</a>
+      </li>
+      <li>
+        <Button theme="primary" href="/kontakt" className="cta">Skontaktuj się z nami</Button>
       </li>
     </ul>
     <div class="info">
@@ -211,7 +211,7 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
       }
     }
     .logo {
-      margin-bottom: clamp(calc(32rem / 16), calc(48vw / 7.68), calc(48rem / 16));
+      margin-bottom: clamp(3rem, calc(5vw / 0.48), 5rem);
     }
     .links {
       columns: 2;
@@ -225,7 +225,7 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
         display: block;
         transition: opacity 500ms var(--easing);
         &:hover {
-          opacity: 0.8;
+          opacity: 0.75;
         }
       }
       & > li {
@@ -240,17 +240,17 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
       li + li {
         margin-top: 1rem;
       }
-      @media (max-width: calc(499rem / 16)) {
+      @media (max-width: 38rem) {
         columns: 1;
         & > li:has(ul) {
-          margin-top: 2rem !important;
+          margin-bottom: 2rem !important;
         }
       }
     }
     .info {
       display: flex;
       flex-wrap: wrap;
-      gap: 1.5rem 4rem;
+      gap: 2rem 4rem;
       align-items: center;
       padding-top: clamp(2rem, calc(3vw / 0.48), 3rem);
       margin-top: clamp(1.5rem, calc(2vw / 0.48), 2rem);
@@ -259,15 +259,23 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
         display: grid;
         gap: 1rem;
       }
+      a:not(.link) {
+        transition: opacity 500ms var(--easing);
+        &:hover {
+          opacity: 0.75;
+        }
+      }
     }
     .socials {
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      margin: -11.5px -12px;
+      margin: 0 -12px;
       a {
-        display: block;
-        padding: 11.5px 12px;
+        display: grid;
+        place-items: center;
+        width: 2.75rem;
+        height: 2.75rem;
       }
     }
     .address {
@@ -287,6 +295,7 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
       margin-top: clamp(2rem, calc(3vw / 0.48), 3rem);
       padding-top: clamp(1.5rem, calc(2vw / 0.48), 2rem);
       border-top: 1px solid var(--secondary-700, #0c2d63);
+      color: var(--primary-500, #dfddda);
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
