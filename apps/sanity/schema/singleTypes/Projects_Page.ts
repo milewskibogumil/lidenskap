@@ -55,6 +55,30 @@ export default defineType({
           ],
           validation: Rule => Rule.required(),
         }),
+        defineField({
+          name: 'highlightedProjects',
+          type: 'array',
+          title: 'Projekty wyróżnione',
+          description: 'Projekty wyróżnione, to projekty, które będą wyświetlane na górze listy projektów.',
+          of: [{
+            type: 'reference',
+            to: [{ type: 'Project_Collection' }],
+            options: {
+              disableNew: true,
+              filter: ({ parent }) => {
+                const selectedIds = (parent as { _ref?: string }[])?.filter(item => item._ref).map(item => item._ref) || [];
+                if (selectedIds.length > 0) {
+                  return {
+                    filter: '!(_id in $selectedIds)',
+                    params: { selectedIds }
+                  }
+                }
+                return {}
+              }
+            },
+            validation: Rule => Rule.required(),
+          }],
+        }),
       ],
       validation: Rule => Rule.required(),
     }),

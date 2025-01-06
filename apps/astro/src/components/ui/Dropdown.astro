@@ -100,7 +100,7 @@ const { options } = Astro.props
     const dropdownList = dropdown.querySelector('.dropdown-list')!
 
     const urlParams = new URLSearchParams(window.location.search)
-    const initialSort = urlParams.get('sort') || 'newest'
+    const initialSort = urlParams.get('sort')
     const initialOption = dropdown.querySelector(`.dropdown-item[data-value="${initialSort}"]`)
 
     if (initialOption) {

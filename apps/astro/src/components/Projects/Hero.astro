@@ -13,6 +13,7 @@ export const Hero_Query = `
       ${PortableTextQuery('text')}
       ${ButtonDataQuery('cta')}
     },
+    "highlightedProjects": highlightedProjects[] -> ._id,
     "listing": *[_type == "Project_Collection"][] | order(endDate desc) {
       ${ImageDataQuery('img')}
       name,
@@ -21,6 +22,7 @@ export const Hero_Query = `
       "slug": slug.current,
       startDate,
       endDate,
+      _id
     }
   },
 `
@@ -32,6 +34,7 @@ export type HeroProps = {
     text: PortableTextValue
     cta: ButtonDataProps
   }
+  highlightedProjects: string[]
   listing: Array<{
     img: ImageDataProps
     name: string
@@ -40,15 +43,32 @@ export type HeroProps = {
     type: string
     startDate: string
     endDate?: string
+    _id: string
   }>
 }
 
-const { heading, paragraph, ctaBox, listing } = Astro.props as HeroProps
+const { heading, paragraph, ctaBox, listing, highlightedProjects } = Astro.props as HeroProps
+
 
 const cities = [...new Set(listing.map((item) => item.city))]
 const types = [...new Set(listing.map((item) => item.type))]
 
 const ITEMS_PER_PAGE = 11
+
+listing.sort((a, b) => {
+  const isHighlightedA = highlightedProjects.includes(a._id)
+  const isHighlightedB = highlightedProjects.includes(b._id)
+
+  if (isHighlightedA && isHighlightedB) {
+    return highlightedProjects.indexOf(a._id) - highlightedProjects.indexOf(b._id)
+  }
+  if (isHighlightedA) return -1
+  if (isHighlightedB) return 1
+
+  const dateA = a.endDate || '9999-12-31'
+  const dateB = b.endDate || '9999-12-31'
+  return dateB.localeCompare(dateA)
+})
 ---
 
 <section class="Hero">
@@ -59,6 +79,7 @@ const ITEMS_PER_PAGE = 11
   <div class="filters">
     <Dropdown
       options={[
+        { value: 'default', label: 'domyślne' },
         { value: 'newest', label: 'od najnowszych' },
         { value: 'oldest', label: 'od najstarszych' },
       ]}
@@ -102,11 +123,13 @@ const ITEMS_PER_PAGE = 11
   </div>
   <div class="listing">
     {
-      listing.map(({ img, name, slug, city, type, endDate }, index) => (
+      listing.map(({ img, name, slug, city, type, endDate, _id }, index) => (
         <article
           data-city={slugify(city)}
           data-type={slugify(type)}
           data-end-date={endDate || ''}
+          data-highlighted={highlightedProjects.includes(_id)}
+          data-highlighted-order={highlightedProjects.includes(_id) ? highlightedProjects.indexOf(_id) : -1}
           style={index >= ITEMS_PER_PAGE ? 'display: none;' : ''}>
           <a href={slug} class="listing-link">
             <div class="img">
@@ -310,25 +333,37 @@ const ITEMS_PER_PAGE = 11
     const searchParams = new URLSearchParams(window.location.search)
     const currentCity = searchParams.get('city')
     const currentType = searchParams.get('type')
-    const currentSort = searchParams.get('sort') || 'newest'
+    const currentSort = searchParams.get('sort') || 'default'
 
     const articles = Array.from(document.querySelectorAll<HTMLDivElement>('.listing article'))
     const listing = document.querySelector<HTMLDivElement>('.listing')!
     const ctaBox = document.querySelector<HTMLDivElement>('.ctaBox')!
 
-    // First sort all articles
     const sortedArticles = articles.sort((a, b) => {
+      if (currentSort === 'default') {
+        const isHighlightedA = a.getAttribute('data-highlighted') === 'true'
+        const isHighlightedB = b.getAttribute('data-highlighted') === 'true'
+
+        if (isHighlightedA && isHighlightedB) {
+          return Number(a.getAttribute('data-highlighted-order')) - Number(b.getAttribute('data-highlighted-order'))
+        }
+        if (isHighlightedA) return -1
+        if (isHighlightedB) return 1
+
+        const dateA = a.getAttribute('data-end-date') || '9999-12-31'
+        const dateB = b.getAttribute('data-end-date') || '9999-12-31'
+        return dateB.localeCompare(dateA)
+      }
+
       const dateA = a.getAttribute('data-end-date') || '9999-12-31'
       const dateB = b.getAttribute('data-end-date') || '9999-12-31'
       return currentSort === 'newest' ? dateB.localeCompare(dateA) : dateA.localeCompare(dateB)
     })
 
-    // Reorder DOM elements
     listing.innerHTML = ''
     sortedArticles.forEach((article) => listing.appendChild(article))
     listing.appendChild(ctaBox)
 
-    // Then filter matching articles from sorted list
     const matchingArticles = sortedArticles.filter((article) => {
       const articleCity = article.getAttribute('data-city')
       const articleType = article.getAttribute('data-type')
@@ -339,7 +374,6 @@ const ITEMS_PER_PAGE = 11
       return cityMatch && typeMatch
     })
 
-    // Update visibility based on filters and pagination
     sortedArticles.forEach((article) => {
       const articleCity = article.getAttribute('data-city')
       const articleType = article.getAttribute('data-type')
@@ -357,18 +391,15 @@ const ITEMS_PER_PAGE = 11
       }
     })
 
-    // Update load more indicators
     const visibleCount = matchingArticles.filter((article) => article.style.display !== 'none').length
     const totalCount = matchingArticles.length
     updateLoadMoreIndicators(visibleCount, totalCount)
 
-    // Update counts in filter tags
     document.querySelectorAll('.filter-tag').forEach((link) => {
       const filterType = link.getAttribute('data-filter')
       const filterValue = link.getAttribute('data-value')
 
       if (filterValue === '') {
-        // Update "All" count based on other active filter
         const visibleCount = articles.filter((article) => {
           if (filterType === 'city') {
             return !currentType || article.getAttribute('data-type') === currentType
@@ -378,14 +409,12 @@ const ITEMS_PER_PAGE = 11
         }).length
         link.querySelector('.count')!.textContent = `(${visibleCount})`
       } else {
-        // Update individual filter counts
         const count = articles.filter((article) => {
           const matches =
             filterType === 'city'
               ? article.getAttribute('data-city') === filterValue
               : article.getAttribute('data-type') === filterValue
 
-          // Apply other active filter
           if (filterType === 'city' && currentType) {
             return matches && article.getAttribute('data-type') === currentType
           } else if (filterType === 'type' && currentCity) {
@@ -396,7 +425,6 @@ const ITEMS_PER_PAGE = 11
         link.querySelector('.count')!.textContent = `(${count})`
       }
 
-      // Rest of the existing active state logic
       const value = link.getAttribute('data-value')
       const type = link.getAttribute('data-filter')
       const isAll = value === ''
@@ -420,7 +448,6 @@ const ITEMS_PER_PAGE = 11
     })
   }
 
-  // Update load more button handler
   document.querySelector<HTMLButtonElement>('.load-more-btn')?.addEventListener('click', () => {
     const articles = Array.from(document.querySelectorAll<HTMLDivElement>('.listing article'))
     const searchParams = new URLSearchParams(window.location.search)
@@ -445,7 +472,6 @@ const ITEMS_PER_PAGE = 11
       }
     })
 
-    // Update indicators after loading more
     const currentlyVisible = matchingArticles.filter((article) => article.style.display !== 'none').length
     updateLoadMoreIndicators(currentlyVisible, matchingArticles.length)
   })
