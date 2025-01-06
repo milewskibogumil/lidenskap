@@ -32,12 +32,6 @@ export default defineConfig({
     prefetchAll: true
   },
   redirects: redirects,
-  output: "server",
-  adapter: vercel({
-    ...(!isPreviewDeployment && {
-      isr: {
-        bypassToken: process.env.VERCEL_DEPLOYMENT_ID,
-      }
-    })
-  }),
+  output: isPreviewDeployment ? "server" : "static",
+  adapter: vercel({}),
 });
