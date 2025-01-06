@@ -69,7 +69,7 @@ export default defineField({
           },
         },
       ],
-      validation: Rule => Rule.required().min(1).max(4),
+      validation: Rule => Rule.required().min(1).max(5),
     }),
     defineField({
       name: 'images',
