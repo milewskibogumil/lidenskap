@@ -47,7 +47,7 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
                 <li class="dropdown-item-img">
                   <a href={slug}>
                     <Image {...img} sizes="36px" loading="eager" />
-                    {name}
+                    <span>{name}</span>
                   </a>
                 </li>
               ))
@@ -161,8 +161,15 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
               display: flex;
               align-items: center;
               gap: calc(8rem / 16);
+              span {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 21rem;
+              }
             }
             img {
+              flex-shrink: 0;
               width: 36px;
               height: 36px;
               object-fit: cover;
