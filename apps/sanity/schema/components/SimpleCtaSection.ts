@@ -33,11 +33,11 @@ export default defineField({
   ],
   preview: {
     select: {
-      name: 'name',
+      subtitle: 'name',
     },
-    prepare: ({ name }) => ({
+    prepare: ({ subtitle }) => ({
       title: title,
-      subtitle: toPlainText(name),
+      subtitle: toPlainText(subtitle),
       ...sectionPreview({ name, icon: icon() }),
     }),
   },

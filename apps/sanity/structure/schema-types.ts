@@ -6,6 +6,7 @@ import Contact_Page from '../schema/singleTypes/Contact_Page';
 import Projects_Page from '../schema/singleTypes/Projects_Page';
 import Investments_Page from '../schema/singleTypes/Investments_Page';
 import About_Page from '../schema/singleTypes/About_Page';
+import Service_Page from '../schema/singleTypes/Service_Page';
 import PrivacyPolicy_Page from '../schema/singleTypes/PrivacyPolicy_Page';
 import NotFound_Page from '../schema/singleTypes/NotFound_Page';
 
@@ -16,6 +17,7 @@ const singleTypes = [
   Projects_Page,
   Investments_Page,
   About_Page,
+  Service_Page,
   Contact_Page,
   PrivacyPolicy_Page,
   NotFound_Page,

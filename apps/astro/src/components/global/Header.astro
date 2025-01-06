@@ -36,6 +36,9 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
   <div class="max-width">
     <nav data-lenis-prevent>
       <ul>
+        <li>
+          <a href="/oferta">Oferta</a>
+        </li>
         <li class="dropdown-item">
           <span>Realizacje</span>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" class="dropdown-icon">
@@ -238,6 +241,7 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
           align-items: center;
           height: unset;
           &.dropdown-item {
+            order: -1;
             & > span {
               font-size: calc(14rem / 16);
             }
