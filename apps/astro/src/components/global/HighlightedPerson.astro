@@ -71,8 +71,8 @@ const { index, heading, paragraph, email, tel, name, position, description, desc
     }
   </header>
   <div class="description-wrapper">
-    <div class="name">
-      <p>{name}</p>
+    <div class="name-wrapper">
+      <p class="name">{name}</p>
       {position && <p class="position">{position}</p>}
     </div>
     <PortableText value={description} class="description" />
@@ -136,8 +136,11 @@ const { index, heading, paragraph, email, tel, name, position, description, desc
       padding: clamp(1.5rem, calc(2vw / 0.48), 2rem);
       display: flex;
       flex-direction: column;
-      .name {
+      .name-wrapper {
         margin-bottom: 4rem;
+        .name {
+          font-size: 1.25rem;
+        }
       }
       .position {
         font-size: 0.875rem;

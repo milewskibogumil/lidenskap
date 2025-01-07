@@ -41,38 +41,40 @@ const { index, heading, list } = Astro.props
     {
       list?.map(({ img, name, position, description, email, tel }) => (
         <li class="item">
-          <Image {...img} sizes="(max-width: 37rem) 100vw, (max-width: 75rem) 50vw, 30vw" />
-          <p class="name">{name}</p>
-          {position && <PortableText value={position} class="position" />}
-          {description && <PortableText value={description} class="description" />}
-          {email && (
-            <p class="email">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" fill="none">
-                <path
-                  stroke="#374776"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M3.438 5.604 10 9.823l7.031-4.219M4.375 15.754A1.875 1.875 0 0 1 2.5 13.879V6.542c0-1.036.84-1.875 1.875-1.875h11.25c1.035 0 1.875.84 1.875 1.875v7.337c0 1.035-.84 1.875-1.875 1.875H4.375Z"
-                />
-              </svg>
-              <a href={`mailto:${email}`}>{email}</a>
-              <CopyToClipboard data={email} />
-            </p>
-          )}
-          {tel && (
-            <p class="tel">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" fill="none">
-                <path
-                  stroke="#374776"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M17.22 16.142s-.966.949-1.203 1.227c-.385.411-.84.605-1.435.605-.057 0-.118 0-.176-.003-1.133-.073-2.186-.515-2.976-.892a16.948 16.948 0 0 1-5.633-4.402C4.495 11.11 3.625 9.664 3.049 8.11c-.355-.948-.485-1.687-.428-2.384.039-.446.21-.815.527-1.131L4.45 3.296c.187-.175.386-.27.58-.27.241 0 .436.144.558.266l.011.012c.233.217.454.441.687.681.118.122.24.244.363.37l1.042 1.04c.404.403.404.776 0 1.18-.111.11-.218.221-.329.328-.32.327-.068.076-.4.373-.008.008-.016.011-.02.02-.328.327-.267.647-.198.864l.012.034c.27.655.652 1.272 1.232 2.007l.004.004c1.053 1.295 2.164 2.304 3.389 3.077.156.1.317.18.47.255.137.069.267.134.377.202.015.008.03.02.046.027.13.065.252.095.378.095a.816.816 0 0 0 .58-.263l.748-.746c.13-.13.336-.286.576-.286.237 0 .432.149.55.278l.008.008 2.102 2.098c.393.389.004 1.192.004 1.192Z"
-                />
-              </svg>
-              <a href={`tel:${tel}`}>{tel}</a>
-              <CopyToClipboard data={tel} />
-            </p>
-          )}
+          <Image {...img} sizes="(max-width: 40rem) 100vw, (max-width: 53rem) 33vw, 30vw" />
+          <div class="info">
+            <p class="name">{name}</p>
+            {position && <PortableText value={position} class="position" />}
+            {description && <PortableText value={description} class="description" />}
+            {email && (
+              <p class="email">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" fill="none">
+                  <path
+                    stroke="#374776"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M3.438 5.604 10 9.823l7.031-4.219M4.375 15.754A1.875 1.875 0 0 1 2.5 13.879V6.542c0-1.036.84-1.875 1.875-1.875h11.25c1.035 0 1.875.84 1.875 1.875v7.337c0 1.035-.84 1.875-1.875 1.875H4.375Z"
+                  />
+                </svg>
+                <a href={`mailto:${email}`}>{email}</a>
+                <CopyToClipboard data={email} />
+              </p>
+            )}
+            {tel && (
+              <p class="tel">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" fill="none">
+                  <path
+                    stroke="#374776"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M17.22 16.142s-.966.949-1.203 1.227c-.385.411-.84.605-1.435.605-.057 0-.118 0-.176-.003-1.133-.073-2.186-.515-2.976-.892a16.948 16.948 0 0 1-5.633-4.402C4.495 11.11 3.625 9.664 3.049 8.11c-.355-.948-.485-1.687-.428-2.384.039-.446.21-.815.527-1.131L4.45 3.296c.187-.175.386-.27.58-.27.241 0 .436.144.558.266l.011.012c.233.217.454.441.687.681.118.122.24.244.363.37l1.042 1.04c.404.403.404.776 0 1.18-.111.11-.218.221-.329.328-.32.327-.068.076-.4.373-.008.008-.016.011-.02.02-.328.327-.267.647-.198.864l.012.034c.27.655.652 1.272 1.232 2.007l.004.004c1.053 1.295 2.164 2.304 3.389 3.077.156.1.317.18.47.255.137.069.267.134.377.202.015.008.03.02.046.027.13.065.252.095.378.095a.816.816 0 0 0 .58-.263l.748-.746c.13-.13.336-.286.576-.286.237 0 .432.149.55.278l.008.008 2.102 2.098c.393.389.004 1.192.004 1.192Z"
+                  />
+                </svg>
+                <a href={`tel:${tel}`}>{tel}</a>
+                <CopyToClipboard data={tel} />
+              </p>
+            )}
+          </div>
         </li>
       ))
     }
@@ -89,33 +91,41 @@ const { index, heading, list } = Astro.props
       grid-column: 5/2;
       display: grid;
       gap: 2rem 1rem;
-      grid-template-columns: 1fr 1fr 1fr;
-      .name {
-        font-size: 1rem;
-        margin-top: 0.75rem;
-        margin-bottom: 0.12rem;
-      }
-      .position {
-        font-size: 0.875rem;
-      }
-      .description {
-        border-top: 1px solid var(--secondary-200, #c0c7db);
-        margin-top: 0.75rem;
-        padding-top: 0.5rem;
-        font-size: 0.875rem;
-      }
-      .tel,
-      .email {
-        margin-top: 1rem;
-        font-size: 0.875rem;
-        display: flex;
-        flex-wrap: wrap;
+      grid-template-columns: 1fr;
+      .item {
+        display: grid;
         align-items: center;
-        a {
-          margin: 0 0.5rem 0 0.75rem;
-        }
-        svg {
-          flex-shrink: 0;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1rem;
+        .info {
+          grid-column: 2/4;
+          .name {
+            font-size: 1.25rem;
+            margin-bottom: 0.12rem;
+          }
+          .position {
+            font-size: 0.875rem;
+          }
+          .description {
+            border-top: 1px solid var(--secondary-200, #c0c7db);
+            margin-top: 0.75rem;
+            padding-top: 0.5rem;
+            font-size: 0.875rem;
+          }
+          .tel,
+          .email {
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            a {
+              margin: 0 0.5rem 0 0.75rem;
+            }
+            svg {
+              flex-shrink: 0;
+            }
+          }
         }
       }
     }
@@ -125,12 +135,29 @@ const { index, heading, list } = Astro.props
       margin: 0 auto;
       .list {
         grid-column: unset;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
+        .item {
+          align-items: flex-start;
+        }
       }
     }
-    @media (max-width: 37rem) {
+    @media (max-width: 53rem) {
       .list {
-        grid-template-columns: 1fr;
+        row-gap: 3rem;
+        .item {
+          grid-template-columns: 1fr 1.5fr;
+          .info {
+            grid-column: unset;
+          }
+        }
+      }
+    }
+    @media (max-width: 40rem) {
+      .list {
+        .item {
+          grid-template-columns: 1fr;
+          gap: 0.75rem;
+        }
       }
     }
   }
