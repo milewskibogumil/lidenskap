@@ -1,9 +1,17 @@
 ---
 import type { feauturedProjectsProps } from '@layouts/Layout.astro'
+import type { HeadProps } from '@layouts/Head.astro'
 import Button from '@components/ui/Button'
 import Image from '@components/ui/Image'
+import { LANGUAGES } from '@utils/languages'
 
-const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProjectsProps[] }
+type Props = {
+  feauturedProjects: feauturedProjectsProps[]
+  lang: string
+  alternates: HeadProps['alternates']
+}
+
+const { feauturedProjects, lang, alternates } = Astro.props
 ---
 
 <a href="#main" class="skip-link">Przejdź do treści</a>
@@ -46,11 +54,11 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
           </svg>
           <ul class="dropdown">
             {
-              feauturedProjects?.map(({ img, name, slug }) => (
+              feauturedProjects?.map(({ img, title, slug }) => (
                 <li class="dropdown-item-img">
                   <a href={slug}>
                     <Image {...img} sizes="36px" loading="eager" />
-                    <span>{name}</span>
+                    <span>{title}</span>
                   </a>
                 </li>
               ))
@@ -68,6 +76,53 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
         </li>
       </ul>
     </nav>
+    <div class="language">
+      <button
+        class="language-switcher"
+        aria-expanded="false"
+        aria-controls="language-dropdown"
+        aria-label={lang === 'pl' ? 'Zmień język' : 'Change language'}>
+        <svg
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+          class="globe">
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M3 12h5m-5 0a9 9 0 0 0 9 9m-9-9a9 9 0 0 1 9-9m-4 9h8m-8 0c0 4.97 1.79 9 4 9m-4-9c0-4.97 1.79-9 4-9m4 9h5m-5 0c0-4.97-1.79-9-4-9m4 9c0 4.97-1.79 9-4 9m9-9a9 9 0 0 0-9-9m9 9a9 9 0 0 1-9 9">
+          </path>
+        </svg>
+        <span class="current-lang">{lang === 'pl' ? 'Polski' : 'English'}</span>
+        <svg
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="12"
+          height="12"
+          fill="none"
+          viewBox="0 0 12 12"
+          class="chevron">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="m2 4 4 4 4-4"></path>
+        </svg>
+      </button>
+      <div id="language-dropdown" class="language-dropdown" hidden>
+        {
+          LANGUAGES.map((locale) => (
+            <a
+              class="language-option"
+              href={alternates?.find((alt) => alt.lang === locale)?.url || `/${locale}`}
+              aria-current={lang === locale ? 'true' : undefined}
+              lang={locale}>
+              {locale === 'pl' ? 'Polski (Polish)' : 'English (Angielski)'}
+            </a>
+          ))
+        }
+      </div>
+    </div>
     <Button theme="primary" linkType="internal" href="/kontakt" className="cta">Kontakt</Button>
     <button class="nav-toggle" aria-label="Otwórz menu"><div></div><div></div><div></div></button>
   </div>
@@ -75,7 +130,7 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
 <div class="overlay" role="button" aria-hidden="true" aria-label="Zamknij menu"></div>
 
 <style lang="scss">
-  $nav-max-breakpoint: 899px;
+  $nav-max-breakpoint: 59rem;
   $header-height: 3.75rem;
   .skip-link {
     border: 1px solid var(--primary-700, #ad6116);
@@ -123,7 +178,7 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
   nav {
     font-size: calc(14rem / 16);
     margin-left: auto;
-    margin-right: clamp(32px, calc(48vw / 7.68), 48px);
+    margin-right: clamp(1rem, calc(1.5vw / 0.48), 2rem);
     border: 1px solid var(--primary-300, #f4efe8);
     background: var(--primary-100, #fffefd);
     padding: 0 16px;
@@ -204,6 +259,94 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
             opacity: 0.62;
           }
         }
+      }
+    }
+  }
+  .language {
+    position: relative;
+    pointer-events: auto;
+    margin-right: clamp(1rem, calc(1.5vw / 0.48), 2rem);
+    border: 1px solid var(--primary-300, #f4efe8);
+    background: var(--primary-100, #fffefd);
+    font-size: 0.875rem;
+    .language-switcher {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: opacity 300ms var(--easing);
+      .globe {
+        transform-style: preserve-3d;
+        transition: none;
+        @keyframes rotate {
+          0% {
+            transform: rotateY(0deg);
+          }
+          100% {
+            transform: rotateY(360deg);
+          }
+        }
+      }
+      .chevron {
+        transition: transform 500ms var(--easing);
+      }
+      &[aria-expanded='true'] {
+        .chevron {
+          transform: rotateX(180deg);
+        }
+      }
+    }
+    &:hover {
+      .globe {
+        animation: rotate 800ms var(--easing) forwards;
+      }
+    }
+    .language-dropdown {
+      position: absolute;
+      top: calc(100% + 0.25rem);
+      right: 0;
+      min-width: 12rem;
+      background: var(--primary-100, #fffefd);
+      border: 1px solid var(--primary-300, #f4efe8);
+      z-index: 10;
+      transition: transform 500ms var(--easing);
+      &[hidden] {
+        display: block;
+        visibility: hidden;
+        transform: translateY(-0.25rem);
+        opacity: 0;
+        pointer-events: none;
+      }
+      .language-option {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 0.75rem 1rem 0.75rem 2rem;
+        text-decoration: none;
+        color: var(--secondary-800, #0b2348);
+        transition: background-color 300ms var(--easing);
+        &:hover {
+          background-color: var(--primary-200, #f9f7f4);
+        }
+        &[aria-current='true'] {
+          background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20stroke%3D%22%23000%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20d%3D%22m16.8%208.4-7.16%207.2-2.44-2.454%22%2F%3E%3C%2Fsvg%3E');
+          background-size: 1.5rem;
+          background-position: 0.5rem 0.8rem;
+          background-repeat: no-repeat;
+        }
+      }
+    }
+    @media (max-width: $nav-max-breakpoint) {
+      position: fixed;
+      margin-right: 0;
+      right: 0.5rem;
+      bottom: 0.5rem;
+      .language-dropdown {
+        top: unset;
+        bottom: calc(100% + 0.25rem);
       }
     }
   }
@@ -343,4 +486,47 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
       nav.style.height = '0'
     }
   })
+
+  const languageSwitcher = header.querySelector<HTMLButtonElement>('.language-switcher')!
+  const languageDropdown = header.querySelector<HTMLDivElement>('.language-dropdown')!
+  languageSwitcher.addEventListener('click', () => {
+    const isExpanded = languageSwitcher.getAttribute('aria-expanded') === 'true'
+    toggleDropdown(!isExpanded)
+  })
+  document.addEventListener('click', (e) => {
+    if (!languageSwitcher.contains(e.target as Node)) {
+      toggleDropdown(false)
+    }
+  })
+  document.addEventListener('keydown', (e) => {
+    const options = languageDropdown.querySelectorAll<HTMLAnchorElement>('.language-option')
+    const currentIndex = Array.from(options).findIndex((option) => option === document.activeElement)
+
+    if (e.key === 'Escape') {
+      toggleDropdown(false)
+      languageSwitcher.focus()
+    }
+    if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      if (currentIndex === options.length - 1) {
+        // Loop to first option
+        options[0].focus()
+      } else {
+        options[currentIndex + 1].focus()
+      }
+    }
+    if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      if (currentIndex === 0 || currentIndex === -1) {
+        // Loop to last option
+        options[options.length - 1].focus()
+      } else {
+        options[currentIndex - 1].focus()
+      }
+    }
+  })
+  function toggleDropdown(open: boolean) {
+    languageSwitcher.setAttribute('aria-expanded', open.toString())
+    languageDropdown.hidden = !open
+  }
 </script>
