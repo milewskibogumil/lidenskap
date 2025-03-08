@@ -1,5 +1,5 @@
 import { createClient, type QueryParams } from '@sanity/client'
-import { isPreviewDeployment } from './is-preview-deployment';
+import { isProductionDeployment } from './is-production-deployment';
 
 const SANITY_API_TOKEN = process.env.SANITY_API_TOKEN || import.meta.env.SANITY_API_TOKEN;
 
@@ -10,7 +10,7 @@ export const client = createClient({
   dataset: 'production',
   apiVersion: '2024-12-21',
   useCdn: false,
-  perspective: isPreviewDeployment ? 'drafts' : 'published',
+  perspective: isProductionDeployment ? 'published' : 'drafts',
   token: SANITY_API_TOKEN
 })
 

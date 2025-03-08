@@ -2,7 +2,7 @@ import { defineConfig } from "astro/config";
 import preact from '@astrojs/preact';
 import vercel from "@astrojs/vercel";
 import { DOMAIN } from "./src/global/constants";
-import { isPreviewDeployment } from "./src/utils/is-preview-deployment";
+import { isProductionDeployment } from "./src/utils/is-production-deployment";
 import redirects from "./redirects";
 
 export default defineConfig({
@@ -34,7 +34,7 @@ export default defineConfig({
   redirects: redirects,
   output: "server",
   adapter: vercel({
-    ...(isPreviewDeployment && {
+    ...(isProductionDeployment && {
       isr: {
         bypassToken: process.env.VERCEL_DEPLOYMENT_ID,
         exclude: ['/api/contact']
