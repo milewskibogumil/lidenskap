@@ -178,7 +178,7 @@ const { feauturedProjects, lang, alternates } = Astro.props
   nav {
     font-size: calc(14rem / 16);
     margin-left: auto;
-    margin-right: clamp(1rem, calc(1.5vw / 0.48), 2rem);
+    margin-right: 2rem;
     border: 1px solid var(--primary-300, #f4efe8);
     background: var(--primary-100, #fffefd);
     padding: 0 16px;
@@ -265,7 +265,7 @@ const { feauturedProjects, lang, alternates } = Astro.props
   .language {
     position: relative;
     pointer-events: auto;
-    margin-right: clamp(1rem, calc(1.5vw / 0.48), 2rem);
+    margin-right: 2rem;
     border: 1px solid var(--primary-300, #f4efe8);
     background: var(--primary-100, #fffefd);
     font-size: 0.875rem;
@@ -340,14 +340,7 @@ const { feauturedProjects, lang, alternates } = Astro.props
       }
     }
     @media (max-width: $nav-max-breakpoint) {
-      position: fixed;
-      margin-right: 0;
-      right: 0.5rem;
-      bottom: 0.5rem;
-      .language-dropdown {
-        top: unset;
-        bottom: calc(100% + 0.25rem);
-      }
+      margin-left: auto;
     }
   }
   @media (max-width: $nav-max-breakpoint) {
@@ -356,7 +349,16 @@ const { feauturedProjects, lang, alternates } = Astro.props
       background-color: var(--primary-100, #fffefd);
       padding-left: clamp(89px, calc(106vw / 7.68), 106px);
       .cta {
+        max-width: 13rem;
         margin: auto;
+        position: fixed;
+        right: 0.5rem;
+        left: 0.5rem;
+        bottom: 0.5rem;
+        transition: transform 500ms var(--easing);
+        &[data-visible='false'] {
+          transform: translateY(calc(100% + 0.5rem));
+        }
       }
     }
     nav {
@@ -468,6 +470,8 @@ const { feauturedProjects, lang, alternates } = Astro.props
   const nav = header.querySelector<HTMLElement>('nav')!
   const navToggle = header.querySelector<HTMLButtonElement>('.nav-toggle')!
   const overlay = header.nextElementSibling!
+  const cta = header.querySelector<HTMLAnchorElement>('.cta')!
+  const footer = document.querySelector('footer[data-component="Footer"]')!
 
   navToggle.addEventListener('click', () => {
     const isExpanded = header.getAttribute('aria-expanded') === 'true'
@@ -529,4 +533,11 @@ const { feauturedProjects, lang, alternates } = Astro.props
     languageSwitcher.setAttribute('aria-expanded', open.toString())
     languageDropdown.hidden = !open
   }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(({ isIntersecting }) => {
+      cta.setAttribute('data-visible', (!isIntersecting).toString())
+    })
+  })
+  observer.observe(footer)
 </script>
