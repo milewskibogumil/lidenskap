@@ -56,5 +56,9 @@ const ui = [
 
 export const schemaTypes = [...singleTypes, ...collectionTypes, ...components, ...ui];
 
+export const i18nTypes = [...singleTypes, ...collectionTypes]
+  .map(type => type.name)
+  .filter(name => !['redirects'].includes(name))
+
 export const singletonActions = new Set(["publish", "discardChanges", "restore"]);
 export const singletonTypes = new Set(singleTypes.map(type => type.name as string));

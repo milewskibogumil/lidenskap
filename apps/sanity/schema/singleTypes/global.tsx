@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity';
+import { LANGUAGES } from '../../structure/languages';
 
 const name = 'global';
 const title = 'Globalne ustawienia';
@@ -10,6 +11,12 @@ export default defineType({
   title: title,
   icon,
   fields: [
+    defineField({
+      name: 'language',
+      type: 'string',
+      readOnly: true,
+      hidden: true,
+    }),
     defineField({
       name: 'email',
       type: 'string',
@@ -162,9 +169,18 @@ export default defineType({
     }),
   ],
   preview: {
-    prepare: () => ({
-      title: title,
-    })
+    select: {
+      language: 'language',
+    },
+    prepare: ({ language }) => {
+      const languageObj = language ? LANGUAGES.find(lang => lang.id === language) : undefined;
+      const formattedTitle = languageObj
+        ? `${title} (${languageObj.title})`
+        : title;
+      return {
+        title: formattedTitle,
+      }
+    }
   }
 })
 
