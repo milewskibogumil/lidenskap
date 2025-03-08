@@ -82,9 +82,9 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
         <a href="/realizacje">Realizacje</a>
         <ul>
           {
-            feauturedProjects?.map(({ name, slug }) => (
+            feauturedProjects?.map(({ title, slug }) => (
               <li>
-                <a href={slug}>{name}</a>
+                <a href={slug}>{title}</a>
               </li>
             ))
           }

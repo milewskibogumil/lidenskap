@@ -5,7 +5,7 @@ import Button, { ButtonDataQuery, type ButtonDataProps } from '@components/ui/Bu
 
 export const ProjectCard_Query = `
  ${ImageDataQuery('img')}
-  name,
+  title,
   "slug": slug.current,
 `
 
@@ -32,7 +32,7 @@ export type Props = {
   isSelectedProjects: boolean
   projects: Array<{
     img: ImageDataProps
-    name: string
+    title: string
     slug: string
   }>
   excludeSlug?: string
@@ -52,13 +52,13 @@ const projects = isSelectedProjects
   </header>
   <div class="projects">
     {
-      projects.map(({ img, name, slug }) => (
+      projects.map(({ img, title, slug }) => (
         <article>
           <a href={slug} class="project-link">
             <div class="img">
               <Image {...img} sizes="(max-width: 28rem) 100vw, (max-width: 38rem) 19rem, 25vw" priority={index === 0} />
             </div>
-            <h3 class="h3">{name}</h3>
+            <h3 class="h3">{title}</h3>
           </a>
         </article>
       ))
