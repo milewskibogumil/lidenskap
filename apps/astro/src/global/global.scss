@@ -196,7 +196,8 @@ h6,
   color: var(--secondary-700, #0c2d63);
   font-variant-numeric: lining-nums tabular-nums;
   strong {
-    font-weight: 600;
+    font-weight: 400;
+    background: linear-gradient(rgba(255, 255, 255, 0) 38%, var(--primary-300, #f4efe8) 62%);
   }
 }
 h1,
