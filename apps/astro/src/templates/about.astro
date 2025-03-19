@@ -1,0 +1,37 @@
+---
+import Layout from '@layouts/Layout.astro'
+import metadataFetch from '@utils/metadata.fetch'
+import sanityFetch from '@utils/sanity.fetch'
+import Breadcrumbs from '@components/ui/Breadcrumbs.astro'
+import Components, { Components_Query, type ComponentsProps } from '@components/Components.astro'
+import { type Language } from '@utils/languages'
+
+type Props = NonNullable<Awaited<ReturnType<typeof fetchData>>>
+
+export async function fetchData(lang: Language) {
+  const page = await sanityFetch<{
+    title: string
+    slug: string
+    components: ComponentsProps
+  }>({
+    query: `
+      *[_type == "About_Page" && language == $language][0] {
+        title,
+        "slug": slug.current,
+        ${Components_Query}
+      }
+    `,
+    params: { language: lang },
+  })
+  if (!page) return null
+  const metadata = await metadataFetch(page.slug)
+  return { page, metadata }
+}
+
+const { page, metadata } = Astro.props
+---
+
+<Layout {...metadata}>
+  <Breadcrumbs data={[{ name: page.title, path: page.slug }]} />
+  <Components data={page.components} />
+</Layout>
