@@ -1,10 +1,10 @@
 ---
-import NotFoundPage, { fetchData } from '@templates/404.astro'
+import IndexPage, { fetchData } from '@templates/index.astro'
 import { LANGUAGES } from '@utils/languages'
 
-const lang = 'pl'
+const lang = 'en'
 const data = await fetchData(lang)
 if (!LANGUAGES.includes(lang) || !data) return Astro.rewrite('/404')
 ---
 
-<NotFoundPage {...data} />
+<IndexPage {...data} />
