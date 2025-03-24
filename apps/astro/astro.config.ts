@@ -2,8 +2,8 @@ import { defineConfig } from "astro/config";
 import preact from '@astrojs/preact';
 import vercel from "@astrojs/vercel";
 import { DOMAIN } from "./src/global/constants";
-import { isPreviewDeployment } from "./src/utils/is-preview-deployment";
 import redirects from "./redirects";
+import { isProductionDeployment } from "./src/utils/is-production-deployment";
 
 export default defineConfig({
   site: DOMAIN,
@@ -32,6 +32,13 @@ export default defineConfig({
     prefetchAll: true
   },
   redirects: redirects,
-  output: isPreviewDeployment ? "server" : "static",
-  adapter: vercel({}),
+  output: 'server',
+  adapter: vercel({
+    ...(isProductionDeployment && {
+      isr: {
+        bypassToken: process.env.VERCEL_DEPLOYMENT_ID,
+        exclude: ['/api/contact']
+      }
+    })
+  }),
 });
