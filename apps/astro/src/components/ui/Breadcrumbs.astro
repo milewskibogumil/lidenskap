@@ -1,5 +1,6 @@
 ---
 import { DOMAIN } from '@global/constants'
+import sanityFetch from '@utils/sanity.fetch'
 
 type Props = {
   data?: Array<{
@@ -10,8 +11,20 @@ type Props = {
 
 const { data = [] } = Astro.props
 
+const lang = Astro.url.pathname.startsWith('/en') ? 'en' : 'pl'
+
+const { title, slug } = await sanityFetch<{ title: string, slug: string }>({
+  query: `
+    *[_type == "Index_Page" && language == $language][0] {
+      title,
+      "slug": slug.current
+    }
+  `,
+  params: { language: lang },
+})
+
 const breadcrumbsData = [
-  { name: 'Strona główna', path: '/' },
+  { name: title, path: slug },
   ...data,
 ];
 
