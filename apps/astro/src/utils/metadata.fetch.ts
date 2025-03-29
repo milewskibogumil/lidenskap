@@ -9,14 +9,17 @@ export default async function metadataFetch(slug: string): Promise<HeadProps> {
         "title": seo.title,
         "description": seo.description,
         "openGraphImage": seo.img.asset -> url + "?w=1200",
-        "alternates": coalesce(
-          *[_type == 'translation.metadata' && references(^._id)][0] {
-            "urls": translations[] {
-              "lang": _key,
-              "url": *[_id == ^.value._ref][0].slug.current
-            }
-          }.urls,
-          []
+        "alternates": select(
+          _type == 'NotFound_Page' => [],
+          coalesce(
+            *[_type == 'translation.metadata' && references(^._id)][0] {
+              "urls": translations[] {
+                "lang": _key,
+                "url": *[_id == ^.value._ref][0].slug.current
+              }
+            }.urls,
+            []
+          )
         ),
       }
     `,

@@ -114,7 +114,7 @@ const { feauturedProjects, lang, alternates } = Astro.props
           LANGUAGES.map((locale) => (
             <a
               class="language-option"
-              href={alternates?.find((alt) => alt.lang === locale)?.url || `/${locale}`}
+              href={alternates?.find((alt) => alt.lang === locale)?.url || (locale === 'pl' ? '/' : '/en')}
               aria-current={lang === locale ? 'true' : undefined}
               lang={locale}>
               {locale === 'pl' ? 'Polski (Polish)' : 'English (Angielski)'}
