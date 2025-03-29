@@ -1,6 +1,7 @@
 ---
 import type { feauturedProjectsProps } from '@layouts/Layout.astro'
 import type { HeadProps } from '@layouts/Head.astro'
+import sanityFetch from '@utils/sanity.fetch'
 import Button from '@components/ui/Button'
 import Image from '@components/ui/Image'
 import { LANGUAGES } from '@utils/languages'
@@ -12,10 +13,95 @@ type Props = {
 }
 
 const { feauturedProjects, lang, alternates } = Astro.props
+
+const data = await sanityFetch<{
+  links: {
+    services: {
+      title: string
+      slug: string
+    }
+    projects: {
+      title: string
+      slug: string
+      seeAll: string
+    }
+    investments: {
+      title: string
+      slug: string
+    }
+    about: {
+      title: string
+      slug: string
+    }
+    contact: {
+      title: string
+      slug: string
+    }
+  }
+  ui: {
+    skipToContent: string
+    homePage: string
+    openMenu: string
+    closeMenu: string
+  }
+}>({
+  query: `
+    *[_type == 'global' && language == $language][0] {
+      "links": {
+        "services": *[_type == "Service_Page" && language == $language][0] {
+          title,
+          "slug": slug.current,
+        },
+        "projects": *[_type == "Projects_Page" && language == $language][0] {
+          title,
+          "slug": slug.current,
+          "seeAll": select(
+            $language == "en" => "See all projects",
+            "Zobacz wszystkie realizacje"
+          )
+        },
+        "investments": *[_type == "Investments_Page" && language == $language][0] {
+          title,
+          "slug": slug.current,
+        },
+        "about": *[_type == "About_Page" && language == $language][0] {
+          title,
+          "slug": slug.current,
+        },
+        "contact": *[_type == "Contact_Page" && language == $language][0] {
+          "title": select(
+            $language == "en" => "Contact",
+            "Kontakt"
+          ),
+          "slug": slug.current,
+        }
+      },
+      "ui": {
+        "skipToContent": select(
+          $language == "en" => "Skip to content",
+          "Przejdź do treści"
+        ),
+        "homePage": select(
+          $language == "en" => "Home page",
+          "Strona główna"
+        ),
+        "openMenu": select(
+          $language == "en" => "Open menu",
+          "Otwórz menu"
+        ),
+        "closeMenu": select(
+          $language == "en" => "Close menu",
+          "Zamknij menu"
+        )
+      }
+    }
+  `,
+  params: { language: lang },
+})
 ---
 
-<a href="#main" class="skip-link">Przejdź do treści</a>
-<a href="/" aria-label="Strona główna" class="logo">
+<a href="#main" class="skip-link">{data.ui.skipToContent}</a>
+<a href={lang === 'pl' ? '/' : '/en'} aria-label={data.ui.homePage} class="logo">
   <svg xmlns="http://www.w3.org/2000/svg" width="107" height="24" viewBox="0 0 107 24" fill="#C8B888">
     <title>Lidenskap</title>
     <path
@@ -45,10 +131,10 @@ const { feauturedProjects, lang, alternates } = Astro.props
     <nav data-lenis-prevent>
       <ul>
         <li>
-          <a href="/oferta">Oferta</a>
+          <a href={data.links.services.slug}>{data.links.services.title}</a>
         </li>
         <li class="dropdown-item">
-          <span>Realizacje</span>
+          <span>{data.links.projects.title}</span>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" class="dropdown-icon">
             <path stroke="#0C2D63" stroke-linecap="round" stroke-linejoin="round" d="m4 6 4 4 4-4"></path>
           </svg>
@@ -64,15 +150,15 @@ const { feauturedProjects, lang, alternates } = Astro.props
               ))
             }
             <li class="main-link">
-              <a href="/realizacje">Zobacz wszystkie realizacje</a>
+              <a href={data.links.projects.slug}>{data.links.projects.seeAll}</a>
             </li>
           </ul>
         </li>
         <li>
-          <a href="/inwestycje">Inwestycje</a>
+          <a href={data.links.investments.slug}>{data.links.investments.title}</a>
         </li>
         <li>
-          <a href="/o-lidenskap">O lidenskap</a>
+          <a href={data.links.about.slug}>{data.links.about.title}</a>
         </li>
       </ul>
     </nav>
@@ -123,14 +209,23 @@ const { feauturedProjects, lang, alternates } = Astro.props
         }
       </div>
     </div>
-    <Button theme="primary" linkType="internal" href="/kontakt" className="cta">Kontakt</Button>
-    <button class="nav-toggle" aria-label="Otwórz menu"><div></div><div></div><div></div></button>
+    <Button theme="primary" linkType="internal" href={data.links.contact.slug} className="cta">
+      {data.links.contact.title}
+    </Button>
+    <button
+      class="nav-toggle"
+      aria-label={data.ui.openMenu}
+      data-text-open-menu={data.ui.openMenu}
+      data-text-close-menu={data.ui.closeMenu}>
+      <div></div><div></div><div></div>
+    </button>
   </div>
 </header>
-<div class="overlay" role="button" aria-hidden="true" aria-label="Zamknij menu"></div>
+<div class="overlay" role="button" aria-hidden="true" aria-label={data.ui.closeMenu}></div>
 
 <style lang="scss">
-  $nav-max-breakpoint: 59rem;
+  $nav-max-breakpoint: 63rem;
+  $nav-min-breakpoint: 63.001rem;
   $header-height: 3.75rem;
   .skip-link {
     border: 1px solid var(--primary-700, #ad6116);
@@ -183,7 +278,7 @@ const { feauturedProjects, lang, alternates } = Astro.props
     background: var(--primary-100, #fffefd);
     padding: 0 16px;
     pointer-events: auto;
-    @media (min-width: $nav-max-breakpoint + 1) {
+    @media (min-width: $nav-min-breakpoint) {
       height: auto !important;
     }
     > ul {
@@ -339,11 +434,11 @@ const { feauturedProjects, lang, alternates } = Astro.props
         }
       }
     }
-    @media (max-width: $nav-max-breakpoint) {
+    @media (max-width: $nav-max-breakpoint - 0.01rem) {
       margin-left: auto;
     }
   }
-  @media (max-width: $nav-max-breakpoint) {
+  @media (max-width: $nav-max-breakpoint - 0.01rem) {
     header {
       pointer-events: auto;
       background-color: var(--primary-100, #fffefd);
@@ -424,7 +519,7 @@ const { feauturedProjects, lang, alternates } = Astro.props
     opacity: 0;
     pointer-events: none;
     transition: opacity 500ms var(--easing);
-    @media (min-width: $nav-max-breakpoint + 1) {
+    @media (min-width: $nav-min-breakpoint) {
       display: none;
     }
   }
@@ -433,7 +528,7 @@ const { feauturedProjects, lang, alternates } = Astro.props
     gap: 5px;
     padding: 16px 12px;
     margin: 0 -12px;
-    @media (min-width: $nav-max-breakpoint + 1) {
+    @media (min-width: $nav-min-breakpoint) {
       display: none;
     }
     div {
@@ -476,7 +571,10 @@ const { feauturedProjects, lang, alternates } = Astro.props
   navToggle.addEventListener('click', () => {
     const isExpanded = header.getAttribute('aria-expanded') === 'true'
     header.setAttribute('aria-expanded', String(!isExpanded))
-    navToggle.setAttribute('aria-label', isExpanded ? 'Otwórz menu' : 'Zamknij menu')
+    navToggle.setAttribute(
+      'aria-label',
+      isExpanded ? navToggle.getAttribute('data-text-close-menu')! : navToggle.getAttribute('data-text-open-menu')!
+    )
     const navHeight = nav.scrollHeight + 2
     nav.style.height = `${isExpanded ? 0 : navHeight}px`
   })
