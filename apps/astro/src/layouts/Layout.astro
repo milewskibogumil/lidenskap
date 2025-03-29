@@ -18,17 +18,18 @@ export type feauturedProjectsProps = {
   slug: string
 }
 
+const lang = props.path.startsWith('/en') ? 'en' : 'pl'
+
 const feauturedProjects = await sanityFetch<feauturedProjectsProps[]>({
   query: `
-    *[_type == "global"][0].feauturedProjects[] -> {
+    *[_type == "global" && language == $language][0].feauturedProjects[] -> {
       ${ImageDataQuery('img')}
       title,
       "slug": slug.current,
     }
   `,
+  params: { language: lang },
 })
-
-const lang = props.path.startsWith('/en') ? 'en' : 'pl'
 ---
 
 <!doctype html>
@@ -42,7 +43,7 @@ const lang = props.path.startsWith('/en') ? 'en' : 'pl'
     <main id="main">
       <slot />
     </main>
-    <Footer feauturedProjects={feauturedProjects} />
+    <Footer feauturedProjects={feauturedProjects} lang={lang} />
     <SmoothScroll />
   </body>
 </html>

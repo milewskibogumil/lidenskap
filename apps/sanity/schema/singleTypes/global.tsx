@@ -102,15 +102,13 @@ export default defineType({
           to: { type: 'Project_Collection' },
           options: {
             disableNew: true,
-            filter: ({ parent }) => {
+            filter: ({ document, parent }) => {
+              const language = (document as { language?: string })?.language;
               const selectedIds = (parent as { _ref?: string }[])?.filter(item => item._ref).map(item => item._ref) || [];
-              if (selectedIds.length > 0) {
-                return {
-                  filter: '!(_id in $selectedIds) && !(_id in path("drafts.**"))',
-                  params: { selectedIds }
-                }
+              return {
+                filter: '!(_id in $selectedIds) && language == $lang',
+                params: { selectedIds, lang: language }
               }
-              return {}
             }
           }
         })
