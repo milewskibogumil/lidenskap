@@ -4,6 +4,7 @@ import Button, { ButtonDataQuery, type ButtonDataProps } from '@components/ui/Bu
 import Image, { ImageDataQuery, type ImageDataProps } from '@components/ui/Image'
 import Dropdown from '@components/ui/Dropdown.astro'
 import { slugify } from '@utils/slugify'
+import { type Language } from '@utils/languages'
 
 export const Hero_Query = `
   hero {
@@ -18,7 +19,17 @@ export const Hero_Query = `
       ${ImageDataQuery('img')}
       title,
       type,
-      city,
+      "type": select(
+        $language == "en" && type == "Generalne wykonawstwo" => "General construction",
+        $language == "en" && type == "Pozostałe realizacje" => "Other projects",
+        type
+      ),
+      "city": select(
+        $language == "en" && city == "Warszawa" => "Warsaw",
+        $language == "en" && city == "Poznań" => "Poznan",
+        $language == "en" && city == "Pozostałe" => "Others",
+        city
+      ),
       "slug": slug.current,
       startDate,
       endDate,
@@ -45,10 +56,10 @@ export type HeroProps = {
     endDate?: string
     _id: string
   }>
+  lang: Language
 }
 
-const { heading, paragraph, ctaBox, listing, highlightedProjects } = Astro.props as HeroProps
-
+const { heading, paragraph, ctaBox, listing, highlightedProjects, lang } = Astro.props as HeroProps
 
 const cities = [...new Set(listing.map((item) => item.city))]
 const types = [...new Set(listing.map((item) => item.type))]
@@ -69,6 +80,43 @@ listing.sort((a, b) => {
   const dateB = b.endDate || '9999-12-31'
   return dateB.localeCompare(dateA)
 })
+
+const translations: Record<
+  string,
+  {
+    dropdownDefault: string
+    dropdownNewest: string
+    dropdownOldest: string
+    cityLabel: string
+    allLabel: string
+    projectTypeLabel: string
+    displayedText: string
+    loadMoreText: string
+  }
+> = {
+  pl: {
+    dropdownDefault: 'domyślne',
+    dropdownNewest: 'od najnowszych',
+    dropdownOldest: 'od najstarszych',
+    cityLabel: 'Miasto',
+    allLabel: 'Wszystkie',
+    projectTypeLabel: 'Rodzaj projektu',
+    displayedText: 'Wyświetlono',
+    loadMoreText: 'Wczytaj więcej realizacji',
+  },
+  en: {
+    dropdownDefault: 'default',
+    dropdownNewest: 'newest first',
+    dropdownOldest: 'oldest first',
+    cityLabel: 'City',
+    allLabel: 'All',
+    projectTypeLabel: 'Project type',
+    displayedText: 'Showing',
+    loadMoreText: 'Load more projects',
+  },
+}
+
+const ui = translations[lang] || translations.pl
 ---
 
 <section class="Hero">
@@ -78,17 +126,19 @@ listing.sort((a, b) => {
   </header>
   <div class="filters">
     <Dropdown
+      lang={lang}
       options={[
-        { value: 'default', label: 'domyślne' },
-        { value: 'newest', label: 'od najnowszych' },
-        { value: 'oldest', label: 'od najstarszych' },
+        { value: 'default', label: ui.dropdownDefault },
+        { value: 'newest', label: ui.dropdownNewest },
+        { value: 'oldest', label: ui.dropdownOldest },
       ]}
     />
     <div class="filter-group">
-      <p>Miasto</p>
+      <p>{ui.cityLabel}</p>
       <div class="filter-tags">
         <a href="?" data-filter="city" data-value="" class="filter-tag" aria-disabled="true">
-          Wszystkie <span class="count">({listing.length})</span>
+          {ui.allLabel}
+          <span class="count">({listing.length})</span>
         </a>
         {
           cities.map((city) => {
@@ -103,10 +153,11 @@ listing.sort((a, b) => {
       </div>
     </div>
     <div class="filter-group">
-      <p>Rodzaj projektu</p>
+      <p>{ui.projectTypeLabel}</p>
       <div class="filter-tags">
         <a href="?" data-filter="type" data-value="" class="filter-tag">
-          Wszystkie <span class="count">({listing.length})</span>
+          {ui.allLabel}
+          <span class="count">({listing.length})</span>
         </a>
         {
           types.map((type) => {
@@ -161,7 +212,7 @@ listing.sort((a, b) => {
   {
     listing.length > ITEMS_PER_PAGE && (
       <div class="load-more">
-        Wyświetlono
+        {ui.displayedText}
         <div class="indicator">
           <div class="indicator-barWrapper">
             <div class="indicator-bar" style={`transform: scaleX(${Math.min(1, ITEMS_PER_PAGE / listing.length)})`} />
@@ -171,7 +222,7 @@ listing.sort((a, b) => {
             <span class="total">{listing.length}</span>
           </p>
         </div>
-        <button class="load-more-btn link">Wczytaj więcej realizacji</button>
+        <button class="load-more-btn link">{ui.loadMoreText}</button>
       </div>
     )
   }
