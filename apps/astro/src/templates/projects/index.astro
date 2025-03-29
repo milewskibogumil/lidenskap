@@ -28,14 +28,14 @@ export async function fetchData(lang: Language) {
   })
   if (!page) return null
   const metadata = await metadataFetch(page.slug)
-  return { page, metadata }
+  return { page, metadata, lang }
 }
 
-const { page, metadata } = Astro.props
+const { page, metadata, lang } = Astro.props
 ---
 
 <Layout {...metadata}>
   <Breadcrumbs data={[{ name: page.title, path: page.slug }]} />
-  <Hero {...page.hero} />
-  <Components data={page.components} hasPreviousSections={true} />
+  <Hero {...page.hero} lang={lang} />
+  <Components data={page.components} hasPreviousSections={true} lang={lang} />
 </Layout>

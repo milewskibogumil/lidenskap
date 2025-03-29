@@ -38,6 +38,7 @@ export async function fetchData(lang: Language, _slug: string) {
   const slug = `${slugPrefix[lang]}${_slug}`
 
   const page = await sanityFetch<{
+    rootTitle: string
     title: string
     hero: HeroProps
     summary: SummaryProps
@@ -47,6 +48,7 @@ export async function fetchData(lang: Language, _slug: string) {
   }>({
     query: `
       *[_type == 'Project_Collection' && slug.current == $slug && language == $language][0] {
+        "rootTitle": *[_type == 'Projects_Page' && language == $language][0].title,
         title,
         ${Hero_Query}
         ${Summary_Query}
@@ -59,16 +61,16 @@ export async function fetchData(lang: Language, _slug: string) {
   })
   if (!page) return null
   const metadata = await metadataFetch(slug)
-  return { page, metadata, slug }
+  return { page, metadata, slug, lang }
 }
 
-const { page, metadata, slug } = Astro.props
+const { page, metadata, slug, lang } = Astro.props
 ---
 
 <Layout {...metadata}>
   <Breadcrumbs
     data={[
-      { name: 'Realizacje', path: '/realizacje' },
+      { name: page.rootTitle, path: slugPrefix[lang] },
       { name: page.title, path: slug },
     ]}
   />

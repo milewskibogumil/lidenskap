@@ -18,7 +18,7 @@ export const FeaturedProjects_Query = `
       projects[] -> {
         ${ProjectCard_Query}
       },
-      *[_type == "Project_Collection"][] | order(endDate desc)[0..4] {
+      *[_type == "Project_Collection" && language == $language][] | order(endDate desc)[0..4] {
         ${ProjectCard_Query}
       },
     ),
