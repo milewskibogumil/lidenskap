@@ -276,8 +276,11 @@ h3,
 }
 
 .cta-wrapper {
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
   align-items: center;
   gap: clamp(0.5rem, calc(0.75vw / 0.48), 0.75rem);
+  @media (max-width: 32rem) {
+    width: 100%;
+  }
 }
