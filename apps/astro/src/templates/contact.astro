@@ -31,7 +31,7 @@ export async function fetchData(lang: Language) {
 const { page, metadata } = Astro.props
 ---
 
-<Layout {...metadata}>
+<Layout {...metadata} bodyProps={{ 'data-contact-page': 'true' }}>
   <Breadcrumbs data={[{ name: page.title, path: page.slug }]} />
   <Components data={page.components} />
 </Layout>

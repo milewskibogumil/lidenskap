@@ -8,7 +8,9 @@ import Header from '@components/global/Header.astro'
 import Footer from '@components/global/Footer.astro'
 import SmoothScroll from './smooth-scroll.astro'
 
-type Props = HeadProps
+type Props = HeadProps & {
+  bodyProps: astroHTML.JSX.IntrinsicElements['body']
+}
 
 const { ...props } = Astro.props
 
@@ -38,7 +40,7 @@ const feauturedProjects = await sanityFetch<feauturedProjectsProps[]>({
     <Head {...props} />
     <script is:inline src="https://analytics.ahrefs.com/analytics.js" data-key="aXa2hx1VgC/dy7pJ+MCH0A" async></script>
   </head>
-  <body>
+  <body {...props.bodyProps}>
     <Header feauturedProjects={feauturedProjects} lang={lang} alternates={props.alternates} />
     <main id="main">
       <slot />

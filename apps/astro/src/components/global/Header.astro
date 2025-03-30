@@ -439,6 +439,13 @@ const data = await sanityFetch<{
     }
   }
   @media (max-width: $nav-max-breakpoint - 0.01rem) {
+    body[data-contact-page='true'] {
+      header {
+        .cta {
+          display: none;
+        }
+      }
+    }
     header {
       pointer-events: auto;
       background-color: var(--primary-100, #fffefd);
