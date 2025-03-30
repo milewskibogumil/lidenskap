@@ -1,9 +1,9 @@
 import { defineField, defineType } from "sanity"
 import { defineSlugForDocument } from "../../utils/define-slug-for-document";
+import { documentPreview } from "../../utils/document-preview";
 
 const name = 'Investments_Page';
 const title = 'Inwestycje';
-const slug = '/inwestycje';
 const icon = () => '💰';
 
 export default defineType({
@@ -13,7 +13,18 @@ export default defineType({
   icon,
   options: { documentPreview: true },
   fields: [
-    ...defineSlugForDocument({ slug }),
+    defineField({
+      name: 'language',
+      type: 'string',
+      readOnly: true,
+      hidden: true,
+    }),
+    ...defineSlugForDocument({
+      slugs: {
+        pl: '/inwestycje',
+        en: '/en/investments',
+      }
+    }),
     defineField({
       name: 'hero',
       type: 'object',
@@ -75,10 +86,5 @@ export default defineType({
       title: 'SEO',
     },
   ],
-  preview: {
-    prepare: () => ({
-      title: title,
-      subtitle: slug
-    })
-  }
+  ...documentPreview()
 });

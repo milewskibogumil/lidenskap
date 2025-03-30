@@ -1,80 +1,10 @@
 ---
-import Layout from '@layouts/Layout.astro'
-import metadataFetch from '@utils/metadata.fetch'
-import sanityFetch from '@utils/sanity.fetch'
-import Breadcrumbs from '@components/ui/Breadcrumbs.astro'
-import PortableText, { PortableTextQuery, type PortableTextValue } from '@components/ui/PortableText'
+import PrivacyPolicyPage, { fetchData } from '@templates/privacy-policy.astro'
+import { LANGUAGES } from '@utils/languages'
 
-const metadata = await metadataFetch('/polityka-prywatnosci')
-
-const data = await sanityFetch<{
-  name: string
-  slug: string
-  header: {
-    heading: PortableTextValue
-    paragraph: PortableTextValue
-  }
-  content: PortableTextValue
-}>({
-  query: `
-    *[_type == "PrivacyPolicy_Page"][0] {
-      "name": title,
-      "slug": slug.current,
-      header {
-        ${PortableTextQuery('heading')}
-        ${PortableTextQuery('paragraph')}
-      },
-      ${PortableTextQuery('content')}
-    }
-  `,
-})
+const lang = 'pl'
+const data = await fetchData(lang)
+if (!LANGUAGES.includes(lang) || !data) return Astro.rewrite('/404')
 ---
 
-<Layout {...metadata}>
-  <Breadcrumbs data={[{ name: data.name, path: data.slug }]} />
-  <section class="header">
-    <PortableText value={data.header.heading} heading="h1" class="heading h2" />
-    <PortableText value={data.header.paragraph} />
-  </section>
-  <section class="content">
-    <PortableText value={data.content} />
-  </section>
-</Layout>
-
-<style lang="scss">
-  .header,
-  .content {
-    max-width: 41rem;
-    margin: 0 auto;
-  }
-  .header {
-    margin-top: clamp(2rem, calc(3vw / 0.48), 5rem);
-    .heading {
-      margin-bottom: clamp(0.75rem, calc(1vw / 0.48), 1rem);
-    }
-  }
-  .content {
-    padding: clamp(3rem, calc(5vw / 0.48), 6rem) 0;
-    counter-reset: counter;
-    :global(h2) {
-      &:not(:first-child) {
-        margin-top: clamp(3rem, calc(4vw / 0.48), 5rem);
-      }
-      font-size: clamp(1.25rem, calc(1.5vw / 0.48), 1.5rem);
-      margin-bottom: clamp(1rem, calc(1.75vw / 0.48), 1.75rem) !important;
-      counter-increment: counter;
-      display: grid;
-      grid-template-columns: 1.5rem 1fr;
-      gap: 0.5rem;
-      &::before {
-        content: counter(counter);
-      }
-    }
-    @media (min-width: 31.25rem) {
-      padding-left: 2rem;
-      :global(h2) {
-        margin-left: -2rem;
-      }
-    }
-  }
-</style>
+<PrivacyPolicyPage {...data} />

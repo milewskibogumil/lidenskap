@@ -10,6 +10,10 @@ export const ContactForm_Query = `
     ${ImageDataQuery('img')}
     ${PortableTextQuery('heading')}
     responseTime,
+    "privacyPolicy": *[_type == "PrivacyPolicy_Page" && language == $language][0] {
+      title,
+      "slug": slug.current,
+    }
   },
 `
 export type Props = {
@@ -17,9 +21,15 @@ export type Props = {
   img: ImageDataProps
   heading: PortableTextValue
   responseTime?: string
+  privacyPolicy: {
+    title: string
+    slug: string
+  }
 }
 
-const { index, img, heading, responseTime } = Astro.props
+const { index, img, heading, responseTime, privacyPolicy } = Astro.props
+
+const lang = Astro.url.pathname.startsWith('/en') ? 'en' : 'pl'
 
 const { email, tel, address, socials, companyInfo } = await sanityFetch<{
   email: string
@@ -74,7 +84,15 @@ const { email, tel, address, socials, companyInfo } = await sanityFetch<{
           </p>
         )
       }
-      <Form email={email} tel={tel} facebook={socials.facebook} instagram={socials.instagram} client:idle />
+      <Form
+        client:idle
+        email={email}
+        tel={tel}
+        facebook={socials.facebook}
+        instagram={socials.instagram}
+        lang={lang}
+        privacyPolicy={privacyPolicy}
+      />
     </header>
     <div class="info">
       <ul class="socials">

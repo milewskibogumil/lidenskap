@@ -14,18 +14,21 @@ const { ...props } = Astro.props
 
 export type feauturedProjectsProps = {
   img: ImageDataProps
-  name: string
+  title: string
   slug: string
 }
 
+const lang = props.path.startsWith('/en') ? 'en' : 'pl'
+
 const feauturedProjects = await sanityFetch<feauturedProjectsProps[]>({
   query: `
-    *[_type == "global"][0].feauturedProjects[] -> {
+    *[_type == "global" && language == $language][0].feauturedProjects[] -> {
       ${ImageDataQuery('img')}
-      name,
+      title,
       "slug": slug.current,
     }
   `,
+  params: { language: lang },
 })
 ---
 
@@ -36,11 +39,11 @@ const feauturedProjects = await sanityFetch<feauturedProjectsProps[]>({
     <script is:inline src="https://analytics.ahrefs.com/analytics.js" data-key="aXa2hx1VgC/dy7pJ+MCH0A" async></script>
   </head>
   <body>
-    <Header feauturedProjects={feauturedProjects} />
+    <Header feauturedProjects={feauturedProjects} lang={lang} alternates={props.alternates} />
     <main id="main">
       <slot />
     </main>
-    <Footer feauturedProjects={feauturedProjects} />
+    <Footer feauturedProjects={feauturedProjects} lang={lang} />
     <SmoothScroll />
   </body>
 </html>

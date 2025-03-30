@@ -5,7 +5,7 @@ import { InternalLinkableTypes } from "../../structure/internal-linkable-types";
 
 const name = 'cta';
 const title = 'Call To Action (CTA)';
-const icon = () => '🗣️';
+const icon = () => '👆';
 
 export default defineType({
   name,
@@ -34,7 +34,6 @@ export default defineType({
         layout: 'radio',
         direction: 'horizontal',
       },
-      initialValue: 'primary',
       validation: Rule => Rule.required(),
       fieldset: 'style',
     }),
@@ -52,7 +51,6 @@ export default defineType({
         layout: 'radio',
         direction: 'horizontal',
       },
-      initialValue: 'external',
       validation: Rule => Rule.required(),
       fieldset: 'style',
     }),
@@ -64,8 +62,8 @@ export default defineType({
       hidden: ({ parent }) => parent?.linkType !== 'external',
       validation: (Rule) => [
         Rule.custom((value, { parent }) => {
-          const type = (parent as { type?: string })?.type;
-          if (type === 'external') {
+          const linkType = (parent as { linkType?: string })?.linkType;
+          if (linkType === 'external') {
             if (!value) return "URL is required";
             if (!value.startsWith('https://')) {
               return 'External link must start with the "https://" protocol';
@@ -84,13 +82,19 @@ export default defineType({
       to: InternalLinkableTypes,
       options: {
         disableNew: true,
-        filter: 'defined(slug.current)',
+        filter: ({ document }) => {
+          const language = (document as { language?: string })?.language;
+          return {
+            filter: 'defined(slug.current) && language == $lang',
+            params: { lang: language }
+          }
+        }
       },
       hidden: ({ parent }) => parent?.linkType !== 'internal',
       validation: (rule) => [
         rule.custom((value, { parent }) => {
-          const type = (parent as { type?: string })?.type;
-          if (type === 'internal' && !value?._ref) return "You have to choose internal page to link to.";
+          const linkType = (parent as { linkType?: string })?.linkType;
+          if (linkType === 'internal' && !value?._ref) return "You have to choose internal page to link to.";
           return true;
         }),
       ],
@@ -101,7 +105,6 @@ export default defineType({
       name: 'style',
       title: 'Style',
       options: {
-        collapsible: false,
         columns: 2,
       }
     },
@@ -110,18 +113,22 @@ export default defineType({
     select: {
       title: 'text',
       theme: 'theme',
-      type: 'type',
+      linkType: 'linkType',
       external: 'external',
       internal: 'internal.slug.current',
     },
-    prepare({ title, theme, type, external, internal }) {
+    prepare({ title, theme, linkType, external, internal }) {
+      const isExternal = linkType === 'external';
+      const icon = isExternal ? '🌐' : '🔗';
       return {
         title: `${title}`,
-        subtitle: type === 'external' ? external : internal,
+        subtitle: isExternal ? external : internal,
         media: () => <Tooltip
           content={
             <Box padding={1}>
               <Text size={1}>
+                {icon} {isExternal ? 'External link' : 'Internal link'}
+                &nbsp;|&nbsp;
                 {theme === 'primary' ? 'Primary button' : 'Secondary button'}
               </Text>
             </Box>
@@ -129,7 +136,7 @@ export default defineType({
           placement="top"
           portal
         >
-          <span>{icon()}</span>
+          <span>{icon}</span>
         </Tooltip>
       };
     },

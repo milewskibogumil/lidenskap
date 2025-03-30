@@ -6,7 +6,7 @@ export const Hero_Query = `
   "hero": {
     ${ImageDataQuery('img')}
     ${ImageDataQuery('beforeImg')}
-    name,
+    title,
     ${PortableTextQuery('description')}
   },
 `
@@ -14,16 +14,16 @@ export const Hero_Query = `
 export type HeroProps = {
   img: ImageDataProps
   beforeImg?: ImageDataProps
-  name: string
+  title: string
   description?: PortableTextValue
 }
 
-const { img, beforeImg, name, description } = Astro.props as HeroProps
+const { img, beforeImg, title, description } = Astro.props as HeroProps
 ---
 
 <section class="Hero">
   <header>
-    <h1 class="h1">{name}</h1>
+    <h1 class="h1">{title}</h1>
     {description && <PortableText value={description} class="description" />}
   </header>
   <div class="img-compare-container">

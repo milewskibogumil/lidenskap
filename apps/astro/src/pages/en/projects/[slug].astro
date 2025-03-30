@@ -1,0 +1,11 @@
+---
+import ProjectPage, { fetchData } from '@templates/projects/project.astro'
+import { LANGUAGES } from '@utils/languages'
+
+const lang = 'en'
+const { slug } = Astro.params
+const data = await fetchData(lang, slug!)
+if (!LANGUAGES.includes(lang) || !data) return Astro.rewrite('/404')
+---
+
+<ProjectPage {...data} />

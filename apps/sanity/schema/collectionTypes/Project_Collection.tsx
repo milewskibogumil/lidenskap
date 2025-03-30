@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
 import { defineSlugForDocument } from "../../utils/define-slug-for-document";
+import { documentPreview } from "../../utils/document-preview";
 
 const name = 'Project_Collection';
 const title = 'Zbiór realizacji';
@@ -15,6 +16,12 @@ export default defineType({
   },
   fields: [
     defineField({
+      name: 'language',
+      type: 'string',
+      readOnly: true,
+      hidden: true,
+    }),
+    defineField({
       name: 'img',
       type: 'image',
       title: 'Zdjęcie',
@@ -28,13 +35,12 @@ export default defineType({
         collapsed: true,
       }
     }),
-    defineField({
-      name: 'name',
-      type: 'string',
-      title: 'Nazwa',
-      validation: Rule => Rule.required(),
+    ...defineSlugForDocument({
+      prefixes: {
+        pl: '/realizacje/',
+        en: '/en/projects/',
+      }
     }),
-    ...defineSlugForDocument({ source: 'name', prefix: '/realizacje/' }),
     defineField({
       name: 'description',
       type: 'PortableText',
@@ -71,8 +77,8 @@ export default defineType({
       validation: Rule => [
         Rule.required(),
         Rule.custom((value, context) => {
-          const name = (context.parent as { name: string })?.name;
-          if (name && value && name.includes(value)) {
+          const title = (context.parent as { title: string })?.title;
+          if (title && value && title.includes(value)) {
             return true;
           }
           return 'Zweryfikuj poprawność miasta'
@@ -209,10 +215,10 @@ export default defineType({
   preview: {
     select: {
       img: 'img',
-      name: 'name',
+      title: 'title',
     },
-    prepare: ({ img, name }) => ({
-      title: name,
+    prepare: ({ img, title }) => ({
+      title: title,
       media: img,
     }),
   },

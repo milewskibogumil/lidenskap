@@ -9,7 +9,108 @@ import FormState from '@components/ui/FormState';
 import { REGEX } from '@global/constants';
 import { sendContactEmail, type Props as sendContactEmailProps } from '@pages/api/contact/sendContactEmail';
 
-export default function Form({ email, tel, facebook, instagram }: { email: string, tel: string, facebook: string, instagram: string }) {
+type FormTranslations = {
+  fields: {
+    email: string;
+    phone: string;
+    phoneOptional: string;
+    message: string;
+    messagePlaceholder: string;
+    legal: string;
+    submit: string;
+  };
+  validation: {
+    emailRequired: string;
+    emailInvalid: string;
+    phoneInvalid: string;
+    messageRequired: string;
+    legalRequired: string;
+  };
+  success: {
+    heading: string;
+    paragraph: string;
+    social: string;
+  };
+  error: {
+    heading: string;
+    paragraph: string;
+    tryAgain: string;
+  };
+}
+
+const translations: Record<string, FormTranslations> = {
+  pl: {
+    fields: {
+      email: 'Email',
+      phone: 'Telefon',
+      phoneOptional: 'Telefon (opcjonalnie)',
+      message: 'Twoja wiadomość',
+      messagePlaceholder: 'Napisz o czym chcesz porozmawiać…',
+      legal: 'Akceptuję',
+      submit: 'Wyślij wiadomość'
+    },
+    validation: {
+      emailRequired: 'Email jest wymagany',
+      emailInvalid: 'Niepoprawny adres e-mail',
+      phoneInvalid: 'Niepoprawny numer telefonu',
+      messageRequired: 'Wiadomość jest wymagana',
+      legalRequired: 'Zgoda jest wymagana'
+    },
+    success: {
+      heading: 'Dziękujemy za wiadomość!',
+      paragraph: 'Odpowiemy w ciągu 48. godzin.',
+      social: 'Zapraszamy na nasze social media:'
+    },
+    error: {
+      heading: 'Formularzy nie został wysłany',
+      paragraph: 'Spróbuj wysłać ponownie, lub skontaktuj się z nami mailowo:',
+      tryAgain: 'Spróbuj ponownie'
+    }
+  },
+  en: {
+    fields: {
+      email: 'Email',
+      phone: 'Phone',
+      phoneOptional: 'Phone (optional)',
+      message: 'Your message',
+      messagePlaceholder: 'Tell us what you want to talk about...',
+      legal: 'I accept the',
+      submit: 'Send message'
+    },
+    validation: {
+      emailRequired: 'Email is required',
+      emailInvalid: 'Invalid email address',
+      phoneInvalid: 'Invalid phone number',
+      messageRequired: 'Message is required',
+      legalRequired: 'Consent is required'
+    },
+    success: {
+      heading: 'Thank you for your message!',
+      paragraph: 'We will respond within 48 hours.',
+      social: 'Visit our social media:'
+    },
+    error: {
+      heading: 'Form was not sent',
+      paragraph: 'Please try again or contact us by email:',
+      tryAgain: 'Try again'
+    }
+  }
+};
+
+type Props = {
+  email: string;
+  tel: string;
+  facebook: string;
+  instagram: string;
+  lang?: string;
+  privacyPolicy: {
+    title: string
+    slug: string
+  }
+}
+
+export default function Form({ email, tel, facebook, instagram, lang = 'pl', privacyPolicy }: Props) {
+  const t = translations[lang] || translations.pl;
   const [status, setStatus] = useState<{ sending: boolean, success: boolean | undefined }>({ sending: false, success: undefined });
   const {
     register,
@@ -34,10 +135,10 @@ export default function Form({ email, tel, facebook, instagram }: { email: strin
       <Loader loading={status.sending} />
       <FormState
         success={{
-          heading: 'Dziękujemy za wiadomość!',
-          paragraph: <p>Odpowiemy w ciągu 48. godzin.</p>,
+          heading: t.success.heading,
+          paragraph: <p>{t.success.paragraph}</p>,
           additionalInfo: <>
-            <p>Zapraszamy na nasze social media:</p>
+            <p>{t.success.social}</p>
             <ul className={styles.socials}>
               <li>
                 <a href={facebook} aria-label="Facebook" target="_blank" rel="noopener">
@@ -75,14 +176,14 @@ export default function Form({ email, tel, facebook, instagram }: { email: strin
           </>
         }}
         error={{
-          heading: 'Formularzy nie został wysłany',
-          paragraph: <p>Spróbuj wysłać ponownie, lub skontaktuj się z nami mailowo: <a href="mailto:biuro@lidenskap.pl" className='link'>biuro@lidenskap.pl</a></p>,
+          heading: t.error.heading,
+          paragraph: <p>{t.error.paragraph} <a href={`mailto:${email}`} className='link'>{email}</a></p>,
           additionalInfo: <>
             <Button
               type='button'
               onClick={() => setStatus({ sending: false, success: undefined })}
             >
-              Spróbuj ponownie
+              {t.error.tryAgain}
             </Button>
             <div className={styles.contact}>
               <a className={styles.tel} href={`tel:${tel}`}>
@@ -114,43 +215,43 @@ export default function Form({ email, tel, facebook, instagram }: { email: strin
       />
 
       <Input
-        label='Email'
+        label={t.fields.email}
         register={register('email', {
-          required: { value: true, message: 'Email jest wymagany' },
-          pattern: { value: REGEX.email, message: 'Niepoprawny adres e-mail' },
+          required: { value: true, message: t.validation.emailRequired },
+          pattern: { value: REGEX.email, message: t.validation.emailInvalid },
         })}
         errors={errors}
         type='email'
       />
       <Input
-        label='Telefon (opcjonalnie)'
+        label={t.fields.phoneOptional}
         register={register('phone', {
-          pattern: { value: REGEX.phone, message: 'Niepoprawny numer telefonu' },
+          pattern: { value: REGEX.phone, message: t.validation.phoneInvalid },
         })}
         errors={errors}
         type='tel'
         placeholder='+48 --- --- ---'
       />
       <Input
-        label='Twoja wiadomość'
+        label={t.fields.message}
         register={register('message', {
-          required: { value: true, message: 'Wiadomość jest wymagana' },
+          required: { value: true, message: t.validation.messageRequired },
         })}
         isTextarea={true}
         errors={errors}
-        placeholder='Napisz o czym chcesz porozmawiać…'
+        placeholder={t.fields.messagePlaceholder}
       />
       <Checkbox
         register={register('legal', {
-          required: { value: true, message: 'Zgoda jest wymagana' },
+          required: { value: true, message: t.validation.legalRequired },
         })}
         errors={errors}
       >
-        Akceptuję <a href="/polityka-prywatnosci" target="_blank" rel="noopener noreferrer" className="link">
-          politykę prywatności
+        {t.fields.legal} <a href={privacyPolicy.slug} target="_blank" rel="noopener noreferrer" className="link">
+          {privacyPolicy.title}
         </a>
       </Checkbox>
-      <Button type="submit" className={styles.cta}>Wyślij wiadomość</Button>
+      <Button type="submit" className={styles.cta}>{t.fields.submit}</Button>
     </form >
   )
 }

@@ -1,0 +1,82 @@
+---
+import Layout from '@layouts/Layout.astro'
+import sanityFetch from '@utils/sanity.fetch'
+import metadataFetch from '@utils/metadata.fetch'
+import Breadcrumbs from '@components/ui/Breadcrumbs.astro'
+import Hero, { Hero_Query, type HeroProps } from '@components/Projects/Project/Hero.astro'
+import Gallery, { Gallery_Query, type Props as GalleryProps } from '@components/Projects/Project/Gallery.astro'
+import Summary, { Summary_Query, type Props as SummaryProps } from '@components/Projects/Project/Summary.astro'
+import Overview, { Overview_Query, type Props as OverviewProps } from '@components/Projects/Project/Overview.astro'
+import Components, { Components_Query, type ComponentsProps } from '@components/Components.astro'
+import { type Language } from '@utils/languages'
+
+type Props = NonNullable<Awaited<ReturnType<typeof fetchData>>>
+
+export const slugPrefix = {
+  pl: '/realizacje/',
+  en: '/en/projects/',
+}
+
+export async function getStaticPaths() {
+  const collection = await sanityFetch<{ slug: string; language: Language }[]>({
+    query: `
+      *[_type == 'Project_Collection'][] {
+        "slug": slug.current,
+        language
+      }
+    `,
+  })
+  return collection?.map(({ slug, language }) => ({
+    params: {
+      slug: slug.replace(slugPrefix[language], ''),
+      lang: language,
+    },
+  }))
+}
+
+export async function fetchData(lang: Language, _slug: string) {
+  const slug = `${slugPrefix[lang]}${_slug}`
+
+  const page = await sanityFetch<{
+    rootTitle: string
+    title: string
+    hero: HeroProps
+    summary: SummaryProps
+    overview: OverviewProps
+    gallery: GalleryProps
+    components: ComponentsProps
+  }>({
+    query: `
+      *[_type == 'Project_Collection' && slug.current == $slug && language == $language][0] {
+        "rootTitle": *[_type == 'Projects_Page' && language == $language][0].title,
+        title,
+        ${Hero_Query}
+        ${Summary_Query}
+        ${Overview_Query}
+        ${Gallery_Query}
+        ${Components_Query}
+      }
+    `,
+    params: { slug, language: lang },
+  })
+  if (!page) return null
+  const metadata = await metadataFetch(slug)
+  return { page, metadata, slug, lang }
+}
+
+const { page, metadata, slug, lang } = Astro.props
+---
+
+<Layout {...metadata}>
+  <Breadcrumbs
+    data={[
+      { name: page.rootTitle, path: slugPrefix[lang] },
+      { name: page.title, path: slug },
+    ]}
+  />
+  <Hero {...page.hero} />
+  <Summary {...page.summary} />
+  <Overview {...page.overview} />
+  <Gallery {...page.gallery} />
+  <Components data={page.components} hasPreviousSections={true} excludeSlug={slug} />
+</Layout>

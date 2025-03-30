@@ -1,13 +1,107 @@
 ---
 import type { feauturedProjectsProps } from '@layouts/Layout.astro'
+import type { HeadProps } from '@layouts/Head.astro'
+import sanityFetch from '@utils/sanity.fetch'
 import Button from '@components/ui/Button'
 import Image from '@components/ui/Image'
+import { LANGUAGES } from '@utils/languages'
 
-const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProjectsProps[] }
+type Props = {
+  feauturedProjects: feauturedProjectsProps[]
+  lang: string
+  alternates: HeadProps['alternates']
+}
+
+const { feauturedProjects, lang, alternates } = Astro.props
+
+const data = await sanityFetch<{
+  links: {
+    services: {
+      title: string
+      slug: string
+    }
+    projects: {
+      title: string
+      slug: string
+      seeAll: string
+    }
+    investments: {
+      title: string
+      slug: string
+    }
+    about: {
+      title: string
+      slug: string
+    }
+    contact: {
+      title: string
+      slug: string
+    }
+  }
+  ui: {
+    skipToContent: string
+    homePage: string
+    openMenu: string
+    closeMenu: string
+  }
+}>({
+  query: `
+    *[_type == 'global' && language == $language][0] {
+      "links": {
+        "services": *[_type == "Service_Page" && language == $language][0] {
+          title,
+          "slug": slug.current,
+        },
+        "projects": *[_type == "Projects_Page" && language == $language][0] {
+          title,
+          "slug": slug.current,
+          "seeAll": select(
+            $language == "en" => "See all projects",
+            "Zobacz wszystkie realizacje"
+          )
+        },
+        "investments": *[_type == "Investments_Page" && language == $language][0] {
+          title,
+          "slug": slug.current,
+        },
+        "about": *[_type == "About_Page" && language == $language][0] {
+          title,
+          "slug": slug.current,
+        },
+        "contact": *[_type == "Contact_Page" && language == $language][0] {
+          "title": select(
+            $language == "en" => "Contact",
+            "Kontakt"
+          ),
+          "slug": slug.current,
+        }
+      },
+      "ui": {
+        "skipToContent": select(
+          $language == "en" => "Skip to content",
+          "Przejdź do treści"
+        ),
+        "homePage": select(
+          $language == "en" => "Home page",
+          "Strona główna"
+        ),
+        "openMenu": select(
+          $language == "en" => "Open menu",
+          "Otwórz menu"
+        ),
+        "closeMenu": select(
+          $language == "en" => "Close menu",
+          "Zamknij menu"
+        )
+      }
+    }
+  `,
+  params: { language: lang },
+})
 ---
 
-<a href="#main" class="skip-link">Przejdź do treści</a>
-<a href="/" aria-label="Strona główna" class="logo">
+<a href="#main" class="skip-link">{data.ui.skipToContent}</a>
+<a href={lang === 'pl' ? '/' : '/en'} aria-label={data.ui.homePage} class="logo">
   <svg xmlns="http://www.w3.org/2000/svg" width="107" height="24" viewBox="0 0 107 24" fill="#C8B888">
     <title>Lidenskap</title>
     <path
@@ -37,45 +131,101 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
     <nav data-lenis-prevent>
       <ul>
         <li>
-          <a href="/oferta">Oferta</a>
+          <a href={data.links.services.slug}>{data.links.services.title}</a>
         </li>
         <li class="dropdown-item">
-          <span>Realizacje</span>
+          <span>{data.links.projects.title}</span>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" class="dropdown-icon">
             <path stroke="#0C2D63" stroke-linecap="round" stroke-linejoin="round" d="m4 6 4 4 4-4"></path>
           </svg>
           <ul class="dropdown">
             {
-              feauturedProjects?.map(({ img, name, slug }) => (
+              feauturedProjects?.map(({ img, title, slug }) => (
                 <li class="dropdown-item-img">
                   <a href={slug}>
                     <Image {...img} sizes="36px" loading="eager" />
-                    <span>{name}</span>
+                    <span>{title}</span>
                   </a>
                 </li>
               ))
             }
             <li class="main-link">
-              <a href="/realizacje">Zobacz wszystkie realizacje</a>
+              <a href={data.links.projects.slug}>{data.links.projects.seeAll}</a>
             </li>
           </ul>
         </li>
         <li>
-          <a href="/inwestycje">Inwestycje</a>
+          <a href={data.links.investments.slug}>{data.links.investments.title}</a>
         </li>
         <li>
-          <a href="/o-lidenskap">O lidenskap</a>
+          <a href={data.links.about.slug}>{data.links.about.title}</a>
         </li>
       </ul>
     </nav>
-    <Button theme="primary" linkType="internal" href="/kontakt" className="cta">Kontakt</Button>
-    <button class="nav-toggle" aria-label="Otwórz menu"><div></div><div></div><div></div></button>
+    <div class="language">
+      <button
+        class="language-switcher"
+        aria-expanded="false"
+        aria-controls="language-dropdown"
+        aria-label={lang === 'pl' ? 'Zmień język' : 'Change language'}>
+        <svg
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+          class="globe">
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M3 12h5m-5 0a9 9 0 0 0 9 9m-9-9a9 9 0 0 1 9-9m-4 9h8m-8 0c0 4.97 1.79 9 4 9m-4-9c0-4.97 1.79-9 4-9m4 9h5m-5 0c0-4.97-1.79-9-4-9m4 9c0 4.97-1.79 9-4 9m9-9a9 9 0 0 0-9-9m9 9a9 9 0 0 1-9 9">
+          </path>
+        </svg>
+        <span class="current-lang">{lang === 'pl' ? 'Polski' : 'English'}</span>
+        <svg
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="12"
+          height="12"
+          fill="none"
+          viewBox="0 0 12 12"
+          class="chevron">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="m2 4 4 4 4-4"></path>
+        </svg>
+      </button>
+      <div id="language-dropdown" class="language-dropdown" hidden>
+        {
+          LANGUAGES.map((locale) => (
+            <a
+              class="language-option"
+              href={alternates?.find((alt) => alt.lang === locale)?.url || (locale === 'pl' ? '/' : '/en')}
+              aria-current={lang === locale ? 'true' : undefined}
+              lang={locale}>
+              {locale === 'pl' ? 'Polski (Polish)' : 'English (Angielski)'}
+            </a>
+          ))
+        }
+      </div>
+    </div>
+    <Button theme="primary" linkType="internal" href={data.links.contact.slug} className="cta">
+      {data.links.contact.title}
+    </Button>
+    <button
+      class="nav-toggle"
+      aria-label={data.ui.openMenu}
+      data-text-open-menu={data.ui.openMenu}
+      data-text-close-menu={data.ui.closeMenu}>
+      <div></div><div></div><div></div>
+    </button>
   </div>
 </header>
-<div class="overlay" role="button" aria-hidden="true" aria-label="Zamknij menu"></div>
+<div class="overlay" role="button" aria-hidden="true" aria-label={data.ui.closeMenu}></div>
 
 <style lang="scss">
-  $nav-max-breakpoint: 899px;
+  $nav-max-breakpoint: 63rem;
+  $nav-min-breakpoint: 63.001rem;
   $header-height: 3.75rem;
   .skip-link {
     border: 1px solid var(--primary-700, #ad6116);
@@ -123,12 +273,12 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
   nav {
     font-size: calc(14rem / 16);
     margin-left: auto;
-    margin-right: clamp(32px, calc(48vw / 7.68), 48px);
+    margin-right: 2rem;
     border: 1px solid var(--primary-300, #f4efe8);
     background: var(--primary-100, #fffefd);
     padding: 0 16px;
     pointer-events: auto;
-    @media (min-width: $nav-max-breakpoint + 1) {
+    @media (min-width: $nav-min-breakpoint) {
       height: auto !important;
     }
     > ul {
@@ -207,13 +357,103 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
       }
     }
   }
-  @media (max-width: $nav-max-breakpoint) {
+  .language {
+    position: relative;
+    pointer-events: auto;
+    margin-right: 2rem;
+    border: 1px solid var(--primary-300, #f4efe8);
+    background: var(--primary-100, #fffefd);
+    font-size: 0.875rem;
+    .language-switcher {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: opacity 300ms var(--easing);
+      .globe {
+        transform-style: preserve-3d;
+        transition: none;
+        @keyframes rotate {
+          0% {
+            transform: rotateY(0deg);
+          }
+          100% {
+            transform: rotateY(360deg);
+          }
+        }
+      }
+      .chevron {
+        transition: transform 500ms var(--easing);
+      }
+      &[aria-expanded='true'] {
+        .chevron {
+          transform: rotateX(180deg);
+        }
+      }
+    }
+    &:hover {
+      .globe {
+        animation: rotate 800ms var(--easing) forwards;
+      }
+    }
+    .language-dropdown {
+      position: absolute;
+      top: calc(100% + 0.25rem);
+      right: 0;
+      min-width: 12rem;
+      background: var(--primary-100, #fffefd);
+      border: 1px solid var(--primary-300, #f4efe8);
+      z-index: 10;
+      transition: transform 500ms var(--easing);
+      &[hidden] {
+        display: block;
+        visibility: hidden;
+        transform: translateY(-0.25rem);
+        opacity: 0;
+        pointer-events: none;
+      }
+      .language-option {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 0.75rem 1rem 0.75rem 2rem;
+        text-decoration: none;
+        color: var(--secondary-800, #0b2348);
+        transition: background-color 300ms var(--easing);
+        &:hover {
+          background-color: var(--primary-200, #f9f7f4);
+        }
+        &[aria-current='true'] {
+          background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20stroke%3D%22%23000%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20d%3D%22m16.8%208.4-7.16%207.2-2.44-2.454%22%2F%3E%3C%2Fsvg%3E');
+          background-size: 1.5rem;
+          background-position: 0.5rem 0.8rem;
+          background-repeat: no-repeat;
+        }
+      }
+    }
+    @media (max-width: $nav-max-breakpoint - 0.01rem) {
+      margin-left: auto;
+    }
+  }
+  @media (max-width: $nav-max-breakpoint - 0.01rem) {
     header {
       pointer-events: auto;
       background-color: var(--primary-100, #fffefd);
       padding-left: clamp(89px, calc(106vw / 7.68), 106px);
       .cta {
+        max-width: 13rem;
         margin: auto;
+        position: fixed;
+        right: 0.5rem;
+        left: 0.5rem;
+        bottom: 0.5rem;
+        transition: transform 500ms var(--easing);
+        &[data-visible='false'] {
+          transform: translateY(calc(100% + 0.5rem));
+        }
       }
     }
     nav {
@@ -279,7 +519,7 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
     opacity: 0;
     pointer-events: none;
     transition: opacity 500ms var(--easing);
-    @media (min-width: $nav-max-breakpoint + 1) {
+    @media (min-width: $nav-min-breakpoint) {
       display: none;
     }
   }
@@ -288,7 +528,7 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
     gap: 5px;
     padding: 16px 12px;
     margin: 0 -12px;
-    @media (min-width: $nav-max-breakpoint + 1) {
+    @media (min-width: $nav-min-breakpoint) {
       display: none;
     }
     div {
@@ -325,11 +565,16 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
   const nav = header.querySelector<HTMLElement>('nav')!
   const navToggle = header.querySelector<HTMLButtonElement>('.nav-toggle')!
   const overlay = header.nextElementSibling!
+  const cta = header.querySelector<HTMLAnchorElement>('.cta')!
+  const footer = document.querySelector('footer[data-component="Footer"]')!
 
   navToggle.addEventListener('click', () => {
     const isExpanded = header.getAttribute('aria-expanded') === 'true'
     header.setAttribute('aria-expanded', String(!isExpanded))
-    navToggle.setAttribute('aria-label', isExpanded ? 'Otwórz menu' : 'Zamknij menu')
+    navToggle.setAttribute(
+      'aria-label',
+      isExpanded ? navToggle.getAttribute('data-text-close-menu')! : navToggle.getAttribute('data-text-open-menu')!
+    )
     const navHeight = nav.scrollHeight + 2
     nav.style.height = `${isExpanded ? 0 : navHeight}px`
   })
@@ -343,4 +588,54 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
       nav.style.height = '0'
     }
   })
+
+  const languageSwitcher = header.querySelector<HTMLButtonElement>('.language-switcher')!
+  const languageDropdown = header.querySelector<HTMLDivElement>('.language-dropdown')!
+  languageSwitcher.addEventListener('click', () => {
+    const isExpanded = languageSwitcher.getAttribute('aria-expanded') === 'true'
+    toggleDropdown(!isExpanded)
+  })
+  document.addEventListener('click', (e) => {
+    if (!languageSwitcher.contains(e.target as Node)) {
+      toggleDropdown(false)
+    }
+  })
+  document.addEventListener('keydown', (e) => {
+    const options = languageDropdown.querySelectorAll<HTMLAnchorElement>('.language-option')
+    const currentIndex = Array.from(options).findIndex((option) => option === document.activeElement)
+
+    if (e.key === 'Escape') {
+      toggleDropdown(false)
+      languageSwitcher.focus()
+    }
+    if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      if (currentIndex === options.length - 1) {
+        // Loop to first option
+        options[0].focus()
+      } else {
+        options[currentIndex + 1].focus()
+      }
+    }
+    if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      if (currentIndex === 0 || currentIndex === -1) {
+        // Loop to last option
+        options[options.length - 1].focus()
+      } else {
+        options[currentIndex - 1].focus()
+      }
+    }
+  })
+  function toggleDropdown(open: boolean) {
+    languageSwitcher.setAttribute('aria-expanded', open.toString())
+    languageDropdown.hidden = !open
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(({ isIntersecting }) => {
+      cta.setAttribute('data-visible', (!isIntersecting).toString())
+    })
+  })
+  observer.observe(footer)
 </script>

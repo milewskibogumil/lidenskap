@@ -1,27 +1,10 @@
 ---
-import Layout from '@layouts/Layout.astro'
-import metadataFetch from '@utils/metadata.fetch'
-import sanityFetch from '@utils/sanity.fetch'
-import Breadcrumbs from '@components/ui/Breadcrumbs.astro'
-import Hero, { Hero_Query, type HeroProps } from '@components/Investments/Hero.astro'
-import Components, { Components_Query, type ComponentsProps } from '@components/Components.astro'
+import InvestmentsPage, { fetchData } from '@templates/investments.astro'
+import { LANGUAGES } from '@utils/languages'
 
-const metadata = await metadataFetch('/inwestycje')
-
-const data = await sanityFetch<{ name: string; slug: string; hero: HeroProps; components: ComponentsProps }>({
-  query: `
-    *[_type == "Investments_Page"][0] {
-      "name": title,
-      "slug": slug.current,
-      ${Hero_Query}
-      ${Components_Query}
-    }
-  `,
-})
+const lang = 'pl'
+const data = await fetchData(lang)
+if (!LANGUAGES.includes(lang) || !data) return Astro.rewrite('/404')
 ---
 
-<Layout {...metadata}>
-  <Breadcrumbs data={[{ name: data.name, path: data.slug }]} />
-  <Hero {...data.hero} />
-  <Components data={data.components} hasPreviousSections={true} />
-</Layout>
+<InvestmentsPage {...data} />

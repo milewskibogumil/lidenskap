@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity';
+import { LANGUAGES } from '../../structure/languages';
 
 const name = 'global';
 const title = 'Globalne ustawienia';
@@ -10,6 +11,12 @@ export default defineType({
   title: title,
   icon,
   fields: [
+    defineField({
+      name: 'language',
+      type: 'string',
+      readOnly: true,
+      hidden: true,
+    }),
     defineField({
       name: 'email',
       type: 'string',
@@ -95,15 +102,13 @@ export default defineType({
           to: { type: 'Project_Collection' },
           options: {
             disableNew: true,
-            filter: ({ parent }) => {
+            filter: ({ document, parent }) => {
+              const language = (document as { language?: string })?.language;
               const selectedIds = (parent as { _ref?: string }[])?.filter(item => item._ref).map(item => item._ref) || [];
-              if (selectedIds.length > 0) {
-                return {
-                  filter: '!(_id in $selectedIds) && !(_id in path("drafts.**"))',
-                  params: { selectedIds }
-                }
+              return {
+                filter: '!(_id in $selectedIds) && language == $lang',
+                params: { selectedIds, lang: language }
               }
-              return {}
             }
           }
         })
@@ -162,9 +167,18 @@ export default defineType({
     }),
   ],
   preview: {
-    prepare: () => ({
-      title: title,
-    })
+    select: {
+      language: 'language',
+    },
+    prepare: ({ language }) => {
+      const languageObj = language ? LANGUAGES.find(lang => lang.id === language) : undefined;
+      const formattedTitle = languageObj
+        ? `${title} (${languageObj.title})`
+        : title;
+      return {
+        title: formattedTitle,
+      }
+    }
   }
 })
 

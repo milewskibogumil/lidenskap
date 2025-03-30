@@ -1,10 +1,10 @@
 import { defineField, defineType } from "sanity"
 import { defineSlugForDocument } from "../../utils/define-slug-for-document";
+import { documentPreview } from "../../utils/document-preview";
 import { PortableText } from "../ui/portable-text";
 
 const name = 'PrivacyPolicy_Page';
 const title = 'Polityka Prywatności';
-const slug = '/polityka-prywatnosci';
 const icon = () => '📄';
 
 export default defineType({
@@ -14,7 +14,18 @@ export default defineType({
   icon,
   options: { documentPreview: true },
   fields: [
-    ...defineSlugForDocument({ slug: slug }),
+    defineField({
+      name: 'language',
+      type: 'string',
+      readOnly: true,
+      hidden: true,
+    }),
+    ...defineSlugForDocument({
+      slugs: {
+        pl: '/polityka-prywatnosci',
+        en: '/en/privacy-policy',
+      }
+    }),
     defineField({
       name: 'header',
       type: 'object',
@@ -53,10 +64,5 @@ export default defineType({
       title: 'SEO',
     },
   ],
-  preview: {
-    prepare: () => ({
-      title: title,
-      subtitle: slug
-    })
-  }
+  ...documentPreview()
 });

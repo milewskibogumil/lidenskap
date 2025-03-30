@@ -1,5 +1,6 @@
 import { Iframe, type IframeProps } from "sanity-plugin-iframe-pane";
-import { PREVIEW_DEPLOYMENT_DOMAIN } from "../constants";
+
+const PREVIEW_DEPLOYMENT_DOMAIN: string = import.meta.env.SANITY_STUDIO_PREVIEW_DOMAIN;
 
 export const Preview = ({ document }: { document: IframeProps['document'] }) => {
   const slug = (document.displayed.slug as { current?: string })?.current;

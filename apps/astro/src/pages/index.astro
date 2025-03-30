@@ -1,22 +1,10 @@
 ---
-import Layout from '@layouts/Layout.astro'
-import metadataFetch from '@utils/metadata.fetch'
-import sanityFetch from '@utils/sanity.fetch'
-import Breadcrumbs from '@components/ui/Breadcrumbs.astro'
-import Components, { Components_Query, type ComponentsProps } from '@components/Components.astro'
+import IndexPage, { fetchData } from '@templates/index.astro'
+import { LANGUAGES } from '@utils/languages'
 
-const metadata = await metadataFetch('/')
-
-const data = await sanityFetch<{ components: ComponentsProps }>({
-  query: `
-    *[_type == "Index_Page"][0] {
-      ${Components_Query}
-    }
-  `,
-})
+const lang = 'pl'
+const data = await fetchData(lang)
+if (!LANGUAGES.includes(lang) || !data) return Astro.rewrite('/404')
 ---
 
-<Layout {...metadata}>
-  <Breadcrumbs />
-  <Components data={data.components} />
-</Layout>
+<IndexPage {...data} />

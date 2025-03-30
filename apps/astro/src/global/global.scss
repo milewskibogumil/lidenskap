@@ -196,7 +196,8 @@ h6,
   color: var(--secondary-700, #0c2d63);
   font-variant-numeric: lining-nums tabular-nums;
   strong {
-    font-weight: 600;
+    font-weight: 400;
+    background: linear-gradient(rgba(255, 255, 255, 0) 38%, var(--primary-300, #f4efe8) 62%);
   }
 }
 h1,
@@ -279,4 +280,7 @@ h3,
   flex-wrap: wrap;
   align-items: center;
   gap: clamp(0.5rem, calc(0.75vw / 0.48), 0.75rem);
+  @media (max-width: 32rem) {
+    width: 100%;
+  }
 }

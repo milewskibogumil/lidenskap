@@ -4,7 +4,14 @@ import Button from '@components/ui/Button'
 import sanityFetch from '@utils/sanity.fetch'
 import CopyToClipboard from '@components/ui/CopyToClipboard.astro'
 
-type QueryProps = {
+type Props = {
+  feauturedProjects: feauturedProjectsProps[]
+  lang: string
+}
+
+const { feauturedProjects, lang } = Astro.props
+
+const data = await sanityFetch<{
   email: string
   tel: string
   address: {
@@ -19,11 +26,35 @@ type QueryProps = {
     nip: string
     krs: string
   }
-}
-
-const data = await sanityFetch<QueryProps>({
+  links: {
+    projects: {
+      title: string
+      slug: string
+    }
+    services: {
+      title: string
+      slug: string
+    }
+    investments: {
+      title: string
+      slug: string
+    }
+    about: {
+      title: string
+      slug: string
+    }
+    contact: {
+      title: string
+      slug: string
+    }
+    privacy: {
+      title: string
+      slug: string
+    }
+  }
+}>({
   query: `
-    *[_type == 'global'][0] {
+    *[_type == 'global' && language == $language][0] {
       email,
       tel,
       address {
@@ -38,11 +69,39 @@ const data = await sanityFetch<QueryProps>({
         nip,
         krs,
       },
+      "links": {
+        "projects": *[_type == "Projects_Page" && language == $language][0] {
+          title,
+          "slug": slug.current,
+        },
+        "services": *[_type == "Service_Page" && language == $language][0] {
+          title,
+          "slug": slug.current,
+        },
+        "investments": *[_type == "Investments_Page" && language == $language][0] {
+          title,
+          "slug": slug.current,
+        },
+        "about": *[_type == "About_Page" && language == $language][0] {
+          title,
+          "slug": slug.current,
+        },
+        "contact": *[_type == "Contact_Page" && language == $language][0] {
+          "title": select(
+            $language == "en" => "Contact us",
+            "Skontaktuj się z nami"
+          ),
+          "slug": slug.current,
+        },
+        "privacy": *[_type == "PrivacyPolicy_Page" && language == $language][0] {
+          title,
+          "slug": slug.current,
+        }
+      }
     }
   `,
+  params: { language: lang },
 })
-
-const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProjectsProps[] }
 ---
 
 <footer data-component="Footer">
@@ -79,28 +138,30 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
     </svg>
     <ul class="links">
       <li>
-        <a href="/realizacje">Realizacje</a>
+        <a href={data.links.projects.slug}>{data.links.projects.title}</a>
         <ul>
           {
-            feauturedProjects?.map(({ name, slug }) => (
+            feauturedProjects?.map(({ title, slug }) => (
               <li>
-                <a href={slug}>{name}</a>
+                <a href={slug}>{title}</a>
               </li>
             ))
           }
         </ul>
       </li>
       <li>
-        <a href="/oferta">Oferta</a>
+        <a href={data.links.services.slug}>{data.links.services.title}</a>
       </li>
       <li>
-        <a href="/inwestycje">Inwestycje</a>
+        <a href={data.links.investments.slug}>{data.links.investments.title}</a>
       </li>
       <li>
-        <a href="/o-lidenskap">O Lidenskap</a>
+        <a href={data.links.about.slug}>{data.links.about.title}</a>
       </li>
       <li>
-        <Button theme="primary" href="/kontakt" className="cta">Skontaktuj się z nami</Button>
+        <Button theme="primary" href={data.links.contact.slug} className="cta">
+          {data.links.contact.title}
+        </Button>
       </li>
     </ul>
     <div class="info">
@@ -188,10 +249,24 @@ const { feauturedProjects } = Astro.props as { feauturedProjects: feauturedProje
       </div>
     </div>
     <div class="copyright">
-      <p>Wykonane przez <a href="https://milewski.me" class="link">milewski.me</a></p>
-      <div>
-        <a href="/polityka-prywatnosci" class="link">Polityka prywatności</a>
-      </div>
+      {
+        lang === 'en' ? (
+          <p>
+            Created by
+            <a href="https://milewski.me" class="link">
+              milewski.me
+            </a>
+          </p>
+        ) : (
+          <p>
+            Wykonane przez
+            <a href="https://milewski.me" class="link">
+              milewski.me
+            </a>
+          </p>
+        )
+      }
+      <a href={data.links.privacy.slug} class="link">{data.links.privacy.title}</a>
     </div>
   </div>
 </footer>

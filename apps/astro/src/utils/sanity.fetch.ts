@@ -8,9 +8,9 @@ if (!SANITY_API_TOKEN) console.warn('\x1b[33m%s\x1b[0m', "The `SANITY_API_TOKEN`
 export const client = createClient({
   projectId: '0qbklpoh',
   dataset: 'production',
-  apiVersion: '2024-12-21',
+  apiVersion: '2025-03-08',
   useCdn: false,
-  perspective: isProductionDeployment ? 'published' : 'previewDrafts',
+  perspective: isProductionDeployment ? 'published' : 'drafts',
   token: SANITY_API_TOKEN
 })
 

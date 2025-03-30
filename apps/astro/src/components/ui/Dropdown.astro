@@ -1,12 +1,15 @@
 ---
+import { type Language } from '@utils/languages'
+
 type Props = {
   options: {
     value: string
     label: string
   }[]
+  lang: Language
 }
 
-const { options } = Astro.props
+const { options, lang } = Astro.props
 ---
 
 <button
@@ -17,7 +20,10 @@ const { options } = Astro.props
   aria-expanded="false"
   aria-controls="dropdown-list"
   aria-labelledby="sort-label">
-  <p id="sort-label">Sortowanie: <span id="current-sort">{options[0].label}</span></p>
+  <p id="sort-label">
+    {lang === 'pl' ? 'Sortowanie:' : 'Sorting:'}
+    <span id="current-sort">{options[0].label}</span>
+  </p>
   <svg role="presentation" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 20 20">
     <path stroke="#374776" stroke-linecap="round" stroke-linejoin="round" d="m5 7.5 5 5 5-5"></path>
   </svg>

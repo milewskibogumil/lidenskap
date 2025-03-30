@@ -10,7 +10,8 @@
       "@assets/*": ["./src/assets/*"],
       "@public/*": ["./public/*"],
       "@layouts/*": ["./src/layouts/*"],
-      "@pages/*": ["./src/pages/*"]
+      "@pages/*": ["./src/pages/*"],
+      "@templates/*": ["./src/templates/*"]
     }
   }
 }
