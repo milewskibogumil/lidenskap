@@ -276,7 +276,7 @@ h3,
 }
 
 .cta-wrapper {
-  display: inline-flex;
+  display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: clamp(0.5rem, calc(0.75vw / 0.48), 0.75rem);
