@@ -1,6 +1,5 @@
 ---
 import '@global/global.scss'
-import { LOCALE } from '@global/constants'
 import Head, { type HeadProps } from './Head.astro'
 import sanityFetch from '@utils/sanity.fetch'
 import { ImageDataQuery, type ImageDataProps } from '@components/ui/Image'
@@ -9,7 +8,7 @@ import Footer from '@components/global/Footer.astro'
 import SmoothScroll from './smooth-scroll.astro'
 
 type Props = HeadProps & {
-  bodyProps: astroHTML.JSX.IntrinsicElements['body']
+  bodyProps?: astroHTML.JSX.IntrinsicElements['body']
 }
 
 const { ...props } = Astro.props
